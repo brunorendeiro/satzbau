@@ -3,16 +3,26 @@ import {
   subjects,
   verbs,
   modals,
+  timeAdverbs,
+  mannerAdverbs,
+  NONE_ID,
   buildDeTokens,
   buildDeWerTokens,
   buildDeContentTokens,
+  buildDeWannTokens,
+  buildDeWieTokens,
   buildPt,
   buildEn,
   buildDeAnswer,
+  buildDeOpenAnswer,
   buildPtWer,
   buildPtContent,
+  buildPtWann,
+  buildPtWie,
   buildEnWer,
   buildEnContent,
+  buildEnWann,
+  buildEnWie,
   roleLabel,
   type SubjectId,
   type VerbId,
@@ -61,6 +71,8 @@ export default function App() {
   const [verbId, setVerbId] = useState<VerbId>(DEFAULT_VERB)
   const [objectId, setObjectId] = useState<string>('deutsch')
   const [modalId, setModalId] = useState<ModalId>(DEFAULT_MODAL)
+  const [timeId, setTimeId] = useState<string>(NONE_ID)
+  const [mannerId, setMannerId] = useState<string>(NONE_ID)
 
   useEffect(() => {
     setLocale(detectLocale())
@@ -90,6 +102,8 @@ export default function App() {
     () => verb.objects.find(o => o.id === objectId) ?? verb.objects[0],
     [verb, objectId],
   )
+  const time = useMemo(() => timeAdverbs.find(t2 => t2.id === timeId)!, [timeId])
+  const manner = useMemo(() => mannerAdverbs.find(m => m.id === mannerId)!, [mannerId])
 
   function changeVerb(next: VerbId) {
     const nextVerb = verbs.find(v => v.id === next)!
@@ -103,6 +117,8 @@ export default function App() {
     setSubjectId(DEFAULT_SUBJECT)
     changeVerb(DEFAULT_VERB)
     setModalId(DEFAULT_MODAL)
+    setTimeId(NONE_ID)
+    setMannerId(NONE_ID)
   }
 
   const isQuestion = form === 'question'
@@ -110,30 +126,38 @@ export default function App() {
   const contentLabel = object.kind === 'place' ? (isFrom ? t.whereFromModeLabel : t.whereToModeLabel) : t.whatModeLabel
   const contentExplain = object.kind === 'place' ? (isFrom ? t.whereFromExplain : t.whereToExplain) : t.whatExplain
 
-  const tokens = isQuestion && questionMode === 'wer'
-    ? buildDeWerTokens(verb, object)
-    : isQuestion && questionMode === 'content'
-      ? buildDeContentTokens(subjectId, verb, object)
-      : buildDeTokens(form, subjectId, verb, object, modal)
+  const tokens =
+    isQuestion && questionMode === 'wer' ? buildDeWerTokens(verb, object, time, manner) :
+    isQuestion && questionMode === 'content' ? buildDeContentTokens(subjectId, verb, object, time, manner) :
+    isQuestion && questionMode === 'wann' ? buildDeWannTokens(subjectId, verb, object, manner) :
+    isQuestion && questionMode === 'wie' ? buildDeWieTokens(subjectId, verb, object, time) :
+    buildDeTokens(form, subjectId, verb, object, modal, time, manner)
 
-  const sentencePt = isQuestion && questionMode === 'wer'
-    ? buildPtWer(verb, object)
-    : isQuestion && questionMode === 'content'
-      ? buildPtContent(subjectId, verb, object)
-      : buildPt(form, subjectId, verb, object, modal)
+  const sentencePt =
+    isQuestion && questionMode === 'wer' ? buildPtWer(verb, object, time, manner) :
+    isQuestion && questionMode === 'content' ? buildPtContent(subjectId, verb, object, time, manner) :
+    isQuestion && questionMode === 'wann' ? buildPtWann(subjectId, verb, object, manner) :
+    isQuestion && questionMode === 'wie' ? buildPtWie(subjectId, verb, object, time) :
+    buildPt(form, subjectId, verb, object, modal, time, manner)
 
-  const sentenceEn = isQuestion && questionMode === 'wer'
-    ? buildEnWer(verb, object)
-    : isQuestion && questionMode === 'content'
-      ? buildEnContent(subjectId, verb, object)
-      : buildEn(form, subjectId, verb, object, modal)
+  const sentenceEn =
+    isQuestion && questionMode === 'wer' ? buildEnWer(verb, object, time, manner) :
+    isQuestion && questionMode === 'content' ? buildEnContent(subjectId, verb, object, time, manner) :
+    isQuestion && questionMode === 'wann' ? buildEnWann(subjectId, verb, object, manner) :
+    isQuestion && questionMode === 'wie' ? buildEnWie(subjectId, verb, object, time) :
+    buildEn(form, subjectId, verb, object, modal, time, manner)
 
   const explain = isQuestion
-    ? (questionMode === 'wer' ? t.werExplain : questionMode === 'content' ? contentExplain : t.formExplain.question)
+    ? (questionMode === 'wer' ? t.werExplain
+      : questionMode === 'content' ? contentExplain
+      : questionMode === 'wann' ? t.wannExplain
+      : questionMode === 'wie' ? t.wieExplain
+      : t.formExplain.question)
     : t.formExplain[form]
 
-  const yesAnswer = buildDeAnswer('yes', subjectId, verb, object)
-  const noAnswer = buildDeAnswer('no', subjectId, verb, object)
+  const yesAnswer = buildDeAnswer('yes', subjectId, verb, object, time, manner)
+  const noAnswer = buildDeAnswer('no', subjectId, verb, object, time, manner)
+  const openAnswer = buildDeOpenAnswer(subjectId, verb, object, time, manner)
 
   return (
     <div className="app-shell">
@@ -179,6 +203,8 @@ export default function App() {
           <button className={questionMode === 'yesno' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('yesno')}>{t.yesNoModeLabel}</button>
           <button className={questionMode === 'wer' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wer')}>{t.werModeLabel}</button>
           <button className={questionMode === 'content' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('content')}>{contentLabel}</button>
+          <button className={questionMode === 'wann' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wann')}>{t.wannModeLabel}</button>
+          <button className={questionMode === 'wie' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wie')}>{t.wieModeLabel}</button>
         </div>
       )}
 
@@ -199,7 +225,7 @@ export default function App() {
         {isQuestion && questionMode !== 'yesno' && (
           <div className="answers">
             <span className="answers-label">{t.answerLabel}</span>
-            <p>{yesAnswer}</p>
+            <p>{openAnswer}</p>
           </div>
         )}
       </div>
@@ -254,6 +280,28 @@ export default function App() {
             {modals.map(m => (
               <button key={m.id} className={m.id === modalId ? 'chip active' : 'chip'} onClick={() => setModalId(m.id)}>
                 {m.de.ich}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="piece-group">
+          <span className="piece-label">{t.zeit}</span>
+          <div className="chips">
+            {timeAdverbs.map(adv => (
+              <button key={adv.id} className={adv.id === timeId ? 'chip active' : 'chip'} onClick={() => setTimeId(adv.id)}>
+                {adv.id === NONE_ID ? t.noneOption : adv.de}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="piece-group">
+          <span className="piece-label">{t.wie}</span>
+          <div className="chips">
+            {mannerAdverbs.map(adv => (
+              <button key={adv.id} className={adv.id === mannerId ? 'chip active' : 'chip'} onClick={() => setMannerId(adv.id)}>
+                {adv.id === NONE_ID ? t.noneOption : adv.de}
               </button>
             ))}
           </div>

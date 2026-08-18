@@ -99,6 +99,9 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .tok-neg .tok-word { background: var(--danger); border-color: var(--danger); color: #fff8f2; }
 .tok-neg .tok-label { color: var(--danger); }
 
+.tok-time .tok-word, .tok-manner .tok-word { background: var(--ok); border-color: var(--ok); color: #fff8f2; }
+.tok-time .tok-label, .tok-manner .tok-label { color: var(--ok); }
+
 .sentence-translation { margin: 14px 0 0; color: var(--muted); font-size: 15px; }
 .form-explain { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); color: var(--text); font-size: 13px; line-height: 1.6; }
 

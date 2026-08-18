@@ -24,6 +24,9 @@ type UiStrings = {
   aktion: string
   modal: string
   wasWo: string
+  zeit: string
+  wie: string
+  noneOption: string
   forms: Record<Form, string>
   formExplain: Record<Form, string>
   regularLabel: string
@@ -39,10 +42,14 @@ type UiStrings = {
   whatModeLabel: string
   whereToModeLabel: string
   whereFromModeLabel: string
+  wannModeLabel: string
+  wieModeLabel: string
   werExplain: string
   whatExplain: string
   whereToExplain: string
   whereFromExplain: string
+  wannExplain: string
+  wieExplain: string
   restart: string
   themeLight: string
   themeDark: string
@@ -60,6 +67,9 @@ export const ui: Record<Locale, UiStrings> = {
     aktion: 'Aktion · Ação',
     modal: 'Modal · Querer, precisar, gostaria',
     wasWo: 'Was/Wo · O quê / Onde',
+    zeit: 'Wann · Quando',
+    wie: 'Wie · Como',
+    noneOption: '— nenhum —',
     forms: {
       affirmative: 'Afirmativa',
       question: 'Pergunta',
@@ -89,6 +99,10 @@ export const ui: Record<Locale, UiStrings> = {
     whatExplain: '"Was" (o quê) substitui o objeto — pergunta-se pelo que falta, por isso ele desaparece da frase.',
     whereToExplain: '"Wohin" (para onde) substitui o destino — usa-se "wohin" e não "wo" porque o verbo implica movimento em direção a um sítio.',
     whereFromExplain: '"Woher" (de onde) substitui a origem — usa-se "woher" e não "wo" porque o verbo implica movimento a partir de um sítio.',
+    wannModeLabel: 'Quando',
+    wieModeLabel: 'Como',
+    wannExplain: '"Wann" (quando) substitui a expressão de tempo — se escolheres uma peça de tempo ela desaparece da frase, é isso que se está a perguntar.',
+    wieExplain: '"Wie" (como) substitui a expressão de modo — se escolheres uma peça de modo ela desaparece da frase, é isso que se está a perguntar.',
     restart: 'Reiniciar',
     themeLight: 'Claro',
     themeDark: 'Escuro',
@@ -104,6 +118,9 @@ export const ui: Record<Locale, UiStrings> = {
     aktion: 'Aktion · Action',
     modal: 'Modal · Want, need, would like',
     wasWo: 'Was/Wo · What / Where',
+    zeit: 'Wann · When',
+    wie: 'Wie · How',
+    noneOption: '— none —',
     forms: {
       affirmative: 'Affirmative',
       question: 'Question',
@@ -133,6 +150,10 @@ export const ui: Record<Locale, UiStrings> = {
     whatExplain: '"Was" (what) replaces the object — you\'re asking for the missing piece, so it drops out of the sentence.',
     whereToExplain: '"Wohin" (where to) replaces the destination — "wohin", not "wo", because the verb implies moving toward a place.',
     whereFromExplain: '"Woher" (where from) replaces the origin — "woher", not "wo", because the verb implies moving away from a place.',
+    wannModeLabel: 'When',
+    wieModeLabel: 'How',
+    wannExplain: '"Wann" (when) replaces the time expression — pick a time piece and it drops out of the sentence, since that\'s exactly what\'s being asked.',
+    wieExplain: '"Wie" (how) replaces the manner expression — pick a manner piece and it drops out of the sentence, since that\'s exactly what\'s being asked.',
     restart: 'Restart',
     themeLight: 'Light',
     themeDark: 'Dark',
@@ -148,6 +169,9 @@ export const ui: Record<Locale, UiStrings> = {
     aktion: 'Aktion',
     modal: 'Modal · wollen, müssen, möchten',
     wasWo: 'Was/Wo',
+    zeit: 'Wann',
+    wie: 'Wie',
+    noneOption: '— keine —',
     forms: {
       affirmative: 'Aussage',
       question: 'Frage',
@@ -177,6 +201,10 @@ export const ui: Record<Locale, UiStrings> = {
     whatExplain: '"Was" ersetzt das Objekt — man fragt genau nach dem fehlenden Teil, deshalb fällt er aus dem Satz.',
     whereToExplain: '"Wohin" ersetzt das Ziel — "wohin" statt "wo", weil das Verb eine Bewegung zu einem Ort ausdrückt.',
     whereFromExplain: '"Woher" ersetzt die Herkunft — "woher" statt "wo", weil das Verb eine Bewegung von einem Ort weg ausdrückt.',
+    wannModeLabel: 'Wann',
+    wieModeLabel: 'Wie',
+    wannExplain: '"Wann" ersetzt die Zeitangabe — wählst du ein Zeit-Stück, fällt es aus dem Satz, denn genau danach wird gefragt.',
+    wieExplain: '"Wie" ersetzt die Modalangabe — wählst du ein Art-und-Weise-Stück, fällt es aus dem Satz, denn genau danach wird gefragt.',
     restart: 'Neu starten',
     themeLight: 'Hell',
     themeDark: 'Dunkel',
