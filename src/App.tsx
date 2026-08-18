@@ -3,14 +3,23 @@ import {
   subjects,
   verbs,
   modals,
-  buildDe,
+  buildDeTokens,
+  buildDeWerTokens,
+  buildDeContentTokens,
   buildPt,
   buildEn,
   buildDeAnswer,
+  buildPtWer,
+  buildPtContent,
+  buildEnWer,
+  buildEnContent,
+  roleLabel,
   type SubjectId,
   type VerbId,
   type ModalId,
   type Form,
+  type QuestionMode,
+  type Token,
 } from './data/grammar'
 import { detectLocale, locales, ui, type Locale } from './i18n'
 import { getStoredConsent, loadAnalytics } from './analytics'
@@ -22,9 +31,23 @@ const DEFAULT_SUBJECT: SubjectId = 'ich'
 const DEFAULT_VERB: VerbId = 'lernen'
 const DEFAULT_MODAL: ModalId = 'moechten'
 
+function SentenceTokens({ tokens }: { tokens: Token[] }) {
+  return (
+    <p className="sentence-de">
+      {tokens.map((token, i) => (
+        <span className={`tok tok-${token.role}`} key={i}>
+          <span className="tok-word">{token.text}</span>
+          <span className="tok-label">{roleLabel[token.role]}</span>
+        </span>
+      ))}
+    </p>
+  )
+}
+
 export default function App() {
   const [locale, setLocale] = useState<Locale>('en')
   const [form, setForm] = useState<Form>('affirmative')
+  const [questionMode, setQuestionMode] = useState<QuestionMode>('yesno')
   const [subjectId, setSubjectId] = useState<SubjectId>(DEFAULT_SUBJECT)
   const [verbId, setVerbId] = useState<VerbId>(DEFAULT_VERB)
   const [objectId, setObjectId] = useState<string>('deutsch')
@@ -57,14 +80,37 @@ export default function App() {
 
   function restart() {
     setForm('affirmative')
+    setQuestionMode('yesno')
     setSubjectId(DEFAULT_SUBJECT)
     changeVerb(DEFAULT_VERB)
     setModalId(DEFAULT_MODAL)
   }
 
-  const sentenceDe = buildDe(form, subjectId, verb, object, modal)
-  const sentencePt = buildPt(form, subjectId, verb, object, modal)
-  const sentenceEn = buildEn(form, subjectId, verb, object, modal)
+  const isQuestion = form === 'question'
+  const contentLabel = object.kind === 'place' ? t.whereModeLabel : t.whatModeLabel
+  const contentExplain = object.kind === 'place' ? t.whereExplain : t.whatExplain
+
+  const tokens = isQuestion && questionMode === 'wer'
+    ? buildDeWerTokens(verb, object)
+    : isQuestion && questionMode === 'content'
+      ? buildDeContentTokens(subjectId, verb, object)
+      : buildDeTokens(form, subjectId, verb, object, modal)
+
+  const sentencePt = isQuestion && questionMode === 'wer'
+    ? buildPtWer(verb, object)
+    : isQuestion && questionMode === 'content'
+      ? buildPtContent(subjectId, verb, object)
+      : buildPt(form, subjectId, verb, object, modal)
+
+  const sentenceEn = isQuestion && questionMode === 'wer'
+    ? buildEnWer(verb, object)
+    : isQuestion && questionMode === 'content'
+      ? buildEnContent(subjectId, verb, object)
+      : buildEn(form, subjectId, verb, object, modal)
+
+  const explain = isQuestion
+    ? (questionMode === 'wer' ? t.werExplain : questionMode === 'content' ? contentExplain : t.formExplain.question)
+    : t.formExplain[form]
 
   const yesAnswer = buildDeAnswer('yes', subjectId, verb, object)
   const noAnswer = buildDeAnswer('no', subjectId, verb, object)
@@ -92,23 +138,42 @@ export default function App() {
 
       <div className="form-switch">
         {FORMS.map(f => (
-          <button key={f} className={f === form ? 'form-tab active' : 'form-tab'} onClick={() => setForm(f)}>
+          <button
+            key={f}
+            className={f === form ? 'form-tab active' : 'form-tab'}
+            onClick={() => { setForm(f); if (f !== 'question') setQuestionMode('yesno') }}
+          >
             {t.forms[f]}
           </button>
         ))}
       </div>
 
+      {isQuestion && (
+        <div className="qmode-switch">
+          <button className={questionMode === 'yesno' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('yesno')}>{t.yesNoModeLabel}</button>
+          <button className={questionMode === 'wer' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wer')}>{t.werModeLabel}</button>
+          <button className={questionMode === 'content' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('content')}>{contentLabel}</button>
+        </div>
+      )}
+
       <div className="output-card">
-        <p className="sentence-de">{sentenceDe}</p>
+        <span className="schema-tag">SATZ-SCHEMA</span>
+        <SentenceTokens tokens={tokens} />
         {locale !== 'pt' && <p className="sentence-translation">{sentenceEn}</p>}
         {locale !== 'en' && <p className="sentence-translation">{sentencePt}</p>}
-        <p className="form-explain">{t.formExplain[form]}</p>
+        <p className="form-explain">{explain}</p>
 
-        {form === 'question' && (
+        {isQuestion && questionMode === 'yesno' && (
           <div className="answers">
             <span className="answers-label">{t.answersLabel}</span>
             <p><strong>{t.yesLabel}:</strong> {yesAnswer}</p>
             <p><strong>{t.noLabel}:</strong> {noAnswer}</p>
+          </div>
+        )}
+        {isQuestion && questionMode !== 'yesno' && (
+          <div className="answers">
+            <span className="answers-label">{t.answerLabel}</span>
+            <p>{yesAnswer}</p>
           </div>
         )}
       </div>

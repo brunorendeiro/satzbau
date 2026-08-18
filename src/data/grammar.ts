@@ -1,7 +1,8 @@
 export type SubjectId = 'ich' | 'du' | 'er' | 'wir' | 'ihr' | 'sie'
-export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen'
+export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen'
 export type ModalId = 'moechten' | 'wollen' | 'muessen'
 export type Form = 'affirmative' | 'question' | 'negative' | 'twoVerbs'
+export type QuestionMode = 'yesno' | 'wer' | 'content'
 
 type PerSubject = Record<SubjectId, string>
 
@@ -25,7 +26,7 @@ export type NounObject = {
   id: string
   kind: 'noun'
   noun: string
-  gender: 'm' | 'f' | 'n'
+  gender: 'm' | 'f' | 'n' | 'pl'
   article: 'indef' | 'none'
   pt: string
   en: string
@@ -53,7 +54,7 @@ export type Verb = {
   objects: VerbObject[]
 }
 
-const KEIN: Record<'m' | 'f' | 'n', string> = { m: 'keinen', f: 'keine', n: 'kein' }
+const KEIN: Record<'m' | 'f' | 'n' | 'pl', string> = { m: 'keinen', f: 'keine', n: 'kein', pl: 'keine' }
 const EIN: Record<'m' | 'f' | 'n', string> = { m: 'einen', f: 'eine', n: 'ein' }
 
 export const verbs: Verb[] = [
@@ -139,6 +140,84 @@ export const verbs: Verb[] = [
       { id: 'englisch', kind: 'noun', noun: 'Englisch', gender: 'n', article: 'none', pt: 'inglês', en: 'English' },
     ],
   },
+  {
+    id: 'machen',
+    infinitive: 'machen',
+    meaningPt: 'fazer',
+    meaningEn: 'do',
+    regular: true,
+    de: { ich: 'mache', du: 'machst', er: 'macht', wir: 'machen', ihr: 'macht', sie: 'machen' },
+    pt: { ich: 'faço', du: 'fazes', er: 'faz', wir: 'fazemos', ihr: 'fazeis', sie: 'fazem' },
+    en: { ich: 'do', du: 'do', er: 'does', wir: 'do', ihr: 'do', sie: 'do' },
+    objects: [
+      { id: 'hausaufgaben', kind: 'noun', noun: 'Hausaufgaben', gender: 'pl', article: 'none', pt: 'os trabalhos de casa', en: 'homework' },
+    ],
+  },
+  {
+    id: 'sehen',
+    infinitive: 'sehen',
+    meaningPt: 'ver',
+    meaningEn: 'see',
+    regular: false,
+    de: { ich: 'sehe', du: 'siehst', er: 'sieht', wir: 'sehen', ihr: 'seht', sie: 'sehen' },
+    pt: { ich: 'vejo', du: 'vês', er: 'vê', wir: 'vemos', ihr: 'vedes', sie: 'veem' },
+    en: { ich: 'see', du: 'see', er: 'sees', wir: 'see', ihr: 'see', sie: 'see' },
+    objects: [
+      { id: 'film', kind: 'noun', noun: 'Film', gender: 'm', article: 'indef', pt: 'um filme', en: 'a film' },
+    ],
+  },
+  {
+    id: 'essen',
+    infinitive: 'essen',
+    meaningPt: 'comer',
+    meaningEn: 'eat',
+    regular: false,
+    de: { ich: 'esse', du: 'isst', er: 'isst', wir: 'essen', ihr: 'esst', sie: 'essen' },
+    pt: { ich: 'como', du: 'comes', er: 'come', wir: 'comemos', ihr: 'comeis', sie: 'comem' },
+    en: { ich: 'eat', du: 'eat', er: 'eats', wir: 'eat', ihr: 'eat', sie: 'eat' },
+    objects: [
+      { id: 'apfel', kind: 'noun', noun: 'Apfel', gender: 'm', article: 'indef', pt: 'uma maçã', en: 'an apple' },
+    ],
+  },
+  {
+    id: 'fahren',
+    infinitive: 'fahren',
+    meaningPt: 'conduzir',
+    meaningEn: 'drive',
+    regular: false,
+    de: { ich: 'fahre', du: 'fährst', er: 'fährt', wir: 'fahren', ihr: 'fahrt', sie: 'fahren' },
+    pt: { ich: 'conduzo', du: 'conduzes', er: 'conduz', wir: 'conduzimos', ihr: 'conduzis', sie: 'conduzem' },
+    en: { ich: 'drive', du: 'drive', er: 'drives', wir: 'drive', ihr: 'drive', sie: 'drive' },
+    objects: [
+      { id: 'muenchen', kind: 'place', phrase: 'nach München', pt: 'para Munique', en: 'to Munich' },
+    ],
+  },
+  {
+    id: 'schreiben',
+    infinitive: 'schreiben',
+    meaningPt: 'escrever',
+    meaningEn: 'write',
+    regular: true,
+    de: { ich: 'schreibe', du: 'schreibst', er: 'schreibt', wir: 'schreiben', ihr: 'schreibt', sie: 'schreiben' },
+    pt: { ich: 'escrevo', du: 'escreves', er: 'escreve', wir: 'escrevemos', ihr: 'escreveis', sie: 'escrevem' },
+    en: { ich: 'write', du: 'write', er: 'writes', wir: 'write', ihr: 'write', sie: 'write' },
+    objects: [
+      { id: 'email', kind: 'noun', noun: 'E-Mail', gender: 'f', article: 'indef', pt: 'um e-mail', en: 'an email' },
+    ],
+  },
+  {
+    id: 'spielen',
+    infinitive: 'spielen',
+    meaningPt: 'jogar',
+    meaningEn: 'play',
+    regular: true,
+    de: { ich: 'spiele', du: 'spielst', er: 'spielt', wir: 'spielen', ihr: 'spielt', sie: 'spielen' },
+    pt: { ich: 'jogo', du: 'jogas', er: 'joga', wir: 'jogamos', ihr: 'jogais', sie: 'jogam' },
+    en: { ich: 'play', du: 'play', er: 'plays', wir: 'play', ihr: 'play', sie: 'play' },
+    objects: [
+      { id: 'fussball', kind: 'noun', noun: 'Fußball', gender: 'm', article: 'none', pt: 'futebol', en: 'football' },
+    ],
+  },
 ]
 
 export type Modal = {
@@ -179,7 +258,7 @@ function cap(s: string): string {
 
 function objectDeAffirmative(o: VerbObject): string {
   if (o.kind === 'place') return o.phrase
-  if (o.article === 'indef') return `${EIN[o.gender]} ${o.noun}`
+  if (o.article === 'indef' && o.gender !== 'pl') return `${EIN[o.gender]} ${o.noun}`
   return o.noun
 }
 
@@ -188,21 +267,52 @@ function objectDeNegative(o: VerbObject): { phrase: string; nichtBefore: boolean
   return { phrase: `${KEIN[o.gender]} ${o.noun}`, nichtBefore: false }
 }
 
-export function buildDe(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal): string {
+/** A word (or short phrase) tagged with its grammatical role, used to color-code the
+ * output sentence so the word-order rule (verb in 2nd position, infinitive at the end...)
+ * is visible, not just stated in the explanation text below it. */
+export type Token = { text: string; role: 'subject' | 'verb' | 'modal' | 'infinitive' | 'neg' | 'wh' | 'rest' }
+
+/** Real German grammar terms — used as small captions under each word of the
+ * output sentence, turning it into a syntax gloss instead of a flat line of text. */
+export const roleLabel: Record<Token['role'], string> = {
+  subject: 'SUBJEKT',
+  verb: 'VERB',
+  modal: 'MODALVERB',
+  infinitive: 'INFINITIV',
+  neg: 'NEGATION',
+  wh: 'W-WORT',
+  rest: 'ERGÄNZUNG',
+}
+
+function tok(text: string, role: Token['role']): Token {
+  return { text, role }
+}
+
+export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal): Token[] {
   const subj = subjects.find(s => s.id === subject)!
   const objPhrase = objectDeAffirmative(object)
 
   if (form === 'twoVerbs') {
-    return `${cap(subj.de)} ${modal.de[subject]} ${objPhrase} ${verb.infinitive}.`
+    return [tok(cap(subj.de), 'subject'), tok(modal.de[subject], 'modal'), tok(objPhrase, 'rest'), tok(`${verb.infinitive}.`, 'infinitive')]
   }
   const verbWord = verb.de[subject]
-  if (form === 'affirmative') return `${cap(subj.de)} ${verbWord} ${objPhrase}.`
-  if (form === 'question') return `${cap(verbWord)} ${subj.de} ${objPhrase}?`
+  if (form === 'affirmative') return [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), tok(`${objPhrase}.`, 'rest')]
+  if (form === 'question') return [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), tok(`${objPhrase}?`, 'rest')]
 
   const neg = objectDeNegative(object)
   return neg.nichtBefore
-    ? `${cap(subj.de)} ${verbWord} nicht ${neg.phrase}.`
-    : `${cap(subj.de)} ${verbWord} ${neg.phrase}.`
+    ? [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), tok('nicht', 'neg'), tok(`${neg.phrase}.`, 'rest')]
+    : [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), tok(`${neg.phrase}.`, 'neg')]
+}
+
+export function buildDeWerTokens(verb: Verb, object: VerbObject): Token[] {
+  return [tok('Wer', 'subject'), tok(verb.de.er, 'verb'), tok(`${objectDeAffirmative(object)}?`, 'rest')]
+}
+
+export function buildDeContentTokens(subject: SubjectId, verb: Verb, object: VerbObject): Token[] {
+  const subj = subjects.find(s => s.id === subject)!
+  const whWord = object.kind === 'place' ? 'Wohin' : 'Was'
+  return [tok(whWord, 'wh'), tok(verb.de[subject], 'verb'), tok(`${subj.de}?`, 'subject')]
 }
 
 export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb, object: VerbObject): string {
@@ -229,6 +339,15 @@ export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: Verb
   return `${cap(subj.pt)} não ${verbWord} ${object.pt}.`
 }
 
+export function buildPtWer(verb: Verb, object: VerbObject): string {
+  return `Quem ${verb.pt.er} ${object.pt}?`
+}
+
+export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObject): string {
+  const verbWord = verb.pt[subject]
+  return object.kind === 'place' ? `Para onde ${verbWord}?` : `O que ${verbWord}?`
+}
+
 export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal): string {
   const subj = subjects.find(s => s.id === subject)!
   const base = verb.en.ich
@@ -240,4 +359,17 @@ export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: Verb
   if (form === 'affirmative') return `${cap(subj.en)} ${verb.en[subject]} ${object.en}.`
   if (form === 'question') return `${cap(does)} ${subj.en} ${base} ${object.en}?`
   return `${cap(subj.en)} ${does} not ${base} ${object.en}.`
+}
+
+export function buildEnWer(verb: Verb, object: VerbObject): string {
+  return `Who ${verb.en.er} ${object.en}?`
+}
+
+export function buildEnContent(subject: SubjectId, verb: Verb, object: VerbObject): string {
+  const subj = subjects.find(s => s.id === subject)!
+  const base = verb.en.ich
+  const does = subject === 'er' ? 'does' : 'do'
+  return object.kind === 'place'
+    ? `Where ${does} ${subj.en} ${base}?`
+    : `What ${does} ${subj.en} ${base}?`
 }

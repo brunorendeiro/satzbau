@@ -31,8 +31,16 @@ type UiStrings = {
   regularNote: string
   irregularNote: string
   answersLabel: string
+  answerLabel: string
   yesLabel: string
   noLabel: string
+  yesNoModeLabel: string
+  werModeLabel: string
+  whatModeLabel: string
+  whereModeLabel: string
+  werExplain: string
+  whatExplain: string
+  whereExplain: string
   restart: string
   footerTagline: string
   cookieBody: string
@@ -65,8 +73,16 @@ export const ui: Record<Locale, UiStrings> = {
     regularNote: 'Verbo regular — usa sempre as terminações -e, -st, -t, -en, -t, -en, sem mudar a vogal do radical.',
     irregularNote: 'Verbo irregular — a vogal do radical muda nas formas "du" e "er/sie", as terminações mantêm-se iguais.',
     answersLabel: 'Respostas possíveis',
+    answerLabel: 'Resposta',
     yesLabel: 'Sim',
     noLabel: 'Não',
+    yesNoModeLabel: 'Sim/Não',
+    werModeLabel: 'Quem',
+    whatModeLabel: 'O quê',
+    whereModeLabel: 'Onde',
+    werExplain: '"Wer" (quem) substitui o sujeito. O verbo continua na 2ª posição, mas agora quem responde é que escolhe o sujeito.',
+    whatExplain: '"Was" (o quê) substitui o objeto — pergunta-se pelo que falta, por isso ele desaparece da frase.',
+    whereExplain: '"Wohin" (para onde) substitui o lugar — usa-se "wohin" e não "wo" porque o verbo implica movimento/direção.',
     restart: 'Reiniciar',
     footerTagline: 'Sem contas · tudo guardado no teu browser',
     cookieBody: 'Uso o Google Analytics para perceber quantas pessoas visitam este projeto. Aceitas cookies analíticos?',
@@ -97,8 +113,16 @@ export const ui: Record<Locale, UiStrings> = {
     regularNote: 'Regular verb — always uses the endings -e, -st, -t, -en, -t, -en, with no stem vowel change.',
     irregularNote: 'Irregular verb — the stem vowel changes in the "du" and "er/sie" forms, endings stay the same.',
     answersLabel: 'Possible answers',
+    answerLabel: 'Answer',
     yesLabel: 'Yes',
     noLabel: 'No',
+    yesNoModeLabel: 'Yes/No',
+    werModeLabel: 'Who',
+    whatModeLabel: 'What',
+    whereModeLabel: 'Where',
+    werExplain: '"Wer" (who) replaces the subject. The verb still sits in 2nd position, but now whoever answers picks the subject.',
+    whatExplain: '"Was" (what) replaces the object — you\'re asking for the missing piece, so it drops out of the sentence.',
+    whereExplain: '"Wohin" (where to) replaces the place — "wohin", not "wo", because the verb implies movement/direction.',
     restart: 'Restart',
     footerTagline: 'No accounts · everything stays in your browser',
     cookieBody: 'I use Google Analytics to understand how many people visit this project. Do you accept analytics cookies?',
@@ -129,8 +153,16 @@ export const ui: Record<Locale, UiStrings> = {
     regularNote: 'Regelmäßiges Verb — nutzt immer die Endungen -e, -st, -t, -en, -t, -en, ohne Änderung des Stammvokals.',
     irregularNote: 'Unregelmäßiges Verb — der Stammvokal ändert sich bei "du" und "er/sie", die Endungen bleiben gleich.',
     answersLabel: 'Mögliche Antworten',
+    answerLabel: 'Antwort',
     yesLabel: 'Ja',
     noLabel: 'Nein',
+    yesNoModeLabel: 'Ja/Nein',
+    werModeLabel: 'Wer',
+    whatModeLabel: 'Was',
+    whereModeLabel: 'Wohin',
+    werExplain: '"Wer" ersetzt das Subjekt. Das Verb bleibt an Position 2, aber jetzt wählt die antwortende Person das Subjekt.',
+    whatExplain: '"Was" ersetzt das Objekt — man fragt genau nach dem fehlenden Teil, deshalb fällt er aus dem Satz.',
+    whereExplain: '"Wohin" ersetzt den Ort — "wohin" statt "wo", weil das Verb eine Bewegung/Richtung ausdrückt.',
     restart: 'Neu starten',
     footerTagline: 'Keine Konten · alles bleibt im Browser',
     cookieBody: 'Ich verwende Google Analytics, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse-Cookies?',
