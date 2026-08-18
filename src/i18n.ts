@@ -37,11 +37,15 @@ type UiStrings = {
   yesNoModeLabel: string
   werModeLabel: string
   whatModeLabel: string
-  whereModeLabel: string
+  whereToModeLabel: string
+  whereFromModeLabel: string
   werExplain: string
   whatExplain: string
-  whereExplain: string
+  whereToExplain: string
+  whereFromExplain: string
   restart: string
+  themeLight: string
+  themeDark: string
   footerTagline: string
   cookieBody: string
   cookieAccept: string
@@ -79,11 +83,15 @@ export const ui: Record<Locale, UiStrings> = {
     yesNoModeLabel: 'Sim/Não',
     werModeLabel: 'Quem',
     whatModeLabel: 'O quê',
-    whereModeLabel: 'Onde',
+    whereToModeLabel: 'Para onde',
+    whereFromModeLabel: 'De onde',
     werExplain: '"Wer" (quem) substitui o sujeito. O verbo continua na 2ª posição, mas agora quem responde é que escolhe o sujeito.',
     whatExplain: '"Was" (o quê) substitui o objeto — pergunta-se pelo que falta, por isso ele desaparece da frase.',
-    whereExplain: '"Wohin" (para onde) substitui o lugar — usa-se "wohin" e não "wo" porque o verbo implica movimento/direção.',
+    whereToExplain: '"Wohin" (para onde) substitui o destino — usa-se "wohin" e não "wo" porque o verbo implica movimento em direção a um sítio.',
+    whereFromExplain: '"Woher" (de onde) substitui a origem — usa-se "woher" e não "wo" porque o verbo implica movimento a partir de um sítio.',
     restart: 'Reiniciar',
+    themeLight: 'Claro',
+    themeDark: 'Escuro',
     footerTagline: 'Sem contas · tudo guardado no teu browser',
     cookieBody: 'Uso o Google Analytics para perceber quantas pessoas visitam este projeto. Aceitas cookies analíticos?',
     cookieAccept: 'Aceitar',
@@ -119,11 +127,15 @@ export const ui: Record<Locale, UiStrings> = {
     yesNoModeLabel: 'Yes/No',
     werModeLabel: 'Who',
     whatModeLabel: 'What',
-    whereModeLabel: 'Where',
+    whereToModeLabel: 'Where to',
+    whereFromModeLabel: 'Where from',
     werExplain: '"Wer" (who) replaces the subject. The verb still sits in 2nd position, but now whoever answers picks the subject.',
     whatExplain: '"Was" (what) replaces the object — you\'re asking for the missing piece, so it drops out of the sentence.',
-    whereExplain: '"Wohin" (where to) replaces the place — "wohin", not "wo", because the verb implies movement/direction.',
+    whereToExplain: '"Wohin" (where to) replaces the destination — "wohin", not "wo", because the verb implies moving toward a place.',
+    whereFromExplain: '"Woher" (where from) replaces the origin — "woher", not "wo", because the verb implies moving away from a place.',
     restart: 'Restart',
+    themeLight: 'Light',
+    themeDark: 'Dark',
     footerTagline: 'No accounts · everything stays in your browser',
     cookieBody: 'I use Google Analytics to understand how many people visit this project. Do you accept analytics cookies?',
     cookieAccept: 'Accept',
@@ -159,11 +171,15 @@ export const ui: Record<Locale, UiStrings> = {
     yesNoModeLabel: 'Ja/Nein',
     werModeLabel: 'Wer',
     whatModeLabel: 'Was',
-    whereModeLabel: 'Wohin',
+    whereToModeLabel: 'Wohin',
+    whereFromModeLabel: 'Woher',
     werExplain: '"Wer" ersetzt das Subjekt. Das Verb bleibt an Position 2, aber jetzt wählt die antwortende Person das Subjekt.',
     whatExplain: '"Was" ersetzt das Objekt — man fragt genau nach dem fehlenden Teil, deshalb fällt er aus dem Satz.',
-    whereExplain: '"Wohin" ersetzt den Ort — "wohin" statt "wo", weil das Verb eine Bewegung/Richtung ausdrückt.',
+    whereToExplain: '"Wohin" ersetzt das Ziel — "wohin" statt "wo", weil das Verb eine Bewegung zu einem Ort ausdrückt.',
+    whereFromExplain: '"Woher" ersetzt die Herkunft — "woher" statt "wo", weil das Verb eine Bewegung von einem Ort weg ausdrückt.',
     restart: 'Neu starten',
+    themeLight: 'Hell',
+    themeDark: 'Dunkel',
     footerTagline: 'Keine Konten · alles bleibt im Browser',
     cookieBody: 'Ich verwende Google Analytics, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse-Cookies?',
     cookieAccept: 'Akzeptieren',

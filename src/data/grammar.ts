@@ -1,5 +1,5 @@
 export type SubjectId = 'ich' | 'du' | 'er' | 'wir' | 'ihr' | 'sie'
-export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen'
+export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen'
 export type ModalId = 'moechten' | 'wollen' | 'muessen'
 export type Form = 'affirmative' | 'question' | 'negative' | 'twoVerbs'
 export type QuestionMode = 'yesno' | 'wer' | 'content'
@@ -36,6 +36,9 @@ export type PlaceObject = {
   id: string
   kind: 'place'
   phrase: string
+  /** Which W-word this place takes in a content question: "Wohin" for a destination
+   * (nach Berlin), "Woher" for an origin (aus Portugal) — they are not interchangeable. */
+  whWord: 'Wohin' | 'Woher'
   pt: string
   en: string
 }
@@ -109,8 +112,8 @@ export const verbs: Verb[] = [
     pt: { ich: 'vou', du: 'vais', er: 'vai', wir: 'vamos', ihr: 'ides', sie: 'vão' },
     en: { ich: 'go', du: 'go', er: 'goes', wir: 'go', ihr: 'go', sie: 'go' },
     objects: [
-      { id: 'berlin', kind: 'place', phrase: 'nach Berlin', pt: 'para Berlim', en: 'to Berlin' },
-      { id: 'hause', kind: 'place', phrase: 'nach Hause', pt: 'para casa', en: 'home' },
+      { id: 'berlin', kind: 'place', phrase: 'nach Berlin', whWord: 'Wohin', pt: 'para Berlim', en: 'to Berlin' },
+      { id: 'hause', kind: 'place', phrase: 'nach Hause', whWord: 'Wohin', pt: 'para casa', en: 'home' },
     ],
   },
   {
@@ -189,7 +192,7 @@ export const verbs: Verb[] = [
     pt: { ich: 'conduzo', du: 'conduzes', er: 'conduz', wir: 'conduzimos', ihr: 'conduzis', sie: 'conduzem' },
     en: { ich: 'drive', du: 'drive', er: 'drives', wir: 'drive', ihr: 'drive', sie: 'drive' },
     objects: [
-      { id: 'muenchen', kind: 'place', phrase: 'nach München', pt: 'para Munique', en: 'to Munich' },
+      { id: 'muenchen', kind: 'place', phrase: 'nach München', whWord: 'Wohin', pt: 'para Munique', en: 'to Munich' },
     ],
   },
   {
@@ -216,6 +219,20 @@ export const verbs: Verb[] = [
     en: { ich: 'play', du: 'play', er: 'plays', wir: 'play', ihr: 'play', sie: 'play' },
     objects: [
       { id: 'fussball', kind: 'noun', noun: 'Fußball', gender: 'm', article: 'none', pt: 'futebol', en: 'football' },
+    ],
+  },
+  {
+    id: 'kommen',
+    infinitive: 'kommen',
+    meaningPt: 'vir',
+    meaningEn: 'come',
+    regular: true,
+    de: { ich: 'komme', du: 'kommst', er: 'kommt', wir: 'kommen', ihr: 'kommt', sie: 'kommen' },
+    pt: { ich: 'venho', du: 'vens', er: 'vem', wir: 'vimos', ihr: 'vindes', sie: 'vêm' },
+    en: { ich: 'come', du: 'come', er: 'comes', wir: 'come', ihr: 'come', sie: 'come' },
+    objects: [
+      { id: 'portugal', kind: 'place', phrase: 'aus Portugal', whWord: 'Woher', pt: 'de Portugal', en: 'from Portugal' },
+      { id: 'deutschland', kind: 'place', phrase: 'aus Deutschland', whWord: 'Woher', pt: 'da Alemanha', en: 'from Germany' },
     ],
   },
 ]
@@ -311,7 +328,7 @@ export function buildDeWerTokens(verb: Verb, object: VerbObject): Token[] {
 
 export function buildDeContentTokens(subject: SubjectId, verb: Verb, object: VerbObject): Token[] {
   const subj = subjects.find(s => s.id === subject)!
-  const whWord = object.kind === 'place' ? 'Wohin' : 'Was'
+  const whWord = object.kind === 'place' ? object.whWord : 'Was'
   return [tok(whWord, 'wh'), tok(verb.de[subject], 'verb'), tok(`${subj.de}?`, 'subject')]
 }
 
@@ -345,7 +362,8 @@ export function buildPtWer(verb: Verb, object: VerbObject): string {
 
 export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObject): string {
   const verbWord = verb.pt[subject]
-  return object.kind === 'place' ? `Para onde ${verbWord}?` : `O que ${verbWord}?`
+  if (object.kind !== 'place') return `O que ${verbWord}?`
+  return object.whWord === 'Woher' ? `De onde ${verbWord}?` : `Para onde ${verbWord}?`
 }
 
 export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal): string {
@@ -369,7 +387,8 @@ export function buildEnContent(subject: SubjectId, verb: Verb, object: VerbObjec
   const subj = subjects.find(s => s.id === subject)!
   const base = verb.en.ich
   const does = subject === 'er' ? 'does' : 'do'
-  return object.kind === 'place'
-    ? `Where ${does} ${subj.en} ${base}?`
-    : `What ${does} ${subj.en} ${base}?`
+  if (object.kind !== 'place') return `What ${does} ${subj.en} ${base}?`
+  return object.whWord === 'Woher'
+    ? `Where ${does} ${subj.en} ${base} from?`
+    : `Where ${does} ${subj.en} ${base}?`
 }

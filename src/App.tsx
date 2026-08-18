@@ -31,6 +31,14 @@ const DEFAULT_SUBJECT: SubjectId = 'ich'
 const DEFAULT_VERB: VerbId = 'lernen'
 const DEFAULT_MODAL: ModalId = 'moechten'
 
+type Theme = 'light' | 'dark'
+
+function detectTheme(): Theme {
+  const stored = window.localStorage.getItem('satzbau-theme')
+  if (stored === 'light' || stored === 'dark') return stored
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
 function SentenceTokens({ tokens }: { tokens: Token[] }) {
   return (
     <p className="sentence-de">
@@ -46,6 +54,7 @@ function SentenceTokens({ tokens }: { tokens: Token[] }) {
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>('en')
+  const [theme, setTheme] = useState<Theme>('light')
   const [form, setForm] = useState<Form>('affirmative')
   const [questionMode, setQuestionMode] = useState<QuestionMode>('yesno')
   const [subjectId, setSubjectId] = useState<SubjectId>(DEFAULT_SUBJECT)
@@ -55,14 +64,24 @@ export default function App() {
 
   useEffect(() => {
     setLocale(detectLocale())
+    setTheme(detectTheme())
     if (getStoredConsent() === 'granted') loadAnalytics()
   }, [])
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
 
   const t = ui[locale]
 
   function changeLocale(next: Locale) {
     setLocale(next)
     window.localStorage.setItem('satzbau-locale', next)
+  }
+
+  function changeTheme(next: Theme) {
+    setTheme(next)
+    window.localStorage.setItem('satzbau-theme', next)
   }
 
   const verb = useMemo(() => verbs.find(v => v.id === verbId)!, [verbId])
@@ -87,8 +106,9 @@ export default function App() {
   }
 
   const isQuestion = form === 'question'
-  const contentLabel = object.kind === 'place' ? t.whereModeLabel : t.whatModeLabel
-  const contentExplain = object.kind === 'place' ? t.whereExplain : t.whatExplain
+  const isFrom = object.kind === 'place' && object.whWord === 'Woher'
+  const contentLabel = object.kind === 'place' ? (isFrom ? t.whereFromModeLabel : t.whereToModeLabel) : t.whatModeLabel
+  const contentExplain = object.kind === 'place' ? (isFrom ? t.whereFromExplain : t.whereToExplain) : t.whatExplain
 
   const tokens = isQuestion && questionMode === 'wer'
     ? buildDeWerTokens(verb, object)
@@ -125,12 +145,18 @@ export default function App() {
             <small>{t.brandTagline}</small>
           </div>
         </h1>
-        <div className="locale-switch">
-          {locales.map(l => (
-            <button key={l.id} className={l.id === locale ? 'active' : ''} onClick={() => changeLocale(l.id)}>
-              {l.label}
-            </button>
-          ))}
+        <div className="header-controls">
+          <div className="locale-switch">
+            {locales.map(l => (
+              <button key={l.id} className={l.id === locale ? 'active' : ''} onClick={() => changeLocale(l.id)}>
+                {l.label}
+              </button>
+            ))}
+          </div>
+          <div className="locale-switch">
+            <button className={theme === 'light' ? 'active' : ''} onClick={() => changeTheme('light')}>{t.themeLight}</button>
+            <button className={theme === 'dark' ? 'active' : ''} onClick={() => changeTheme('dark')}>{t.themeDark}</button>
+          </div>
         </div>
       </header>
 
