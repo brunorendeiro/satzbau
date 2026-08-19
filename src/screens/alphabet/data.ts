@@ -59,8 +59,56 @@ export const combos: LetterEntry[] = [
   { id: 'ie', letter: 'ie', name: 'ie', example: 'Liebe', examplePt: 'amor', exampleEn: 'love', soundPt: 'As duas letras juntas fazem um só som: um "i" longo e fechado.', soundEn: 'The two letters together make a single sound: a long "ee".', tricky: false },
   { id: 'eu', letter: 'eu', name: 'eu', example: 'Deutsch', examplePt: 'alemão', exampleEn: 'German', soundPt: 'Soa "ói", como em "herói" — nunca como o "eu" português.', soundEn: 'Sounds like "oy", as in "boy" — never like the English word "you".', tricky: true },
   { id: 'er', letter: 'er', name: 'final -er', example: 'Wasser', examplePt: 'água', exampleEn: 'water', soundPt: 'No fim de palavra reduz-se a um "a" curto e átono — quase não se ouve o "r".', soundEn: 'At the end of a word it reduces to a short, unstressed "uh" — the "r" is barely heard.', tricky: true },
+  { id: 'ig', letter: '-ig', name: 'final -ig', example: 'traurig', examplePt: 'triste', exampleEn: 'sad', soundPt: 'No fim de palavra soa como o "ch" de "ich" — um "ch" sibilado, não um "g" duro.', soundEn: 'At the end of a word it sounds like the "ch" in "ich" — a soft hissing sound, not a hard "g".', tricky: true },
 ]
 
 /** Real German surnames make good practice material for the R sound —
  * both the throaty word-initial variant and the softened final "-er". */
 export const practiceSurnames: string[] = ['Müller', 'Schmidt', 'Schneider', 'Fischer', 'Schulz', 'Weber', 'Wagner', 'Becker', 'Hoffmann', 'Bauer']
+
+/** Long vs. short vowels are a whole extra dimension beyond the single-letter
+ * cards above — the same letter can sound two different ways, and it changes
+ * the word's meaning. Each pair contrasts a short and a long word that share
+ * a visual spelling cue (doubled consonant/vowel, consonant cluster, silent h). */
+export type VowelLengthPair = {
+  id: string
+  shortWord: string
+  shortMeaningPt: string
+  shortMeaningEn: string
+  longWord: string
+  longMeaningPt: string
+  longMeaningEn: string
+  rulePt: string
+  ruleEn: string
+}
+
+export const vowelLengthPairs: VowelLengthPair[] = [
+  {
+    id: 'bett-beet',
+    shortWord: 'Bett', shortMeaningPt: 'cama', shortMeaningEn: 'bed',
+    longWord: 'Beet', longMeaningPt: 'canteiro', longMeaningEn: 'flower bed',
+    rulePt: 'Consoante dobrada ("tt") = vogal curta. Vogal dobrada ("ee") = vogal longa.',
+    ruleEn: 'A doubled consonant ("tt") signals a short vowel. A doubled vowel ("ee") signals a long one.',
+  },
+  {
+    id: 'offen-ofen',
+    shortWord: 'offen', shortMeaningPt: 'aberto', shortMeaningEn: 'open',
+    longWord: 'Ofen', longMeaningPt: 'forno', longMeaningEn: 'oven',
+    rulePt: 'Consoante dobrada ("ff") = vogal curta. Uma só consoante seguida de vogal = vogal longa.',
+    ruleEn: 'A doubled consonant ("ff") signals a short vowel. A single consonant followed by another vowel signals a long one.',
+  },
+  {
+    id: 'stadt-staat',
+    shortWord: 'Stadt', shortMeaningPt: 'cidade', shortMeaningEn: 'city',
+    longWord: 'Staat', longMeaningPt: 'estado', longMeaningEn: 'state',
+    rulePt: 'Um grupo de consoantes ("dt") = vogal curta. Vogal dobrada ("aa") = vogal longa.',
+    ruleEn: 'A consonant cluster ("dt") signals a short vowel. A doubled vowel ("aa") signals a long one.',
+  },
+  {
+    id: 'sonne-sohn',
+    shortWord: 'Sonne', shortMeaningPt: 'sol', shortMeaningEn: 'sun',
+    longWord: 'Sohn', longMeaningPt: 'filho', longMeaningEn: 'son',
+    rulePt: 'Consoante dobrada ("nn") = vogal curta. Um "h" mudo depois da vogal = vogal longa — o "h" não se ouve.',
+    ruleEn: 'A doubled consonant ("nn") signals a short vowel. A silent "h" after the vowel signals a long one — the "h" itself isn\'t heard.',
+  },
+]

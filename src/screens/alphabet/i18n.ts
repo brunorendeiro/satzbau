@@ -7,6 +7,10 @@ type UiStrings = {
   sectionExtra: string
   sectionCombos: string
   combosIntro: string
+  sectionVowelLength: string
+  vowelLengthIntro: string
+  shortTag: string
+  longTag: string
   surnamesLabel: string
   trickyTag: string
   filterAll: string
@@ -21,6 +25,10 @@ export const ui: Record<Locale, UiStrings> = {
     sectionExtra: 'Letras especiais',
     sectionCombos: 'Combinações de letras',
     combosIntro: 'Algumas letras juntas formam um som completamente diferente do que teriam sozinhas — vale a pena aprendê-las como se fossem uma letra só.',
+    sectionVowelLength: 'Vogais longas e curtas',
+    vowelLengthIntro: 'A mesma vogal pode soar longa ou curta — e isso muda o significado da palavra. Há pistas na escrita que ajudam a saber qual é qual.',
+    shortTag: 'curta',
+    longTag: 'longa',
     surnamesLabel: 'Pratica com apelidos alemães reais',
     trickyTag: 'diferente',
     filterAll: 'Todas',
@@ -33,6 +41,10 @@ export const ui: Record<Locale, UiStrings> = {
     sectionExtra: 'Special letters',
     sectionCombos: 'Letter combinations',
     combosIntro: 'Some letters, put together, make a sound completely different from what they\'d have on their own — worth learning as if they were one single letter.',
+    sectionVowelLength: 'Long and short vowels',
+    vowelLengthIntro: 'The same vowel can sound long or short — and that changes the word\'s meaning. There are spelling clues that hint at which one you\'re looking at.',
+    shortTag: 'short',
+    longTag: 'long',
     surnamesLabel: 'Practice with real German surnames',
     trickyTag: 'different',
     filterAll: 'All',
@@ -45,6 +57,10 @@ export const ui: Record<Locale, UiStrings> = {
     sectionExtra: 'Sonderzeichen',
     sectionCombos: 'Buchstabenkombinationen',
     combosIntro: 'Manche Buchstaben ergeben zusammen einen völlig anderen Laut, als sie einzeln hätten — am besten lernst du sie wie einen einzigen Buchstaben.',
+    sectionVowelLength: 'Lange und kurze Vokale',
+    vowelLengthIntro: 'Derselbe Vokal kann lang oder kurz klingen — und das ändert die Bedeutung des Wortes. Die Schreibweise gibt Hinweise darauf, welcher es ist.',
+    shortTag: 'kurz',
+    longTag: 'lang',
     surnamesLabel: 'Übe mit echten deutschen Nachnamen',
     trickyTag: 'anders',
     filterAll: 'Alle',

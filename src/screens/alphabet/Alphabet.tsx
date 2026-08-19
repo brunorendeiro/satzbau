@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { alphabet, combos, practiceSurnames, type LetterEntry } from './data'
+import { alphabet, combos, practiceSurnames, vowelLengthPairs, type LetterEntry, type VowelLengthPair } from './data'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
 import './alphabet.css'
@@ -27,6 +27,29 @@ function LetterCard({ entry, trickyTag, locale }: { entry: LetterEntry; trickyTa
         <p><span className="letter-guide-label pt">PT</span>{entry.soundPt}</p>
         <p><span className="letter-guide-label en">EN</span>{entry.soundEn}</p>
       </div>
+    </div>
+  )
+}
+
+function VowelPairCard({ pair, locale, shortTag, longTag }: { pair: VowelLengthPair; locale: Locale; shortTag: string; longTag: string }) {
+  const shortMeaning = locale === 'en' ? pair.shortMeaningEn : pair.shortMeaningPt
+  const longMeaning = locale === 'en' ? pair.longMeaningEn : pair.longMeaningPt
+  const rule = locale === 'en' ? pair.ruleEn : pair.rulePt
+  return (
+    <div className="vowel-pair-card">
+      <div className="vowel-pair-words">
+        <div className="vowel-pair-word short">
+          <span className="vowel-pair-tag">{shortTag}</span>
+          <span className="vowel-pair-german">{pair.shortWord}</span>
+          <span className="vowel-pair-meaning">{shortMeaning}</span>
+        </div>
+        <div className="vowel-pair-word long">
+          <span className="vowel-pair-tag">{longTag}</span>
+          <span className="vowel-pair-german">{pair.longWord}</span>
+          <span className="vowel-pair-meaning">{longMeaning}</span>
+        </div>
+      </div>
+      <p className="vowel-pair-rule">{rule}</p>
     </div>
   )
 }
@@ -81,6 +104,14 @@ export default function Alphabet() {
           </div>
         </div>
       )}
+
+      <div className="alpha-section">
+        <span className="piece-label">{t.sectionVowelLength}</span>
+        <p className="alpha-section-note">{t.vowelLengthIntro}</p>
+        <div className="vowel-grid">
+          {vowelLengthPairs.map(pair => <VowelPairCard key={pair.id} pair={pair} locale={locale} shortTag={t.shortTag} longTag={t.longTag} />)}
+        </div>
+      </div>
 
       <div className="alpha-section">
         <span className="piece-label">{t.surnamesLabel}</span>
