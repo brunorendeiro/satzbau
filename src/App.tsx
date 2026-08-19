@@ -4,6 +4,7 @@ import SentenceBuilder from './screens/sentence-builder/SentenceBuilder'
 import CompoundWords from './screens/compound-words/CompoundWords'
 import Numbers from './screens/numbers/Numbers'
 import Alphabet from './screens/alphabet/Alphabet'
+import WordFamily from './screens/word-family/WordFamily'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="wortbau" element={<CompoundWords />} />
           <Route path="zahlen" element={<Numbers />} />
           <Route path="aussprache" element={<Alphabet />} />
+          <Route path="wortfamilie" element={<WordFamily />} />
         </Route>
       </Routes>
     </BrowserRouter>

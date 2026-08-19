@@ -67,6 +67,9 @@ export default function AppShell() {
         <NavLink to="/wortbau" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navCompoundWords}
         </NavLink>
+        <NavLink to="/wortfamilie" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navWordFamily}
+        </NavLink>
         <NavLink to="/zahlen" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navNumbers}
         </NavLink>

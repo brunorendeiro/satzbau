@@ -1,0 +1,58 @@
+import { useOutletContext } from 'react-router-dom'
+import { multiplierGroups, type MultiplierGroup, type MultiplierExample } from './data'
+import { ui } from './i18n'
+import type { Locale } from '../../i18n/common'
+import './word-family.css'
+
+function groupTitle(g: MultiplierGroup, locale: Locale): string {
+  return locale === 'en' ? g.titleEn : locale === 'de' ? g.titleDe : g.titlePt
+}
+
+function groupDescription(g: MultiplierGroup, locale: Locale): string {
+  return locale === 'en' ? g.descriptionEn : locale === 'de' ? g.descriptionDe : g.descriptionPt
+}
+
+function ExampleCard({ example, affix, locale }: { example: MultiplierExample; affix: string; locale: Locale }) {
+  const baseMeaning = locale === 'en' ? example.baseMeaningEn : example.baseMeaningPt
+  const resultMeaning = locale === 'en' ? example.resultMeaningEn : example.resultMeaningPt
+  return (
+    <div className="wb-equation">
+      <div className="wb-piece-col">
+        <span className="wb-slot filled">{example.base}</span>
+        <span className="wb-piece-caption">{baseMeaning}</span>
+      </div>
+      <span className="wb-op">+ {affix}</span>
+      <div className="wb-piece-col">
+        <span className="wb-result">{example.result}</span>
+        <span className="wb-piece-caption">{resultMeaning}</span>
+      </div>
+    </div>
+  )
+}
+
+export default function WordFamily() {
+  const { locale } = useOutletContext<{ locale: Locale }>()
+  const t = ui[locale]
+
+  return (
+    <div className="screen-word-family">
+      <header className="screen-header">
+        <strong>{t.title}</strong>
+      </header>
+
+      <p className="intro">{t.intro}</p>
+
+      {multiplierGroups.map(group => (
+        <div className="wf-section" key={group.id}>
+          <span className="piece-label">{groupTitle(group, locale)}</span>
+          <p className="wf-section-note">{groupDescription(group, locale)}</p>
+          <div className="wf-grid">
+            {group.examples.map(example => (
+              <ExampleCard key={example.id} example={example} affix={group.affix} locale={locale} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
