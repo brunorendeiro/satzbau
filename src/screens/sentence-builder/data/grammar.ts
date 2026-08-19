@@ -1,5 +1,5 @@
 export type SubjectId = 'ich' | 'du' | 'er' | 'wir' | 'ihr' | 'sie'
-export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen' | 'wohnen'
+export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen' | 'wohnen' | 'arbeiten' | 'hoeren' | 'kochen' | 'tragen' | 'oeffnen'
 export type ModalId = 'moechten' | 'wollen' | 'muessen'
 export type Form = 'affirmative' | 'question' | 'negative' | 'twoVerbs'
 export type QuestionMode = 'yesno' | 'wer' | 'content' | 'wann' | 'wie'
@@ -267,6 +267,81 @@ export const verbs: Verb[] = [
     objects: [
       { id: 'lissabon', kind: 'place', phrase: 'in Lissabon', whWord: 'Wo', pt: 'em Lisboa', en: 'in Lisbon' },
       { id: 'wien', kind: 'place', phrase: 'in Wien', whWord: 'Wo', pt: 'em Viena', en: 'in Vienna' },
+    ],
+  },
+  {
+    id: 'arbeiten',
+    infinitive: 'arbeiten',
+    meaningPt: 'trabalhar',
+    meaningEn: 'work',
+    regular: true,
+    de: { ich: 'arbeite', du: 'arbeitest', er: 'arbeitet', wir: 'arbeiten', ihr: 'arbeitet', sie: 'arbeiten' },
+    pt: { ich: 'trabalho', du: 'trabalhas', er: 'trabalha', wir: 'trabalhamos', ihr: 'trabalhais', sie: 'trabalham' },
+    en: { ich: 'work', du: 'work', er: 'works', wir: 'work', ihr: 'work', sie: 'work' },
+    objects: [
+      { id: 'buero', kind: 'place', phrase: 'im Büro', whWord: 'Wo', pt: 'no escritório', en: 'in the office' },
+      { id: 'zuhause-arbeiten', kind: 'place', phrase: 'zu Hause', whWord: 'Wo', pt: 'em casa', en: 'at home' },
+      NONE_OBJECT,
+    ],
+  },
+  {
+    id: 'hoeren',
+    infinitive: 'hören',
+    meaningPt: 'ouvir',
+    meaningEn: 'hear',
+    regular: true,
+    de: { ich: 'höre', du: 'hörst', er: 'hört', wir: 'hören', ihr: 'hört', sie: 'hören' },
+    pt: { ich: 'ouço', du: 'ouves', er: 'ouve', wir: 'ouvimos', ihr: 'ouvis', sie: 'ouvem' },
+    en: { ich: 'hear', du: 'hear', er: 'hears', wir: 'hear', ihr: 'hear', sie: 'hear' },
+    objects: [
+      { id: 'musik', kind: 'noun', noun: 'Musik', gender: 'f', article: 'none', pt: 'música', en: 'music' },
+      { id: 'hoerbuch', kind: 'noun', noun: 'Hörbuch', gender: 'n', article: 'indef', pt: 'um audiolivro', en: 'an audiobook' },
+      NONE_OBJECT,
+    ],
+  },
+  {
+    id: 'kochen',
+    infinitive: 'kochen',
+    meaningPt: 'cozinhar',
+    meaningEn: 'cook',
+    regular: true,
+    de: { ich: 'koche', du: 'kochst', er: 'kocht', wir: 'kochen', ihr: 'kocht', sie: 'kochen' },
+    pt: { ich: 'cozinho', du: 'cozinhas', er: 'cozinha', wir: 'cozinhamos', ihr: 'cozinhais', sie: 'cozinham' },
+    en: { ich: 'cook', du: 'cook', er: 'cooks', wir: 'cook', ihr: 'cook', sie: 'cook' },
+    objects: [
+      { id: 'nudeln', kind: 'noun', noun: 'Nudeln', gender: 'pl', article: 'none', pt: 'massa', en: 'pasta' },
+      { id: 'suppe', kind: 'noun', noun: 'Suppe', gender: 'f', article: 'indef', pt: 'uma sopa', en: 'a soup' },
+      NONE_OBJECT,
+    ],
+  },
+  {
+    id: 'tragen',
+    infinitive: 'tragen',
+    meaningPt: 'usar/vestir',
+    meaningEn: 'wear',
+    regular: false,
+    de: { ich: 'trage', du: 'trägst', er: 'trägt', wir: 'tragen', ihr: 'tragt', sie: 'tragen' },
+    pt: { ich: 'uso', du: 'usas', er: 'usa', wir: 'usamos', ihr: 'usais', sie: 'usam' },
+    en: { ich: 'wear', du: 'wear', er: 'wears', wir: 'wear', ihr: 'wear', sie: 'wear' },
+    objects: [
+      { id: 'kleid', kind: 'noun', noun: 'Kleid', gender: 'n', article: 'indef', pt: 'um vestido', en: 'a dress' },
+      { id: 'jacke', kind: 'noun', noun: 'Jacke', gender: 'f', article: 'indef', pt: 'um casaco', en: 'a jacket' },
+      NONE_OBJECT,
+    ],
+  },
+  {
+    id: 'oeffnen',
+    infinitive: 'öffnen',
+    meaningPt: 'abrir',
+    meaningEn: 'open',
+    regular: true,
+    de: { ich: 'öffne', du: 'öffnest', er: 'öffnet', wir: 'öffnen', ihr: 'öffnet', sie: 'öffnen' },
+    pt: { ich: 'abro', du: 'abres', er: 'abre', wir: 'abrimos', ihr: 'abris', sie: 'abrem' },
+    en: { ich: 'open', du: 'open', er: 'opens', wir: 'open', ihr: 'open', sie: 'open' },
+    objects: [
+      { id: 'fenster', kind: 'noun', noun: 'Fenster', gender: 'n', article: 'indef', pt: 'uma janela', en: 'a window' },
+      { id: 'tuer', kind: 'noun', noun: 'Tür', gender: 'f', article: 'indef', pt: 'uma porta', en: 'a door' },
+      NONE_OBJECT,
     ],
   },
 ]
