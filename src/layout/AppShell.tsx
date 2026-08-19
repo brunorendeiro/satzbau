@@ -70,6 +70,9 @@ export default function AppShell() {
         <NavLink to="/zahlen" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navNumbers}
         </NavLink>
+        <NavLink to="/aussprache" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navAlphabet}
+        </NavLink>
       </nav>
 
       <Outlet context={{ locale }} />
