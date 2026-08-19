@@ -31,6 +31,7 @@ import {
   type Form,
   type QuestionMode,
   type Token,
+  type VerbObject,
 } from './data/grammar'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
@@ -41,6 +42,14 @@ const FORMS: Form[] = ['affirmative', 'question', 'negative', 'twoVerbs']
 const DEFAULT_SUBJECT: SubjectId = 'ich'
 const DEFAULT_VERB: VerbId = 'lernen'
 const DEFAULT_MODAL: ModalId = 'moechten'
+
+/** For the "none" chip this is an empty string, so alphabetical sort
+ * naturally puts it first — no special-casing needed. */
+function objectSortKey(o: VerbObject): string {
+  if (o.kind === 'noun') return o.noun
+  if (o.kind === 'place') return o.phrase
+  return ''
+}
 
 function SentenceTokens({ tokens }: { tokens: Token[] }) {
   return (
@@ -77,6 +86,10 @@ export default function SentenceBuilder() {
   )
   const time = useMemo(() => timeAdverbs.find(t2 => t2.id === timeId)!, [timeId])
   const manner = useMemo(() => mannerAdverbs.find(m => m.id === mannerId)!, [mannerId])
+  const sortedObjects = useMemo(
+    () => [...verb.objects].sort((a, b) => objectSortKey(a).localeCompare(objectSortKey(b), 'de')),
+    [verb],
+  )
 
   function changeVerb(next: VerbId) {
     const nextVerb = verbs.find(v => v.id === next)!
@@ -243,7 +256,7 @@ export default function SentenceBuilder() {
         <div className="piece-group">
           <span className="piece-label">{t.wasWo}</span>
           <div className="chips">
-            {verb.objects.map(o => (
+            {sortedObjects.map(o => (
               <button
                 key={o.id}
                 className={o.id === object.id ? 'chip active' : 'chip'}

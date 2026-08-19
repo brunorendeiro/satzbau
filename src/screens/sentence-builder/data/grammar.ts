@@ -76,7 +76,7 @@ export type Verb = {
 const KEIN: Record<'m' | 'f' | 'n' | 'pl', string> = { m: 'keinen', f: 'keine', n: 'kein', pl: 'keine' }
 const EIN: Record<'m' | 'f' | 'n', string> = { m: 'einen', f: 'eine', n: 'ein' }
 
-export const verbs: Verb[] = [
+export const verbs: Verb[] = ([
   {
     id: 'lernen',
     infinitive: 'lernen',
@@ -402,7 +402,7 @@ export const verbs: Verb[] = [
     en: { ich: 'watch TV', du: 'watch TV', er: 'watches TV', wir: 'watch TV', ihr: 'watch TV', sie: 'watch TV' },
     objects: [NONE_OBJECT],
   },
-]
+] as Verb[]).sort((a, b) => a.infinitive.localeCompare(b.infinitive, 'de'))
 
 export type Modal = {
   id: ModalId
@@ -419,13 +419,15 @@ export type MannerAdverb = { id: string; de: string; pt: string; en: string }
 
 export const NONE_ID = 'none'
 
+/** Sorted alphabetically by the German word — the "none" sentinel has an
+ * empty `de`, so it naturally sorts first without any special-casing. */
 export const timeAdverbs: TimeAdverb[] = [
   { id: NONE_ID, de: '', pt: '', en: '' },
   { id: 'heute', de: 'heute', pt: 'hoje', en: 'today' },
   { id: 'oft', de: 'oft', pt: 'muitas vezes', en: 'often' },
   { id: 'nie', de: 'nie', pt: 'nunca', en: 'never' },
   { id: 'morgen', de: 'morgen', pt: 'amanhã', en: 'tomorrow' },
-]
+].sort((a, b) => a.de.localeCompare(b.de, 'de'))
 
 export const mannerAdverbs: MannerAdverb[] = [
   { id: NONE_ID, de: '', pt: '', en: '' },
@@ -433,7 +435,7 @@ export const mannerAdverbs: MannerAdverb[] = [
   { id: 'gerne', de: 'gerne', pt: 'com prazer', en: 'gladly' },
   { id: 'schnell', de: 'schnell', pt: 'rápido', en: 'quickly' },
   { id: 'langsam', de: 'langsam', pt: 'devagar', en: 'slowly' },
-]
+].sort((a, b) => a.de.localeCompare(b.de, 'de'))
 
 export const modals: Modal[] = [
   {
