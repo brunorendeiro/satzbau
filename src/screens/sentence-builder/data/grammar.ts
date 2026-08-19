@@ -1,5 +1,5 @@
 export type SubjectId = 'ich' | 'du' | 'er' | 'wir' | 'ihr' | 'sie'
-export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen' | 'wohnen' | 'arbeiten' | 'hoeren' | 'kochen' | 'tragen' | 'oeffnen'
+export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen' | 'wohnen' | 'arbeiten' | 'hoeren' | 'kochen' | 'tragen' | 'oeffnen' | 'aufstehen' | 'einkaufen' | 'anrufen' | 'fernsehen'
 export type ModalId = 'moechten' | 'wollen' | 'muessen'
 export type Form = 'affirmative' | 'question' | 'negative' | 'twoVerbs'
 export type QuestionMode = 'yesno' | 'wer' | 'content' | 'wann' | 'wie'
@@ -64,6 +64,12 @@ export type Verb = {
   pt: PerSubject
   en: PerSubject
   regular: boolean
+  /** Separable verbs (trennbare Verben) — the prefix that splits off and jumps
+   * to the very end of the clause whenever the verb itself is conjugated
+   * (Ich stehe auf.), but stays joined in the infinitive after a modal verb
+   * (Ich möchte aufstehen.). The `de` table above stores only the stem's
+   * conjugation ("stehe", not "stehe auf") — the prefix is appended separately. */
+  separablePrefix?: string
   objects: VerbObject[]
 }
 
@@ -344,6 +350,58 @@ export const verbs: Verb[] = [
       NONE_OBJECT,
     ],
   },
+  {
+    id: 'aufstehen',
+    infinitive: 'aufstehen',
+    meaningPt: 'levantar-se',
+    meaningEn: 'get up',
+    regular: true,
+    separablePrefix: 'auf',
+    de: { ich: 'stehe', du: 'stehst', er: 'steht', wir: 'stehen', ihr: 'steht', sie: 'stehen' },
+    pt: { ich: 'levanto-me', du: 'levantas-te', er: 'levanta-se', wir: 'levantamo-nos', ihr: 'levantais-vos', sie: 'levantam-se' },
+    en: { ich: 'get up', du: 'get up', er: 'gets up', wir: 'get up', ihr: 'get up', sie: 'get up' },
+    objects: [NONE_OBJECT],
+  },
+  {
+    id: 'einkaufen',
+    infinitive: 'einkaufen',
+    meaningPt: 'fazer compras',
+    meaningEn: 'go shopping',
+    regular: true,
+    separablePrefix: 'ein',
+    de: { ich: 'kaufe', du: 'kaufst', er: 'kauft', wir: 'kaufen', ihr: 'kauft', sie: 'kaufen' },
+    pt: { ich: 'faço compras', du: 'fazes compras', er: 'faz compras', wir: 'fazemos compras', ihr: 'fazeis compras', sie: 'fazem compras' },
+    en: { ich: 'go shopping', du: 'go shopping', er: 'goes shopping', wir: 'go shopping', ihr: 'go shopping', sie: 'go shopping' },
+    objects: [NONE_OBJECT],
+  },
+  {
+    id: 'anrufen',
+    infinitive: 'anrufen',
+    meaningPt: 'telefonar/ligar',
+    meaningEn: 'call',
+    regular: true,
+    separablePrefix: 'an',
+    de: { ich: 'rufe', du: 'rufst', er: 'ruft', wir: 'rufen', ihr: 'ruft', sie: 'rufen' },
+    pt: { ich: 'ligo', du: 'ligas', er: 'liga', wir: 'ligamos', ihr: 'ligais', sie: 'ligam' },
+    en: { ich: 'call', du: 'call', er: 'calls', wir: 'call', ihr: 'call', sie: 'call' },
+    objects: [
+      { id: 'freund', kind: 'noun', noun: 'Freund', gender: 'm', article: 'indef', pt: 'um amigo', en: 'a friend' },
+      { id: 'freundin', kind: 'noun', noun: 'Freundin', gender: 'f', article: 'indef', pt: 'uma amiga', en: 'a friend' },
+      NONE_OBJECT,
+    ],
+  },
+  {
+    id: 'fernsehen',
+    infinitive: 'fernsehen',
+    meaningPt: 'ver televisão',
+    meaningEn: 'watch TV',
+    regular: false,
+    separablePrefix: 'fern',
+    de: { ich: 'sehe', du: 'siehst', er: 'sieht', wir: 'sehen', ihr: 'seht', sie: 'sehen' },
+    pt: { ich: 'vejo televisão', du: 'vês televisão', er: 'vê televisão', wir: 'vemos televisão', ihr: 'vedes televisão', sie: 'veem televisão' },
+    en: { ich: 'watch TV', du: 'watch TV', er: 'watches TV', wir: 'watch TV', ihr: 'watch TV', sie: 'watch TV' },
+    objects: [NONE_OBJECT],
+  },
 ]
 
 export type Modal = {
@@ -429,7 +487,7 @@ function objectEn(o: VerbObject): string {
 /** A word (or short phrase) tagged with its grammatical role, used to color-code the
  * output sentence so the word-order rule (verb in 2nd position, infinitive at the end...)
  * is visible, not just stated in the explanation text below it. */
-export type Token = { text: string; role: 'subject' | 'verb' | 'modal' | 'infinitive' | 'neg' | 'wh' | 'rest' | 'time' | 'manner' }
+export type Token = { text: string; role: 'subject' | 'verb' | 'modal' | 'infinitive' | 'neg' | 'wh' | 'rest' | 'time' | 'manner' | 'particle' }
 
 /** Real German grammar terms — used as small captions under each word of the
  * output sentence, turning it into a syntax gloss instead of a flat line of text. */
@@ -443,6 +501,7 @@ export const roleLabel: Record<Token['role'], string> = {
   rest: 'ERGÄNZUNG',
   time: 'ZEITANGABE',
   manner: 'MODALANGABE',
+  particle: 'VERBZUSATZ',
 }
 
 function tok(text: string, role: Token['role']): Token {
@@ -456,6 +515,14 @@ function withPunctuation(tokens: Token[], mark: string): Token[] {
   if (tokens.length === 0) return tokens
   const last = tokens[tokens.length - 1]
   return [...tokens.slice(0, -1), { ...last, text: `${last.text}${mark}` }]
+}
+
+/** Appends a separable verb's prefix as its own token at the very end of the
+ * clause — the word-order rule that applies whenever the verb is conjugated
+ * (not when it's an infinitive after a modal, which stays joined). No-op for
+ * verbs that aren't separable. */
+function pushSeparable(core: Token[], verb: Verb): void {
+  if (verb.separablePrefix) core.push(tok(verb.separablePrefix, 'particle'))
 }
 
 function deExtras(time: TimeAdverb, manner: MannerAdverb): Token[] {
@@ -490,6 +557,7 @@ export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object
   if (form === 'affirmative') {
     const core = [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras]
     if (hasObject) core.push(tok(objPhrase, 'rest'))
+    pushSeparable(core, verb)
     return withPunctuation(core, '.')
   }
   if (form === 'question') {
@@ -504,6 +572,7 @@ export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object
     } else if (hasObject) {
       core.push(tok(objPhrase, 'rest'))
     }
+    pushSeparable(core, verb)
     return withPunctuation(core, '?')
   }
 
@@ -514,12 +583,14 @@ export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object
   } else {
     core.push(tok(neg.phrase, 'neg'))
   }
+  pushSeparable(core, verb)
   return withPunctuation(core, '.')
 }
 
 export function buildDeWerTokens(verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): Token[] {
   const core = [tok('Wer', 'subject'), tok(verb.de.er, 'verb'), ...deExtras(time, manner)]
   if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
 
@@ -529,6 +600,7 @@ export function buildDeContentTokens(subject: SubjectId, verb: Verb, object: Ver
   const subj = subjects.find(s => s.id === subject)!
   const whWord = object.kind === 'place' ? object.whWord : 'Was'
   const core = [tok(whWord, 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...deExtras(time, manner)]
+  pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
 
@@ -537,6 +609,7 @@ export function buildDeWannTokens(subject: SubjectId, verb: Verb, object: VerbOb
   const extras = manner.id !== NONE_ID ? [tok(manner.de, 'manner')] : []
   const core = [tok('Wann', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras]
   if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
 
@@ -545,6 +618,7 @@ export function buildDeWieTokens(subject: SubjectId, verb: Verb, object: VerbObj
   const extras = time.id !== NONE_ID ? [tok(time.de, 'time')] : []
   const core = [tok('Wie', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras]
   if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
 
@@ -557,11 +631,11 @@ export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb
   const extras = [time.id !== NONE_ID ? time.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
   if (kind === 'yes') {
     const prefix = negatedQuestion ? 'Doch' : 'Ja'
-    return `${prefix}, ${[subj.de, verbWord, ...extras, objectDeAffirmative(object)].filter(Boolean).join(' ')}.`
+    return `${prefix}, ${[subj.de, verbWord, ...extras, objectDeAffirmative(object), verb.separablePrefix].filter(Boolean).join(' ')}.`
   }
   const neg = objectDeNegative(object)
   const tail = neg.nichtBefore ? ['nicht', neg.phrase] : [neg.phrase]
-  return `Nein, ${[subj.de, verbWord, ...extras, ...tail].filter(Boolean).join(' ')}.`
+  return `Nein, ${[subj.de, verbWord, ...extras, ...tail, verb.separablePrefix].filter(Boolean).join(' ')}.`
 }
 
 /** Plain affirmative sentence with no "Ja,"/"Nein," prefix — the answer to an
@@ -569,7 +643,7 @@ export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb
 export function buildDeOpenAnswer(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
   const subj = subjects.find(s => s.id === subject)!
   const extras = [time.id !== NONE_ID ? time.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
-  return `${[cap(subj.de), verb.de[subject], ...extras, objectDeAffirmative(object)].filter(Boolean).join(' ')}.`
+  return `${[cap(subj.de), verb.de[subject], ...extras, objectDeAffirmative(object), verb.separablePrefix].filter(Boolean).join(' ')}.`
 }
 
 export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
@@ -627,8 +701,8 @@ export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: Verb
   }
   if (form === 'affirmative') return `${[cap(subj.en), verb.en[subject], objEn, ...extras].filter(Boolean).join(' ')}.`
   if (form === 'question') {
-    const notWord = negatedQuestion ? ' not' : ''
-    return `${[cap(does), subj.en, `${base}${notWord}`, objEn, ...extras].filter(Boolean).join(' ')}?`
+    const notWord = negatedQuestion ? 'not' : ''
+    return `${[cap(does), subj.en, notWord, base, objEn, ...extras].filter(Boolean).join(' ')}?`
   }
   return `${[cap(subj.en), does, 'not', base, objEn, ...extras].filter(Boolean).join(' ')}.`
 }

@@ -19,6 +19,8 @@ type UiStrings = {
   irregularLabel: string
   regularNote: string
   irregularNote: string
+  separableLabel: string
+  separableNote: string
   answersLabel: string
   answerLabel: string
   yesLabel: string
@@ -73,6 +75,8 @@ export const ui: Record<Locale, UiStrings> = {
     irregularLabel: 'Irregular',
     regularNote: 'Verbo regular — usa sempre as terminações -e, -st, -t, -en, -t, -en, sem mudar a vogal do radical.',
     irregularNote: 'Verbo irregular — a vogal do radical muda nas formas "du" e "er/sie", as terminações mantêm-se iguais.',
+    separableLabel: 'Separável',
+    separableNote: 'Verbo separável — o prefixo separa-se e vai para o fim da frase quando o verbo está conjugado, mas fica junto no infinitivo depois de um verbo modal.',
     answersLabel: 'Respostas possíveis',
     answerLabel: 'Resposta',
     yesLabel: 'Sim',
@@ -125,6 +129,8 @@ export const ui: Record<Locale, UiStrings> = {
     irregularLabel: 'Irregular',
     regularNote: 'Regular verb — always uses the endings -e, -st, -t, -en, -t, -en, with no stem vowel change.',
     irregularNote: 'Irregular verb — the stem vowel changes in the "du" and "er/sie" forms, endings stay the same.',
+    separableLabel: 'Separable',
+    separableNote: 'Separable verb — the prefix splits off and moves to the end of the sentence when the verb is conjugated, but stays joined in the infinitive after a modal verb.',
     answersLabel: 'Possible answers',
     answerLabel: 'Answer',
     yesLabel: 'Yes',
@@ -177,6 +183,8 @@ export const ui: Record<Locale, UiStrings> = {
     irregularLabel: 'Unregelmäßig',
     regularNote: 'Regelmäßiges Verb — nutzt immer die Endungen -e, -st, -t, -en, -t, -en, ohne Änderung des Stammvokals.',
     irregularNote: 'Unregelmäßiges Verb — der Stammvokal ändert sich bei "du" und "er/sie", die Endungen bleiben gleich.',
+    separableLabel: 'Trennbar',
+    separableNote: 'Trennbares Verb — das Präfix trennt sich ab und wandert ans Satzende, wenn das Verb konjugiert ist, bleibt aber im Infinitiv nach einem Modalverb zusammen.',
     answersLabel: 'Mögliche Antworten',
     answerLabel: 'Antwort',
     yesLabel: 'Ja',

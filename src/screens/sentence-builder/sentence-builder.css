@@ -23,10 +23,10 @@
 .tok-subject .tok-word { background: var(--accent2); border-color: var(--accent2); color: #fff8f2; }
 .tok-subject .tok-label { color: var(--accent2); }
 
-.tok-verb .tok-word, .tok-modal .tok-word, .tok-infinitive .tok-word {
+.tok-verb .tok-word, .tok-modal .tok-word, .tok-infinitive .tok-word, .tok-particle .tok-word {
   background: var(--accent); border-color: var(--accent); color: var(--accent-ink);
 }
-.tok-verb .tok-label, .tok-modal .tok-label, .tok-infinitive .tok-label { color: var(--accent2); }
+.tok-verb .tok-label, .tok-modal .tok-label, .tok-infinitive .tok-label, .tok-particle .tok-label { color: var(--accent2); }
 
 .tok-wh .tok-word { background: var(--text); border-color: var(--text); color: var(--bg); }
 .tok-wh .tok-label { color: var(--text); }
@@ -50,6 +50,7 @@
 .tag { flex-shrink: 0; padding: 3px 9px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
 .tag.regular { background: var(--ok-soft); color: var(--ok); }
 .tag.irregular { background: var(--accent-soft); color: var(--accent); }
+.tag.separable { background: var(--accent2-soft); color: var(--accent2); }
 
 @media (max-width: 560px) {
   .output-card { padding: 20px 16px 18px; }

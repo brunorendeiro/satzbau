@@ -232,6 +232,12 @@ export default function SentenceBuilder() {
             </span>
             {verb.regular ? t.regularNote : t.irregularNote}
           </p>
+          {verb.separablePrefix && (
+            <p className="verb-note">
+              <span className="tag separable">{t.separableLabel}</span>
+              {t.separableNote}
+            </p>
+          )}
         </div>
 
         <div className="piece-group">
