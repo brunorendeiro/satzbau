@@ -1,0 +1,23 @@
+.num-builder { margin-top: 18px; padding: 26px 24px 24px; border-radius: 4px; background: var(--panel-2); border: 1px dashed var(--line); box-shadow: var(--shadow); }
+
+.num-display { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.num-count { font-family: 'IBM Plex Mono', monospace; font-size: clamp(30px, 8vw, 44px); font-weight: 600; color: var(--muted); min-width: 2ch; }
+
+.num-parts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.num-part {
+  padding: 9px 16px; border-radius: 10px;
+  font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(19px, 4vw, 26px);
+  background: var(--accent); border: 1px solid var(--accent); color: var(--accent-ink);
+  word-break: break-word; line-height: 1.2;
+}
+.num-part.stem { background: var(--accent2); border-color: var(--accent2); color: #fff8f2; }
+
+.num-slider { width: 100%; margin-top: 22px; accent-color: var(--accent); }
+
+.num-explain { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); color: var(--text); font-size: 13px; line-height: 1.6; }
+
+.num-highlights { margin-top: 22px; }
+
+@media (max-width: 560px) {
+  .num-builder { padding: 20px 16px 18px; }
+}

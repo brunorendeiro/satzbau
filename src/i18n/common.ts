@@ -20,6 +20,7 @@ type CommonUiStrings = {
   themeDark: string
   navSentenceBuilder: string
   navCompoundWords: string
+  navNumbers: string
   footerTagline: string
   cookieBody: string
   cookieAccept: string
@@ -32,6 +33,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     themeDark: 'Escuro',
     navSentenceBuilder: 'Satzbau',
     navCompoundWords: 'Wortbau',
+    navNumbers: 'Zahlen',
     footerTagline: 'Sem contas · tudo guardado no teu browser',
     cookieBody: 'Uso o Google Analytics para perceber quantas pessoas visitam este projeto. Aceitas cookies analíticos?',
     cookieAccept: 'Aceitar',
@@ -42,6 +44,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     themeDark: 'Dark',
     navSentenceBuilder: 'Satzbau',
     navCompoundWords: 'Wortbau',
+    navNumbers: 'Zahlen',
     footerTagline: 'No accounts · everything stays in your browser',
     cookieBody: 'I use Google Analytics to understand how many people visit this project. Do you accept analytics cookies?',
     cookieAccept: 'Accept',
@@ -52,6 +55,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     themeDark: 'Dunkel',
     navSentenceBuilder: 'Satzbau',
     navCompoundWords: 'Wortbau',
+    navNumbers: 'Zahlen',
     footerTagline: 'Keine Konten · alles bleibt im Browser',
     cookieBody: 'Ich verwende Google Analytics, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse-Cookies?',
     cookieAccept: 'Akzeptieren',
