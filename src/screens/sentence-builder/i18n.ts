@@ -1,21 +1,5 @@
+import type { Locale } from '../../i18n/common'
 import type { Form } from './data/grammar'
-
-export type Locale = 'pt' | 'en' | 'de'
-
-export const locales: { id: Locale; label: string }[] = [
-  { id: 'pt', label: 'PT' },
-  { id: 'en', label: 'EN' },
-  { id: 'de', label: 'DE' },
-]
-
-export function detectLocale(): Locale {
-  const stored = window.localStorage.getItem('satzbau-locale')
-  if (stored === 'pt' || stored === 'en' || stored === 'de') return stored
-  const browser = navigator.language.slice(0, 2).toLowerCase()
-  if (browser === 'de') return 'de'
-  if (browser === 'pt') return 'pt'
-  return 'en'
-}
 
 type UiStrings = {
   brandTagline: string
@@ -56,12 +40,6 @@ type UiStrings = {
   questionNegativeLabel: string
   dochExplain: string
   restart: string
-  themeLight: string
-  themeDark: string
-  footerTagline: string
-  cookieBody: string
-  cookieAccept: string
-  cookieReject: string
 }
 
 export const ui: Record<Locale, UiStrings> = {
@@ -114,12 +92,6 @@ export const ui: Record<Locale, UiStrings> = {
     questionNegativeLabel: 'Pergunta negativa',
     dochExplain: 'A uma pergunta negativa não se responde "Ja" — usa-se "Doch" para contradizer (sim, na verdade sim) e "Nein" para confirmar a negação (não, de facto não).',
     restart: 'Reiniciar',
-    themeLight: 'Claro',
-    themeDark: 'Escuro',
-    footerTagline: 'Sem contas · tudo guardado no teu browser',
-    cookieBody: 'Uso o Google Analytics para perceber quantas pessoas visitam este projeto. Aceitas cookies analíticos?',
-    cookieAccept: 'Aceitar',
-    cookieReject: 'Recusar',
   },
   en: {
     brandTagline: 'The German sentence machine',
@@ -170,12 +142,6 @@ export const ui: Record<Locale, UiStrings> = {
     questionNegativeLabel: 'Negative question',
     dochExplain: 'You can\'t answer a negative question with "Ja" — use "Doch" to contradict it (yes, actually I do) and "Nein" to confirm the negation (no, indeed I don\'t).',
     restart: 'Restart',
-    themeLight: 'Light',
-    themeDark: 'Dark',
-    footerTagline: 'No accounts · everything stays in your browser',
-    cookieBody: 'I use Google Analytics to understand how many people visit this project. Do you accept analytics cookies?',
-    cookieAccept: 'Accept',
-    cookieReject: 'Reject',
   },
   de: {
     brandTagline: 'Die deutsche Satzmaschine',
@@ -226,11 +192,5 @@ export const ui: Record<Locale, UiStrings> = {
     questionNegativeLabel: 'Verneinte Frage',
     dochExplain: 'Auf eine verneinte Frage antwortet man nicht mit "Ja" — "Doch" widerspricht ihr (doch, eigentlich schon) und "Nein" bestätigt die Verneinung (nein, wirklich nicht).',
     restart: 'Neu starten',
-    themeLight: 'Hell',
-    themeDark: 'Dunkel',
-    footerTagline: 'Keine Konten · alles bleibt im Browser',
-    cookieBody: 'Ich verwende Google Analytics, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse-Cookies?',
-    cookieAccept: 'Akzeptieren',
-    cookieReject: 'Ablehnen',
   },
 }

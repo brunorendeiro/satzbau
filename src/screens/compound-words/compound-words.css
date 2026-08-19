@@ -1,0 +1,27 @@
+.screen-compound-words .intro {
+  max-width: 620px; margin: 14px 0 0; padding: 18px 20px; border-radius: 4px; border-left: 3px solid var(--accent2);
+  background: var(--panel); box-shadow: var(--shadow-sm);
+  color: var(--muted); font-size: 15px; line-height: 1.6; font-weight: 500;
+}
+
+.wb-list { display: flex; flex-direction: column; gap: 12px; margin-top: 22px; }
+
+.wb-card { padding: 18px 20px; border-radius: 4px; background: var(--panel-2); border: 1px dashed var(--line); box-shadow: var(--shadow-sm); }
+
+.wb-equation { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.wb-piece, .wb-result {
+  padding: 8px 14px; border-radius: 10px;
+  font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(15px, 3vw, 18px);
+  border: 1px solid var(--line); word-break: break-word; line-height: 1.2;
+}
+.wb-piece { background: var(--panel); color: var(--text); }
+.wb-result { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-size: clamp(17px, 3.6vw, 22px); }
+.wb-op { color: var(--muted); font-weight: 700; font-size: 15px; }
+
+.wb-info { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.wb-info-row { color: var(--text); font-size: 13px; line-height: 1.5; }
+.wb-info-label { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-right: 6px; }
+
+@media (max-width: 560px) {
+  .wb-card { padding: 16px; }
+}

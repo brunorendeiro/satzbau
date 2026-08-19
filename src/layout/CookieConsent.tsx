@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { getStoredConsent, setConsent } from './analytics'
-import { ui, type Locale } from './i18n'
+import { getStoredConsent, setConsent } from '../analytics'
+import { commonUi, type Locale } from '../i18n/common'
 
 export default function CookieConsent({ locale }: { locale: Locale }) {
   const [visible, setVisible] = useState(false)
-  const t = ui[locale]
+  const t = commonUi[locale]
 
   useEffect(() => {
     setVisible(getStoredConsent() === null)
