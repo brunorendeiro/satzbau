@@ -8,6 +8,7 @@ type UiStrings = {
   highlightsLabel: string
   beyondTitle: string
   beyondIntro: string
+  notes: Record<'noUndAfterHundred' | 'million', string>
 }
 
 export const ui: Record<Locale, UiStrings> = {
@@ -25,6 +26,10 @@ export const ui: Record<Locale, UiStrings> = {
     highlightsLabel: 'Saltar para',
     beyondTitle: 'E depois de 100?',
     beyondIntro: 'A mesma lógica continua: unidade + "hundert" (cem) ou + "tausend" (mil) — e ao juntar hundert/tausend ao resto do número não se usa "und", só dentro desse resto (234 = zweihundert + vierunddreißig, sem "und" a mais).',
+    notes: {
+      noUndAfterHundred: 'Repara: mesmo quando o resto é só um número base (eins, elf...), continua sem "und" — "hunderteins", nunca "hundertundeins".',
+      million: '"Million" já não segue esta lógica — é um substantivo a sério, com artigo (eine Million) e plural (zwei Millionen), ao contrário de hundert/tausend que nunca mudam.',
+    },
   },
   en: {
     title: 'Zahlen',
@@ -40,6 +45,10 @@ export const ui: Record<Locale, UiStrings> = {
     highlightsLabel: 'Jump to',
     beyondTitle: 'What about after 100?',
     beyondIntro: 'The same logic keeps going: unit + "hundert" (hundred) or + "tausend" (thousand) — and joining hundert/tausend to the rest of the number never uses "und", only within that rest (234 = zweihundert + vierunddreißig, no extra "und").',
+    notes: {
+      noUndAfterHundred: 'Notice: even when the rest is just a base number (eins, elf...), it still skips "und" — "hunderteins", never "hundertundeins".',
+      million: '"Million" stops following this logic — it\'s a real noun, with an article (eine Million) and a plural (zwei Millionen), unlike hundert/tausend which never change.',
+    },
   },
   de: {
     title: 'Zahlen',
@@ -55,5 +64,9 @@ export const ui: Record<Locale, UiStrings> = {
     highlightsLabel: 'Springe zu',
     beyondTitle: 'Und nach 100?',
     beyondIntro: 'Die gleiche Logik geht weiter: Einer + "hundert" oder + "tausend" — und beim Anfügen von hundert/tausend an den Rest der Zahl steht nie ein "und", nur innerhalb dieses Rests (234 = zweihundert + vierunddreißig, ohne zusätzliches "und").',
+    notes: {
+      noUndAfterHundred: 'Beachte: Selbst wenn der Rest nur eine Grundzahl ist (eins, elf...), fehlt das "und" trotzdem — "hunderteins", nie "hundertundeins".',
+      million: '"Million" folgt dieser Logik nicht mehr — es ist ein echtes Substantiv, mit Artikel (eine Million) und Plural (zwei Millionen), anders als hundert/tausend, die sich nie ändern.',
+    },
   },
 }

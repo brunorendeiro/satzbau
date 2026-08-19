@@ -58,7 +58,10 @@ export default function Numbers() {
         <p className="num-beyond-intro">{t.beyondIntro}</p>
         <ul className="num-beyond-list">
           {bigNumbers.map(b => (
-            <li key={b.label}><span className="num-beyond-num">{b.label}</span> — <span className="num-beyond-word">{b.word}</span></li>
+            <li key={b.label}>
+              <span className="num-beyond-num">{b.label}</span> — <span className="num-beyond-word">{b.word}</span>
+              {b.noteKey && <span className="num-beyond-note">{t.notes[b.noteKey]}</span>}
+            </li>
           ))}
         </ul>
       </div>

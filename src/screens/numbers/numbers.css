@@ -24,6 +24,7 @@
 .num-beyond-list li { font-size: 14px; color: var(--muted); }
 .num-beyond-num { font-family: 'IBM Plex Mono', monospace; color: var(--muted); }
 .num-beyond-word { font-family: 'Fraunces', serif; font-weight: 600; color: var(--text); font-size: 15px; }
+.num-beyond-note { display: block; margin-top: 2px; color: var(--accent2); font-size: 12px; line-height: 1.5; }
 
 @media (max-width: 560px) {
   .num-builder { padding: 20px 16px 18px; }
