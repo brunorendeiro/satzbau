@@ -1,5 +1,5 @@
 import { useOutletContext } from 'react-router-dom'
-import { multiplierGroups, type MultiplierGroup, type MultiplierExample } from './data'
+import { multiplierGroups, genderRules, type MultiplierGroup, type MultiplierExample, type GenderRule } from './data'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
 import './word-family.css'
@@ -10,6 +10,26 @@ function groupTitle(g: MultiplierGroup, locale: Locale): string {
 
 function groupDescription(g: MultiplierGroup, locale: Locale): string {
   return locale === 'en' ? g.descriptionEn : locale === 'de' ? g.descriptionDe : g.descriptionPt
+}
+
+function GenderRuleCard({ rule, locale }: { rule: GenderRule; locale: Locale }) {
+  const description = locale === 'en' ? rule.descriptionEn : locale === 'de' ? rule.descriptionDe : rule.descriptionPt
+  return (
+    <div className="wf-gender-card">
+      <div className="wf-gender-head">
+        <span className="wf-gender-ending">{rule.ending}</span>
+        <span className={`wf-gender-article article-${rule.article}`}>{rule.article}</span>
+      </div>
+      <p className="wf-gender-desc">{description}</p>
+      <div className="wf-gender-examples">
+        {rule.examples.map(ex => (
+          <span className="wf-gender-example" key={ex.word}>
+            {ex.word} <span className="wf-gender-example-meaning">— {locale === 'en' ? ex.meaningEn : ex.meaningPt}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function ExampleCard({ example, affix, locale }: { example: MultiplierExample; affix: string; locale: Locale }) {
@@ -53,6 +73,14 @@ export default function WordFamily() {
           </div>
         </div>
       ))}
+
+      <div className="wf-section">
+        <span className="piece-label">{t.sectionGenderLabel}</span>
+        <p className="wf-section-note">{t.genderIntro}</p>
+        <div className="wf-gender-grid">
+          {genderRules.map(rule => <GenderRuleCard key={rule.id} rule={rule} locale={locale} />)}
+        </div>
+      </div>
     </div>
   )
 }

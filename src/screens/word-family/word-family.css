@@ -1,3 +1,16 @@
 .wf-section { margin-top: 26px; }
 .wf-section-note { margin: 4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 640px; }
 .wf-grid { display: flex; flex-wrap: wrap; gap: 18px 28px; margin-top: 14px; }
+
+.wf-gender-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 14px; }
+.wf-gender-card { padding: 16px; border-radius: 4px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 10px; }
+.wf-gender-head { display: flex; align-items: center; gap: 10px; }
+.wf-gender-ending { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; color: var(--text); }
+.wf-gender-article { padding: 3px 10px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.wf-gender-article.article-der { background: var(--accent2-soft); color: var(--accent2); }
+.wf-gender-article.article-die { background: var(--accent-soft); color: var(--accent); }
+.wf-gender-article.article-das { background: var(--ok-soft); color: var(--ok); }
+.wf-gender-desc { margin: 0; font-size: 12.5px; color: var(--text); line-height: 1.5; }
+.wf-gender-examples { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid var(--line); }
+.wf-gender-example { font-family: 'Fraunces', serif; font-weight: 600; font-size: 14px; color: var(--text); }
+.wf-gender-example-meaning { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 11px; color: var(--muted); }
