@@ -53,3 +53,20 @@ export function breakdown(n: number): NumberBreakdown {
 
 /** Numbers worth jumping straight to — one example per rule. */
 export const highlights = [0, 7, 12, 13, 16, 17, 20, 21, 30, 47, 66, 77, 100]
+
+/** Beyond 100 the same logic keeps going (unit + "hundert"/"tausend"),
+ * just shown as a plain reference list instead of the interactive slider. */
+export type BigNumber = { label: string; word: string }
+
+export const bigNumbers: BigNumber[] = [
+  { label: '200', word: 'zweihundert' },
+  { label: '300', word: 'dreihundert' },
+  { label: '500', word: 'fünfhundert' },
+  { label: '600', word: 'sechshundert' },
+  { label: '700', word: 'siebenhundert' },
+  { label: '1.000', word: 'tausend' },
+  { label: '10.000', word: 'zehntausend' },
+  { label: '100.000', word: 'hunderttausend' },
+  { label: '234', word: 'zweihundertvierunddreißig' },
+  { label: '1.234', word: 'eintausendzweihundertvierunddreißig' },
+]

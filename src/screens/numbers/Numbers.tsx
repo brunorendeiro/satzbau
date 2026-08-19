@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { breakdown, highlights } from './germanNumbers'
+import { breakdown, highlights, bigNumbers } from './germanNumbers'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
 import './numbers.css'
@@ -51,6 +51,16 @@ export default function Numbers() {
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="num-beyond">
+        <span className="piece-label">{t.beyondTitle}</span>
+        <p className="num-beyond-intro">{t.beyondIntro}</p>
+        <ul className="num-beyond-list">
+          {bigNumbers.map(b => (
+            <li key={b.label}><span className="num-beyond-num">{b.label}</span> — <span className="num-beyond-word">{b.word}</span></li>
+          ))}
+        </ul>
       </div>
     </div>
   )
