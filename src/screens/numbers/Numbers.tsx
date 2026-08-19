@@ -60,6 +60,16 @@ export default function Numbers() {
           {bigNumbers.map(b => (
             <li key={b.label}>
               <span className="num-beyond-num">{b.label}</span> — <span className="num-beyond-word">{b.word}</span>
+              {b.segments && (
+                <span className="num-beyond-segments">
+                  {b.segments.map((s, i) => (
+                    <span key={i} className="num-beyond-segment-wrap">
+                      {i > 0 && <span className="num-beyond-plus">+</span>}
+                      <span className="num-part small">{s}</span>
+                    </span>
+                  ))}
+                </span>
+              )}
               {b.noteKey && <span className="num-beyond-note">{t.notes[b.noteKey]}</span>}
             </li>
           ))}

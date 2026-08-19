@@ -9,6 +9,10 @@ function uniqueByDe(pieces: WordPiece[]): WordPiece[] {
   return Array.from(new Map(pieces.map(p => [p.de, p])).values())
 }
 
+function pieceMeaning(p: WordPiece, locale: Locale): string {
+  return locale === 'en' ? p.en : p.pt
+}
+
 export default function CompoundWords() {
   const { locale } = useOutletContext<{ locale: Locale }>()
   const t = ui[locale]
@@ -26,6 +30,8 @@ export default function CompoundWords() {
     () => compoundWords.find(cw => cw.part1.de === part1De && cw.part2.de === part2De) ?? null,
     [part1De, part2De],
   )
+  const part1Piece = useMemo(() => allPart1.find(p => p.de === part1De) ?? null, [allPart1, part1De])
+  const part2Piece = useMemo(() => availablePart2.find(p => p.de === part2De) ?? null, [availablePart2, part2De])
 
   function pickPart1(de: string) {
     setPart1De(de)
@@ -53,19 +59,26 @@ export default function CompoundWords() {
 
       <div className="wb-builder">
         <div className="wb-equation">
-          <span className={part1De ? 'wb-slot filled' : 'wb-slot'}>{part1De ?? '?'}</span>
+          <div className="wb-piece-col">
+            <span className={part1De ? 'wb-slot filled' : 'wb-slot'}>{part1De ?? '?'}</span>
+            {part1Piece && <span className="wb-piece-caption">{pieceMeaning(part1Piece, locale)}</span>}
+          </div>
           <span className="wb-op">+</span>
-          <span className={part2De ? 'wb-slot filled' : 'wb-slot'}>{part2De ?? '?'}</span>
+          <div className="wb-piece-col">
+            <span className={part2De ? 'wb-slot filled' : 'wb-slot'}>{part2De ?? '?'}</span>
+            {part2Piece && <span className="wb-piece-caption">{pieceMeaning(part2Piece, locale)}</span>}
+          </div>
           <span className="wb-op">=</span>
-          <span className={match ? 'wb-result' : 'wb-result placeholder'}>{match ? match.compound.de : '?'}</span>
+          <div className="wb-piece-col">
+            <span className={match ? 'wb-result' : 'wb-result placeholder'}>{match ? match.compound.de : '?'}</span>
+            {match && <span className="wb-piece-caption">{pieceMeaning(match.compound, locale)}</span>}
+          </div>
         </div>
 
         {match ? (
           <div className="wb-info">
             {locale !== 'en' && <span className="wb-info-row"><span className="wb-info-label">{t.literalLabel}</span> {match.literalPt}</span>}
             {locale !== 'pt' && <span className="wb-info-row"><span className="wb-info-label">{t.literalLabel}</span> {match.literalEn}</span>}
-            {locale !== 'en' && <span className="wb-info-row"><span className="wb-info-label">{t.meaningLabel}</span> {match.compound.pt}</span>}
-            {locale !== 'pt' && <span className="wb-info-row"><span className="wb-info-label">{t.meaningLabel}</span> {match.compound.en}</span>}
           </div>
         ) : (
           <p className="wb-hint">{!part1De ? t.pickPart1Hint : t.pickPart2Hint}</p>

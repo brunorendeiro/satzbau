@@ -8,7 +8,6 @@ type UiStrings = {
   pickPart1Hint: string
   pickPart2Hint: string
   literalLabel: string
-  meaningLabel: string
   progressLabel: (found: number, total: number) => string
   resetLabel: string
 }
@@ -22,7 +21,6 @@ export const ui: Record<Locale, UiStrings> = {
     pickPart1Hint: 'Escolhe a primeira peça.',
     pickPart2Hint: 'Agora escolhe a segunda peça.',
     literalLabel: 'À letra',
-    meaningLabel: 'Significado',
     progressLabel: (found, total) => `${found} de ${total} descobertas`,
     resetLabel: 'Recomeçar',
   },
@@ -34,7 +32,6 @@ export const ui: Record<Locale, UiStrings> = {
     pickPart1Hint: 'Pick the first piece.',
     pickPart2Hint: 'Now pick the second piece.',
     literalLabel: 'Literally',
-    meaningLabel: 'Meaning',
     progressLabel: (found, total) => `${found} of ${total} discovered`,
     resetLabel: 'Restart',
   },
@@ -46,7 +43,6 @@ export const ui: Record<Locale, UiStrings> = {
     pickPart1Hint: 'Wähle das erste Teil.',
     pickPart2Hint: 'Wähle jetzt das zweite Teil.',
     literalLabel: 'Wörtlich',
-    meaningLabel: 'Bedeutung',
     progressLabel: (found, total) => `${found} von ${total} entdeckt`,
     resetLabel: 'Neu starten',
   },

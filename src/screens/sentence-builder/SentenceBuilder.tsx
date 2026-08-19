@@ -84,6 +84,12 @@ export default function SentenceBuilder() {
     setObjectId(nextVerb.objects[0].id)
   }
 
+  function changeObject(id: string) {
+    setObjectId(id)
+    const nextObject = verb.objects.find(o => o.id === id)
+    if (nextObject?.kind === 'none' && questionMode === 'content') setQuestionMode('yesno')
+  }
+
   function restart() {
     setForm('affirmative')
     setQuestionMode('yesno')
@@ -159,7 +165,9 @@ export default function SentenceBuilder() {
         <div className="qmode-switch">
           <button className={questionMode === 'yesno' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('yesno')}>{t.yesNoModeLabel}</button>
           <button className={questionMode === 'wer' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wer')}>{t.werModeLabel}</button>
-          <button className={questionMode === 'content' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('content')}>{contentLabel}</button>
+          {object.kind !== 'none' && (
+            <button className={questionMode === 'content' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('content')}>{contentLabel}</button>
+          )}
           <button className={questionMode === 'wann' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wann')}>{t.wannModeLabel}</button>
           <button className={questionMode === 'wie' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wie')}>{t.wieModeLabel}</button>
         </div>
@@ -230,9 +238,9 @@ export default function SentenceBuilder() {
               <button
                 key={o.id}
                 className={o.id === object.id ? 'chip active' : 'chip'}
-                onClick={() => setObjectId(o.id)}
+                onClick={() => changeObject(o.id)}
               >
-                {o.kind === 'noun' ? o.noun : o.phrase}
+                {o.kind === 'noun' ? o.noun : o.kind === 'place' ? o.phrase : t.noneOption}
               </button>
             ))}
           </div>

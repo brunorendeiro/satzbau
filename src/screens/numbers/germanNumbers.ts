@@ -57,22 +57,32 @@ export const highlights = [0, 7, 12, 13, 16, 17, 20, 21, 30, 47, 66, 77, 100]
 /** Beyond 100 the same logic keeps going (unit + "hundert"/"tausend"),
  * just shown as a plain reference list instead of the interactive slider.
  * Kept in ascending order — it's a reference, not a random bag of examples. */
-export type BigNumber = { label: string; word: string; noteKey?: 'noUndAfterHundred' | 'million' }
+export type BigNumber = {
+  label: string
+  word: string
+  noteKey?: 'noUndAfterHundred' | 'million'
+  /** For the longer composite words — shown as separate joined blocks
+   * underneath, so the word doesn't just read as one intimidating blob. */
+  segments?: string[]
+}
 
 export const bigNumbers: BigNumber[] = [
   { label: '101', word: 'hunderteins', noteKey: 'noUndAfterHundred' },
   { label: '111', word: 'hundertelf' },
-  { label: '121', word: 'hunderteinundzwanzig' },
+  { label: '121', word: 'hunderteinundzwanzig', segments: ['hundert', 'einundzwanzig'] },
   { label: '200', word: 'zweihundert' },
-  { label: '234', word: 'zweihundertvierunddreißig' },
+  { label: '234', word: 'zweihundertvierunddreißig', segments: ['zweihundert', 'vierunddreißig'] },
   { label: '300', word: 'dreihundert' },
   { label: '500', word: 'fünfhundert' },
   { label: '600', word: 'sechshundert' },
   { label: '700', word: 'siebenhundert' },
   { label: '1.000', word: 'tausend' },
-  { label: '1.021', word: 'eintausendeinundzwanzig' },
-  { label: '1.234', word: 'eintausendzweihundertvierunddreißig' },
+  { label: '1.021', word: 'eintausendeinundzwanzig', segments: ['eintausend', 'einundzwanzig'] },
+  { label: '1.234', word: 'eintausendzweihundertvierunddreißig', segments: ['eintausend', 'zweihundert', 'vierunddreißig'] },
   { label: '10.000', word: 'zehntausend' },
+  { label: '11.234', word: 'elftausendzweihundertvierunddreißig', segments: ['elftausend', 'zweihundert', 'vierunddreißig'] },
+  { label: '70.000', word: 'siebzigtausend', segments: ['siebzig', 'tausend'] },
   { label: '100.000', word: 'hunderttausend' },
+  { label: '600.000', word: 'sechshunderttausend', segments: ['sechshundert', 'tausend'] },
   { label: '1.000.000', word: 'eine Million', noteKey: 'million' },
 ]

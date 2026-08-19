@@ -11,6 +11,7 @@
   word-break: break-word; line-height: 1.2;
 }
 .num-part.stem { background: var(--accent2); border-color: var(--accent2); color: #fff8f2; }
+.num-part.small { padding: 4px 10px; font-size: 12px; border-radius: 6px; }
 
 .num-slider { width: 100%; margin-top: 22px; accent-color: var(--accent); }
 
@@ -25,6 +26,9 @@
 .num-beyond-num { font-family: 'IBM Plex Mono', monospace; color: var(--muted); }
 .num-beyond-word { font-family: 'Fraunces', serif; font-weight: 600; color: var(--text); font-size: 15px; }
 .num-beyond-note { display: block; margin-top: 2px; color: var(--accent2); font-size: 12px; line-height: 1.5; }
+.num-beyond-segments { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 6px; }
+.num-beyond-segment-wrap { display: flex; align-items: center; gap: 4px; }
+.num-beyond-plus { color: var(--muted); font-weight: 700; font-size: 11px; }
 
 @media (max-width: 560px) {
   .num-builder { padding: 20px 16px 18px; }

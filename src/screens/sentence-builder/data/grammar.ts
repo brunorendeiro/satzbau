@@ -44,7 +44,16 @@ export type PlaceObject = {
   en: string
 }
 
-export type VerbObject = NounObject | PlaceObject
+/** No complement at all — many of these verbs are perfectly fine used on
+ * their own (Ich spiele.), and that's the cleanest way to show that "kein"
+ * only ever negates a noun: with nothing to attach to, negation falls back
+ * to plain "nicht" right after the verb (Ich spiele nicht.). */
+export type NoObject = { id: string; kind: 'none' }
+
+export const NONE_OBJECT_ID = 'none-obj'
+const NONE_OBJECT: NoObject = { id: NONE_OBJECT_ID, kind: 'none' }
+
+export type VerbObject = NounObject | PlaceObject | NoObject
 
 export type Verb = {
   id: VerbId
@@ -73,6 +82,7 @@ export const verbs: Verb[] = [
     en: { ich: 'learn', du: 'learn', er: 'learns', wir: 'learn', ihr: 'learn', sie: 'learn' },
     objects: [
       { id: 'deutsch', kind: 'noun', noun: 'Deutsch', gender: 'n', article: 'none', pt: 'alemão', en: 'German' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -87,6 +97,7 @@ export const verbs: Verb[] = [
     objects: [
       { id: 'kaffee', kind: 'noun', noun: 'Kaffee', gender: 'm', article: 'none', pt: 'café', en: 'coffee' },
       { id: 'wasser', kind: 'noun', noun: 'Wasser', gender: 'n', article: 'none', pt: 'água', en: 'water' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -101,6 +112,7 @@ export const verbs: Verb[] = [
     objects: [
       { id: 'auto', kind: 'noun', noun: 'Auto', gender: 'n', article: 'indef', pt: 'um carro', en: 'a car' },
       { id: 'buch', kind: 'noun', noun: 'Buch', gender: 'n', article: 'indef', pt: 'um livro', en: 'a book' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -128,6 +140,7 @@ export const verbs: Verb[] = [
     en: { ich: 'read', du: 'read', er: 'reads', wir: 'read', ihr: 'read', sie: 'read' },
     objects: [
       { id: 'zeitung', kind: 'noun', noun: 'Zeitung', gender: 'f', article: 'indef', pt: 'um jornal', en: 'a newspaper' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -142,6 +155,7 @@ export const verbs: Verb[] = [
     objects: [
       { id: 'deutsch2', kind: 'noun', noun: 'Deutsch', gender: 'n', article: 'none', pt: 'alemão', en: 'German' },
       { id: 'englisch', kind: 'noun', noun: 'Englisch', gender: 'n', article: 'none', pt: 'inglês', en: 'English' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -155,6 +169,7 @@ export const verbs: Verb[] = [
     en: { ich: 'do', du: 'do', er: 'does', wir: 'do', ihr: 'do', sie: 'do' },
     objects: [
       { id: 'hausaufgaben', kind: 'noun', noun: 'Hausaufgaben', gender: 'pl', article: 'none', pt: 'os trabalhos de casa', en: 'homework' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -168,6 +183,7 @@ export const verbs: Verb[] = [
     en: { ich: 'see', du: 'see', er: 'sees', wir: 'see', ihr: 'see', sie: 'see' },
     objects: [
       { id: 'film', kind: 'noun', noun: 'Film', gender: 'm', article: 'indef', pt: 'um filme', en: 'a film' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -181,6 +197,7 @@ export const verbs: Verb[] = [
     en: { ich: 'eat', du: 'eat', er: 'eats', wir: 'eat', ihr: 'eat', sie: 'eat' },
     objects: [
       { id: 'apfel', kind: 'noun', noun: 'Apfel', gender: 'm', article: 'indef', pt: 'uma maçã', en: 'an apple' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -207,6 +224,7 @@ export const verbs: Verb[] = [
     en: { ich: 'write', du: 'write', er: 'writes', wir: 'write', ihr: 'write', sie: 'write' },
     objects: [
       { id: 'email', kind: 'noun', noun: 'E-Mail', gender: 'f', article: 'indef', pt: 'um e-mail', en: 'an email' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -220,6 +238,7 @@ export const verbs: Verb[] = [
     en: { ich: 'play', du: 'play', er: 'plays', wir: 'play', ihr: 'play', sie: 'play' },
     objects: [
       { id: 'fussball', kind: 'noun', noun: 'Fußball', gender: 'm', article: 'none', pt: 'futebol', en: 'football' },
+      NONE_OBJECT,
     ],
   },
   {
@@ -312,14 +331,24 @@ function cap(s: string): string {
 }
 
 function objectDeAffirmative(o: VerbObject): string {
+  if (o.kind === 'none') return ''
   if (o.kind === 'place') return o.phrase
   if (o.article === 'indef' && o.gender !== 'pl') return `${EIN[o.gender]} ${o.noun}`
   return o.noun
 }
 
 function objectDeNegative(o: VerbObject): { phrase: string; nichtBefore: boolean } {
+  if (o.kind === 'none') return { phrase: '', nichtBefore: true }
   if (o.kind === 'place') return { phrase: o.phrase, nichtBefore: true }
   return { phrase: `${KEIN[o.gender]} ${o.noun}`, nichtBefore: false }
+}
+
+function objectPt(o: VerbObject): string {
+  return o.kind === 'none' ? '' : o.pt
+}
+
+function objectEn(o: VerbObject): string {
+  return o.kind === 'none' ? '' : o.en
 }
 
 /** A word (or short phrase) tagged with its grammatical role, used to color-code the
@@ -345,6 +374,15 @@ function tok(text: string, role: Token['role']): Token {
   return { text, role }
 }
 
+/** Appends a punctuation mark to the last token's text — used so the closing
+ * "." or "?" always lands on whatever token actually ends the sentence, even
+ * when the object is omitted ("no object" chip) and the tail shifts. */
+function withPunctuation(tokens: Token[], mark: string): Token[] {
+  if (tokens.length === 0) return tokens
+  const last = tokens[tokens.length - 1]
+  return [...tokens.slice(0, -1), { ...last, text: `${last.text}${mark}` }]
+}
+
 function deExtras(time: TimeAdverb, manner: MannerAdverb): Token[] {
   const extras: Token[] = []
   if (time.id !== NONE_ID) extras.push(tok(time.de, 'time'))
@@ -365,46 +403,74 @@ export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object
   const objPhrase = objectDeAffirmative(object)
   const extras = deExtras(time, manner)
   const neg = objectDeNegative(object)
+  const hasObject = object.kind !== 'none'
 
   if (form === 'twoVerbs') {
-    return [tok(cap(subj.de), 'subject'), tok(modal.de[subject], 'modal'), ...extras, tok(objPhrase, 'rest'), tok(`${verb.infinitive}.`, 'infinitive')]
+    const core = [tok(cap(subj.de), 'subject'), tok(modal.de[subject], 'modal'), ...extras]
+    if (hasObject) core.push(tok(objPhrase, 'rest'))
+    core.push(tok(verb.infinitive, 'infinitive'))
+    return withPunctuation(core, '.')
   }
   const verbWord = verb.de[subject]
-  if (form === 'affirmative') return [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras, tok(`${objPhrase}.`, 'rest')]
+  if (form === 'affirmative') {
+    const core = [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras]
+    if (hasObject) core.push(tok(objPhrase, 'rest'))
+    return withPunctuation(core, '.')
+  }
   if (form === 'question') {
+    const core = [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras]
     if (negatedQuestion) {
-      return neg.nichtBefore
-        ? [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras, tok('nicht', 'neg'), tok(`${neg.phrase}?`, 'rest')]
-        : [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${neg.phrase}?`, 'neg')]
+      if (neg.nichtBefore) {
+        core.push(tok('nicht', 'neg'))
+        if (hasObject) core.push(tok(neg.phrase, 'rest'))
+      } else {
+        core.push(tok(neg.phrase, 'neg'))
+      }
+    } else if (hasObject) {
+      core.push(tok(objPhrase, 'rest'))
     }
-    return [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${objPhrase}?`, 'rest')]
+    return withPunctuation(core, '?')
   }
 
-  return neg.nichtBefore
-    ? [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras, tok('nicht', 'neg'), tok(`${neg.phrase}.`, 'rest')]
-    : [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras, tok(`${neg.phrase}.`, 'neg')]
+  const core = [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras]
+  if (neg.nichtBefore) {
+    core.push(tok('nicht', 'neg'))
+    if (hasObject) core.push(tok(neg.phrase, 'rest'))
+  } else {
+    core.push(tok(neg.phrase, 'neg'))
+  }
+  return withPunctuation(core, '.')
 }
 
 export function buildDeWerTokens(verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): Token[] {
-  return [tok('Wer', 'subject'), tok(verb.de.er, 'verb'), ...deExtras(time, manner), tok(`${objectDeAffirmative(object)}?`, 'rest')]
+  const core = [tok('Wer', 'subject'), tok(verb.de.er, 'verb'), ...deExtras(time, manner)]
+  if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  return withPunctuation(core, '?')
 }
 
+/** The object never appears here — "Was"/"Wohin"/"Woher" already asks for it,
+ * so repeating it ("Was lernst du Deutsch?") would be redundant/wrong. */
 export function buildDeContentTokens(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): Token[] {
   const subj = subjects.find(s => s.id === subject)!
   const whWord = object.kind === 'place' ? object.whWord : 'Was'
-  return [tok(whWord, 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...deExtras(time, manner), tok(`${objectDeAffirmative(object)}?`, 'rest')]
+  const core = [tok(whWord, 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...deExtras(time, manner)]
+  return withPunctuation(core, '?')
 }
 
 export function buildDeWannTokens(subject: SubjectId, verb: Verb, object: VerbObject, manner: MannerAdverb): Token[] {
   const subj = subjects.find(s => s.id === subject)!
   const extras = manner.id !== NONE_ID ? [tok(manner.de, 'manner')] : []
-  return [tok('Wann', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${objectDeAffirmative(object)}?`, 'rest')]
+  const core = [tok('Wann', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras]
+  if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  return withPunctuation(core, '?')
 }
 
 export function buildDeWieTokens(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb): Token[] {
   const subj = subjects.find(s => s.id === subject)!
   const extras = time.id !== NONE_ID ? [tok(time.de, 'time')] : []
-  return [tok('Wie', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${objectDeAffirmative(object)}?`, 'rest')]
+  const core = [tok('Wie', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras]
+  if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  return withPunctuation(core, '?')
 }
 
 /** "Ja" answers a question phrased affirmatively; "Doch" answers one phrased
@@ -416,11 +482,11 @@ export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb
   const extras = [time.id !== NONE_ID ? time.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
   if (kind === 'yes') {
     const prefix = negatedQuestion ? 'Doch' : 'Ja'
-    return `${prefix}, ${[subj.de, verbWord, ...extras, objectDeAffirmative(object)].join(' ')}.`
+    return `${prefix}, ${[subj.de, verbWord, ...extras, objectDeAffirmative(object)].filter(Boolean).join(' ')}.`
   }
   const neg = objectDeNegative(object)
   const tail = neg.nichtBefore ? ['nicht', neg.phrase] : [neg.phrase]
-  return `Nein, ${[subj.de, verbWord, ...extras, ...tail].join(' ')}.`
+  return `Nein, ${[subj.de, verbWord, ...extras, ...tail].filter(Boolean).join(' ')}.`
 }
 
 /** Plain affirmative sentence with no "Ja,"/"Nein," prefix — the answer to an
@@ -428,27 +494,28 @@ export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb
 export function buildDeOpenAnswer(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
   const subj = subjects.find(s => s.id === subject)!
   const extras = [time.id !== NONE_ID ? time.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
-  return `${[cap(subj.de), verb.de[subject], ...extras, objectDeAffirmative(object)].join(' ')}.`
+  return `${[cap(subj.de), verb.de[subject], ...extras, objectDeAffirmative(object)].filter(Boolean).join(' ')}.`
 }
 
 export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
   const subj = subjects.find(s => s.id === subject)!
   const extras = ptExtras(time, manner)
+  const objPt = objectPt(object)
   if (form === 'twoVerbs') {
     const modalWord = modal.ptNeedsDe ? `${modal.pt[subject]} de` : modal.pt[subject]
-    return `${[cap(subj.pt), modalWord, verb.meaningPt, object.pt, ...extras].join(' ')}.`
+    return `${[cap(subj.pt), modalWord, verb.meaningPt, objPt, ...extras].filter(Boolean).join(' ')}.`
   }
   const verbWord = verb.pt[subject]
-  if (form === 'affirmative') return `${[cap(subj.pt), verbWord, object.pt, ...extras].join(' ')}.`
+  if (form === 'affirmative') return `${[cap(subj.pt), verbWord, objPt, ...extras].filter(Boolean).join(' ')}.`
   if (form === 'question') {
     const neg = negatedQuestion ? 'não ' : ''
-    return `${[cap(subj.pt), `${neg}${verbWord}`, object.pt, ...extras].join(' ')}?`
+    return `${[cap(subj.pt), `${neg}${verbWord}`, objPt, ...extras].filter(Boolean).join(' ')}?`
   }
-  return `${[cap(subj.pt), 'não', verbWord, object.pt, ...extras].join(' ')}.`
+  return `${[cap(subj.pt), 'não', verbWord, objPt, ...extras].filter(Boolean).join(' ')}.`
 }
 
 export function buildPtWer(verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
-  return `Quem ${[verb.pt.er, object.pt, ...ptExtras(time, manner)].join(' ')}?`
+  return `Quem ${[verb.pt.er, objectPt(object), ...ptExtras(time, manner)].filter(Boolean).join(' ')}?`
 }
 
 export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
@@ -463,12 +530,14 @@ export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObjec
 
 export function buildPtWann(subject: SubjectId, verb: Verb, object: VerbObject, manner: MannerAdverb): string {
   const tail = manner.id !== NONE_ID ? ` ${manner.pt}` : ''
-  return `Quando ${verb.pt[subject]}${tail} ${object.pt}?`
+  const objPt = objectPt(object)
+  return `Quando ${verb.pt[subject]}${tail}${objPt ? ` ${objPt}` : ''}?`
 }
 
 export function buildPtWie(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb): string {
   const tail = time.id !== NONE_ID ? ` ${time.pt}` : ''
-  return `Como ${verb.pt[subject]}${tail} ${object.pt}?`
+  const objPt = objectPt(object)
+  return `Como ${verb.pt[subject]}${tail}${objPt ? ` ${objPt}` : ''}?`
 }
 
 export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
@@ -476,20 +545,21 @@ export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: Verb
   const base = verb.en.ich
   const does = subject === 'er' ? 'does' : 'do'
   const extras = enExtras(time, manner)
+  const objEn = objectEn(object)
 
   if (form === 'twoVerbs') {
-    return `${[cap(subj.en), modal.en, base, object.en, ...extras].join(' ')}.`
+    return `${[cap(subj.en), modal.en, base, objEn, ...extras].filter(Boolean).join(' ')}.`
   }
-  if (form === 'affirmative') return `${[cap(subj.en), verb.en[subject], object.en, ...extras].join(' ')}.`
+  if (form === 'affirmative') return `${[cap(subj.en), verb.en[subject], objEn, ...extras].filter(Boolean).join(' ')}.`
   if (form === 'question') {
     const notWord = negatedQuestion ? ' not' : ''
-    return `${[cap(does), subj.en, `${base}${notWord}`, object.en, ...extras].join(' ')}?`
+    return `${[cap(does), subj.en, `${base}${notWord}`, objEn, ...extras].filter(Boolean).join(' ')}?`
   }
-  return `${[cap(subj.en), does, 'not', base, object.en, ...extras].join(' ')}.`
+  return `${[cap(subj.en), does, 'not', base, objEn, ...extras].filter(Boolean).join(' ')}.`
 }
 
 export function buildEnWer(verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
-  return `Who ${[verb.en.er, object.en, ...enExtras(time, manner)].join(' ')}?`
+  return `Who ${[verb.en.er, objectEn(object), ...enExtras(time, manner)].filter(Boolean).join(' ')}?`
 }
 
 export function buildEnContent(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
@@ -508,12 +578,14 @@ export function buildEnWann(subject: SubjectId, verb: Verb, object: VerbObject, 
   const subj = subjects.find(s => s.id === subject)!
   const does = subject === 'er' ? 'does' : 'do'
   const tail = manner.id !== NONE_ID ? ` ${manner.en}` : ''
-  return `When ${does} ${subj.en} ${verb.en.ich}${tail} ${object.en}?`
+  const objEn = objectEn(object)
+  return `When ${does} ${subj.en} ${verb.en.ich}${tail}${objEn ? ` ${objEn}` : ''}?`
 }
 
 export function buildEnWie(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb): string {
   const subj = subjects.find(s => s.id === subject)!
   const does = subject === 'er' ? 'does' : 'do'
   const tail = time.id !== NONE_ID ? ` ${time.en}` : ''
-  return `How ${does} ${subj.en} ${verb.en.ich}${tail} ${object.en}?`
+  const objEn = objectEn(object)
+  return `How ${does} ${subj.en} ${verb.en.ich}${tail}${objEn ? ` ${objEn}` : ''}?`
 }
