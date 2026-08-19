@@ -42,14 +42,19 @@ type UiStrings = {
   whatModeLabel: string
   whereToModeLabel: string
   whereFromModeLabel: string
+  whereModeLabel: string
   wannModeLabel: string
   wieModeLabel: string
   werExplain: string
   whatExplain: string
   whereToExplain: string
   whereFromExplain: string
+  whereExplain: string
   wannExplain: string
   wieExplain: string
+  questionAffirmativeLabel: string
+  questionNegativeLabel: string
+  dochExplain: string
   restart: string
   themeLight: string
   themeDark: string
@@ -95,14 +100,19 @@ export const ui: Record<Locale, UiStrings> = {
     whatModeLabel: 'O quê',
     whereToModeLabel: 'Para onde',
     whereFromModeLabel: 'De onde',
+    whereModeLabel: 'Onde',
     werExplain: '"Wer" (quem) substitui o sujeito. O verbo continua na 2ª posição, mas agora quem responde é que escolhe o sujeito.',
     whatExplain: '"Was" (o quê) substitui o objeto — pergunta-se pelo que falta, por isso ele desaparece da frase.',
     whereToExplain: '"Wohin" (para onde) substitui o destino — usa-se "wohin" e não "wo" porque o verbo implica movimento em direção a um sítio.',
     whereFromExplain: '"Woher" (de onde) substitui a origem — usa-se "woher" e não "wo" porque o verbo implica movimento a partir de um sítio.',
+    whereExplain: '"Wo" substitui um lugar sem movimento — usa-se "wo" (não "wohin"/"woher") porque o verbo descreve onde algo está ou acontece, não uma direção.',
     wannModeLabel: 'Quando',
     wieModeLabel: 'Como',
     wannExplain: '"Wann" (quando) substitui a expressão de tempo — se escolheres uma peça de tempo ela desaparece da frase, é isso que se está a perguntar.',
     wieExplain: '"Wie" (como) substitui a expressão de modo — se escolheres uma peça de modo ela desaparece da frase, é isso que se está a perguntar.',
+    questionAffirmativeLabel: 'Pergunta afirmativa',
+    questionNegativeLabel: 'Pergunta negativa',
+    dochExplain: 'A uma pergunta negativa não se responde "Ja" — usa-se "Doch" para contradizer (sim, na verdade sim) e "Nein" para confirmar a negação (não, de facto não).',
     restart: 'Reiniciar',
     themeLight: 'Claro',
     themeDark: 'Escuro',
@@ -146,14 +156,19 @@ export const ui: Record<Locale, UiStrings> = {
     whatModeLabel: 'What',
     whereToModeLabel: 'Where to',
     whereFromModeLabel: 'Where from',
+    whereModeLabel: 'Where',
     werExplain: '"Wer" (who) replaces the subject. The verb still sits in 2nd position, but now whoever answers picks the subject.',
     whatExplain: '"Was" (what) replaces the object — you\'re asking for the missing piece, so it drops out of the sentence.',
     whereToExplain: '"Wohin" (where to) replaces the destination — "wohin", not "wo", because the verb implies moving toward a place.',
     whereFromExplain: '"Woher" (where from) replaces the origin — "woher", not "wo", because the verb implies moving away from a place.',
+    whereExplain: '"Wo" replaces a place with no movement — "wo" (not "wohin"/"woher") because the verb describes where something is or happens, not a direction.',
     wannModeLabel: 'When',
     wieModeLabel: 'How',
     wannExplain: '"Wann" (when) replaces the time expression — pick a time piece and it drops out of the sentence, since that\'s exactly what\'s being asked.',
     wieExplain: '"Wie" (how) replaces the manner expression — pick a manner piece and it drops out of the sentence, since that\'s exactly what\'s being asked.',
+    questionAffirmativeLabel: 'Affirmative question',
+    questionNegativeLabel: 'Negative question',
+    dochExplain: 'You can\'t answer a negative question with "Ja" — use "Doch" to contradict it (yes, actually I do) and "Nein" to confirm the negation (no, indeed I don\'t).',
     restart: 'Restart',
     themeLight: 'Light',
     themeDark: 'Dark',
@@ -197,14 +212,19 @@ export const ui: Record<Locale, UiStrings> = {
     whatModeLabel: 'Was',
     whereToModeLabel: 'Wohin',
     whereFromModeLabel: 'Woher',
+    whereModeLabel: 'Wo',
     werExplain: '"Wer" ersetzt das Subjekt. Das Verb bleibt an Position 2, aber jetzt wählt die antwortende Person das Subjekt.',
     whatExplain: '"Was" ersetzt das Objekt — man fragt genau nach dem fehlenden Teil, deshalb fällt er aus dem Satz.',
     whereToExplain: '"Wohin" ersetzt das Ziel — "wohin" statt "wo", weil das Verb eine Bewegung zu einem Ort ausdrückt.',
     whereFromExplain: '"Woher" ersetzt die Herkunft — "woher" statt "wo", weil das Verb eine Bewegung von einem Ort weg ausdrückt.',
+    whereExplain: '"Wo" ersetzt einen Ort ohne Bewegung — "wo" statt "wohin"/"woher", weil das Verb beschreibt, wo etwas ist oder passiert, keine Richtung.',
     wannModeLabel: 'Wann',
     wieModeLabel: 'Wie',
     wannExplain: '"Wann" ersetzt die Zeitangabe — wählst du ein Zeit-Stück, fällt es aus dem Satz, denn genau danach wird gefragt.',
     wieExplain: '"Wie" ersetzt die Modalangabe — wählst du ein Art-und-Weise-Stück, fällt es aus dem Satz, denn genau danach wird gefragt.',
+    questionAffirmativeLabel: 'Bejahte Frage',
+    questionNegativeLabel: 'Verneinte Frage',
+    dochExplain: 'Auf eine verneinte Frage antwortet man nicht mit "Ja" — "Doch" widerspricht ihr (doch, eigentlich schon) und "Nein" bestätigt die Verneinung (nein, wirklich nicht).',
     restart: 'Neu starten',
     themeLight: 'Hell',
     themeDark: 'Dunkel',

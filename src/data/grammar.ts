@@ -1,5 +1,5 @@
 export type SubjectId = 'ich' | 'du' | 'er' | 'wir' | 'ihr' | 'sie'
-export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen'
+export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen' | 'wohnen'
 export type ModalId = 'moechten' | 'wollen' | 'muessen'
 export type Form = 'affirmative' | 'question' | 'negative' | 'twoVerbs'
 export type QuestionMode = 'yesno' | 'wer' | 'content' | 'wann' | 'wie'
@@ -37,8 +37,9 @@ export type PlaceObject = {
   kind: 'place'
   phrase: string
   /** Which W-word this place takes in a content question: "Wohin" for a destination
-   * (nach Berlin), "Woher" for an origin (aus Portugal) — they are not interchangeable. */
-  whWord: 'Wohin' | 'Woher'
+   * (nach Berlin), "Woher" for an origin (aus Portugal), "Wo" for a static location
+   * (in Lissabon) — they are not interchangeable. */
+  whWord: 'Wohin' | 'Woher' | 'Wo'
   pt: string
   en: string
 }
@@ -235,6 +236,20 @@ export const verbs: Verb[] = [
       { id: 'deutschland', kind: 'place', phrase: 'aus Deutschland', whWord: 'Woher', pt: 'da Alemanha', en: 'from Germany' },
     ],
   },
+  {
+    id: 'wohnen',
+    infinitive: 'wohnen',
+    meaningPt: 'morar',
+    meaningEn: 'live',
+    regular: true,
+    de: { ich: 'wohne', du: 'wohnst', er: 'wohnt', wir: 'wohnen', ihr: 'wohnt', sie: 'wohnen' },
+    pt: { ich: 'moro', du: 'moras', er: 'mora', wir: 'moramos', ihr: 'morais', sie: 'moram' },
+    en: { ich: 'live', du: 'live', er: 'lives', wir: 'live', ihr: 'live', sie: 'live' },
+    objects: [
+      { id: 'lissabon', kind: 'place', phrase: 'in Lissabon', whWord: 'Wo', pt: 'em Lisboa', en: 'in Lisbon' },
+      { id: 'wien', kind: 'place', phrase: 'in Wien', whWord: 'Wo', pt: 'em Viena', en: 'in Vienna' },
+    ],
+  },
 ]
 
 export type Modal = {
@@ -345,19 +360,26 @@ function enExtras(time: TimeAdverb, manner: MannerAdverb): string[] {
   return [time.id !== NONE_ID ? time.en : null, manner.id !== NONE_ID ? manner.en : null].filter((s): s is string => !!s)
 }
 
-export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb): Token[] {
+export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): Token[] {
   const subj = subjects.find(s => s.id === subject)!
   const objPhrase = objectDeAffirmative(object)
   const extras = deExtras(time, manner)
+  const neg = objectDeNegative(object)
 
   if (form === 'twoVerbs') {
     return [tok(cap(subj.de), 'subject'), tok(modal.de[subject], 'modal'), ...extras, tok(objPhrase, 'rest'), tok(`${verb.infinitive}.`, 'infinitive')]
   }
   const verbWord = verb.de[subject]
   if (form === 'affirmative') return [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras, tok(`${objPhrase}.`, 'rest')]
-  if (form === 'question') return [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${objPhrase}?`, 'rest')]
+  if (form === 'question') {
+    if (negatedQuestion) {
+      return neg.nichtBefore
+        ? [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras, tok('nicht', 'neg'), tok(`${neg.phrase}?`, 'rest')]
+        : [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${neg.phrase}?`, 'neg')]
+    }
+    return [tok(cap(verbWord), 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${objPhrase}?`, 'rest')]
+  }
 
-  const neg = objectDeNegative(object)
   return neg.nichtBefore
     ? [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras, tok('nicht', 'neg'), tok(`${neg.phrase}.`, 'rest')]
     : [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras, tok(`${neg.phrase}.`, 'neg')]
@@ -385,12 +407,16 @@ export function buildDeWieTokens(subject: SubjectId, verb: Verb, object: VerbObj
   return [tok('Wie', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras, tok(`${objectDeAffirmative(object)}?`, 'rest')]
 }
 
-export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
+/** "Ja" answers a question phrased affirmatively; "Doch" answers one phrased
+ * negatively when you're contradicting it (Magst du kein Bier? — Doch, ich mag Bier.).
+ * Using "Ja" there would be wrong — Doch exists specifically to avoid that ambiguity. */
+export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
   const subj = subjects.find(s => s.id === subject)!
   const verbWord = verb.de[subject]
   const extras = [time.id !== NONE_ID ? time.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
   if (kind === 'yes') {
-    return `Ja, ${[subj.de, verbWord, ...extras, objectDeAffirmative(object)].join(' ')}.`
+    const prefix = negatedQuestion ? 'Doch' : 'Ja'
+    return `${prefix}, ${[subj.de, verbWord, ...extras, objectDeAffirmative(object)].join(' ')}.`
   }
   const neg = objectDeNegative(object)
   const tail = neg.nichtBefore ? ['nicht', neg.phrase] : [neg.phrase]
@@ -405,7 +431,7 @@ export function buildDeOpenAnswer(subject: SubjectId, verb: Verb, object: VerbOb
   return `${[cap(subj.de), verb.de[subject], ...extras, objectDeAffirmative(object)].join(' ')}.`
 }
 
-export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb): string {
+export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
   const subj = subjects.find(s => s.id === subject)!
   const extras = ptExtras(time, manner)
   if (form === 'twoVerbs') {
@@ -414,7 +440,10 @@ export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: Verb
   }
   const verbWord = verb.pt[subject]
   if (form === 'affirmative') return `${[cap(subj.pt), verbWord, object.pt, ...extras].join(' ')}.`
-  if (form === 'question') return `${[cap(subj.pt), verbWord, object.pt, ...extras].join(' ')}?`
+  if (form === 'question') {
+    const neg = negatedQuestion ? 'não ' : ''
+    return `${[cap(subj.pt), `${neg}${verbWord}`, object.pt, ...extras].join(' ')}?`
+  }
   return `${[cap(subj.pt), 'não', verbWord, object.pt, ...extras].join(' ')}.`
 }
 
@@ -427,7 +456,9 @@ export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObjec
   const extras = ptExtras(time, manner)
   const tail = extras.length ? ` ${extras.join(' ')}` : ''
   if (object.kind !== 'place') return `O que ${verbWord}${tail}?`
-  return object.whWord === 'Woher' ? `De onde ${verbWord}${tail}?` : `Para onde ${verbWord}${tail}?`
+  if (object.whWord === 'Woher') return `De onde ${verbWord}${tail}?`
+  if (object.whWord === 'Wo') return `Onde ${verbWord}${tail}?`
+  return `Para onde ${verbWord}${tail}?`
 }
 
 export function buildPtWann(subject: SubjectId, verb: Verb, object: VerbObject, manner: MannerAdverb): string {
@@ -440,7 +471,7 @@ export function buildPtWie(subject: SubjectId, verb: Verb, object: VerbObject, t
   return `Como ${verb.pt[subject]}${tail} ${object.pt}?`
 }
 
-export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb): string {
+export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
   const subj = subjects.find(s => s.id === subject)!
   const base = verb.en.ich
   const does = subject === 'er' ? 'does' : 'do'
@@ -450,7 +481,10 @@ export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: Verb
     return `${[cap(subj.en), modal.en, base, object.en, ...extras].join(' ')}.`
   }
   if (form === 'affirmative') return `${[cap(subj.en), verb.en[subject], object.en, ...extras].join(' ')}.`
-  if (form === 'question') return `${[cap(does), subj.en, base, object.en, ...extras].join(' ')}?`
+  if (form === 'question') {
+    const notWord = negatedQuestion ? ' not' : ''
+    return `${[cap(does), subj.en, `${base}${notWord}`, object.en, ...extras].join(' ')}?`
+  }
   return `${[cap(subj.en), does, 'not', base, object.en, ...extras].join(' ')}.`
 }
 

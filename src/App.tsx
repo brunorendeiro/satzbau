@@ -73,6 +73,7 @@ export default function App() {
   const [modalId, setModalId] = useState<ModalId>(DEFAULT_MODAL)
   const [timeId, setTimeId] = useState<string>(NONE_ID)
   const [mannerId, setMannerId] = useState<string>(NONE_ID)
+  const [negatedQuestion, setNegatedQuestion] = useState(false)
 
   useEffect(() => {
     setLocale(detectLocale())
@@ -119,44 +120,47 @@ export default function App() {
     setModalId(DEFAULT_MODAL)
     setTimeId(NONE_ID)
     setMannerId(NONE_ID)
+    setNegatedQuestion(false)
   }
 
   const isQuestion = form === 'question'
-  const isFrom = object.kind === 'place' && object.whWord === 'Woher'
-  const contentLabel = object.kind === 'place' ? (isFrom ? t.whereFromModeLabel : t.whereToModeLabel) : t.whatModeLabel
-  const contentExplain = object.kind === 'place' ? (isFrom ? t.whereFromExplain : t.whereToExplain) : t.whatExplain
+  const placeLabels = { Wohin: [t.whereToModeLabel, t.whereToExplain], Woher: [t.whereFromModeLabel, t.whereFromExplain], Wo: [t.whereModeLabel, t.whereExplain] } as const
+  const [contentLabel, contentExplain] = object.kind === 'place' ? placeLabels[object.whWord] : [t.whatModeLabel, t.whatExplain]
+
+  const isNegatedYesNo = isQuestion && questionMode === 'yesno' && negatedQuestion
 
   const tokens =
     isQuestion && questionMode === 'wer' ? buildDeWerTokens(verb, object, time, manner) :
     isQuestion && questionMode === 'content' ? buildDeContentTokens(subjectId, verb, object, time, manner) :
     isQuestion && questionMode === 'wann' ? buildDeWannTokens(subjectId, verb, object, manner) :
     isQuestion && questionMode === 'wie' ? buildDeWieTokens(subjectId, verb, object, time) :
-    buildDeTokens(form, subjectId, verb, object, modal, time, manner)
+    buildDeTokens(form, subjectId, verb, object, modal, time, manner, isNegatedYesNo)
 
   const sentencePt =
     isQuestion && questionMode === 'wer' ? buildPtWer(verb, object, time, manner) :
     isQuestion && questionMode === 'content' ? buildPtContent(subjectId, verb, object, time, manner) :
     isQuestion && questionMode === 'wann' ? buildPtWann(subjectId, verb, object, manner) :
     isQuestion && questionMode === 'wie' ? buildPtWie(subjectId, verb, object, time) :
-    buildPt(form, subjectId, verb, object, modal, time, manner)
+    buildPt(form, subjectId, verb, object, modal, time, manner, isNegatedYesNo)
 
   const sentenceEn =
     isQuestion && questionMode === 'wer' ? buildEnWer(verb, object, time, manner) :
     isQuestion && questionMode === 'content' ? buildEnContent(subjectId, verb, object, time, manner) :
     isQuestion && questionMode === 'wann' ? buildEnWann(subjectId, verb, object, manner) :
     isQuestion && questionMode === 'wie' ? buildEnWie(subjectId, verb, object, time) :
-    buildEn(form, subjectId, verb, object, modal, time, manner)
+    buildEn(form, subjectId, verb, object, modal, time, manner, isNegatedYesNo)
 
   const explain = isQuestion
     ? (questionMode === 'wer' ? t.werExplain
       : questionMode === 'content' ? contentExplain
       : questionMode === 'wann' ? t.wannExplain
       : questionMode === 'wie' ? t.wieExplain
+      : isNegatedYesNo ? t.dochExplain
       : t.formExplain.question)
     : t.formExplain[form]
 
-  const yesAnswer = buildDeAnswer('yes', subjectId, verb, object, time, manner)
-  const noAnswer = buildDeAnswer('no', subjectId, verb, object, time, manner)
+  const yesAnswer = buildDeAnswer('yes', subjectId, verb, object, time, manner, isNegatedYesNo)
+  const noAnswer = buildDeAnswer('no', subjectId, verb, object, time, manner, isNegatedYesNo)
   const openAnswer = buildDeOpenAnswer(subjectId, verb, object, time, manner)
 
   return (
@@ -205,6 +209,13 @@ export default function App() {
           <button className={questionMode === 'content' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('content')}>{contentLabel}</button>
           <button className={questionMode === 'wann' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wann')}>{t.wannModeLabel}</button>
           <button className={questionMode === 'wie' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wie')}>{t.wieModeLabel}</button>
+        </div>
+      )}
+
+      {isQuestion && questionMode === 'yesno' && (
+        <div className="qmode-switch">
+          <button className={!negatedQuestion ? 'qmode active' : 'qmode'} onClick={() => setNegatedQuestion(false)}>{t.questionAffirmativeLabel}</button>
+          <button className={negatedQuestion ? 'qmode active' : 'qmode'} onClick={() => setNegatedQuestion(true)}>{t.questionNegativeLabel}</button>
         </div>
       )}
 
