@@ -128,6 +128,8 @@ export default function SentenceBuilder() {
     isQuestion && questionMode === 'wie' ? buildEnWie(subjectId, verb, object, time) :
     buildEn(form, subjectId, verb, object, modal, time, manner, isNegatedYesNo)
 
+  const negativeExplain = object.kind === 'noun' ? t.negativeExplainNoun : object.kind === 'place' ? t.negativeExplainPlace : t.formExplain.negative
+
   const explain = isQuestion
     ? (questionMode === 'wer' ? t.werExplain
       : questionMode === 'content' ? contentExplain
@@ -135,6 +137,7 @@ export default function SentenceBuilder() {
       : questionMode === 'wie' ? t.wieExplain
       : isNegatedYesNo ? t.dochExplain
       : t.formExplain.question)
+    : form === 'negative' ? negativeExplain
     : t.formExplain[form]
 
   const yesAnswer = buildDeAnswer('yes', subjectId, verb, object, time, manner, isNegatedYesNo)

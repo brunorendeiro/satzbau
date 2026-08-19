@@ -13,6 +13,8 @@ type UiStrings = {
   noneOption: string
   forms: Record<Form, string>
   formExplain: Record<Form, string>
+  negativeExplainNoun: string
+  negativeExplainPlace: string
   regularLabel: string
   irregularLabel: string
   regularNote: string
@@ -62,9 +64,11 @@ export const ui: Record<Locale, UiStrings> = {
     formExplain: {
       affirmative: 'O verbo fica sempre na 2ª posição: Sujeito + verbo + resto da frase.',
       question: 'Numa pergunta de sim/não, o verbo conjugado passa para o início: Verbo + sujeito + resto?',
-      negative: '"kein" nega um substantivo sem artigo próprio (kein/keine/keinen consoante o género); "nicht" nega um lugar ou o verbo inteiro.',
+      negative: 'Aqui usa-se "nicht" porque não há nenhum substantivo para negar — "nicht" nega o verbo inteiro.',
       twoVerbs: 'Com um verbo modal, este fica na 2ª posição conjugado e o verbo principal vai para o infinitivo, no fim da frase.',
     },
+    negativeExplainNoun: 'Aqui usa-se "kein" porque estás a negar um substantivo (kein/keine/keinen consoante o género) — não "nicht".',
+    negativeExplainPlace: 'Aqui usa-se "nicht" porque estás a negar um lugar, não um substantivo — "kein" só nega substantivos.',
     regularLabel: 'Regular',
     irregularLabel: 'Irregular',
     regularNote: 'Verbo regular — usa sempre as terminações -e, -st, -t, -en, -t, -en, sem mudar a vogal do radical.',
@@ -112,9 +116,11 @@ export const ui: Record<Locale, UiStrings> = {
     formExplain: {
       affirmative: 'The verb always sits in 2nd position: Subject + verb + rest of the sentence.',
       question: 'In a yes/no question, the conjugated verb moves to the front: Verb + subject + rest?',
-      negative: '"kein" negates a noun with no article of its own (kein/keine/keinen depending on gender); "nicht" negates a place or the whole verb.',
+      negative: 'Here it\'s "nicht" because there\'s no noun to negate — "nicht" negates the whole verb.',
       twoVerbs: 'With a modal verb, it takes 2nd position conjugated, and the main verb moves to the infinitive at the very end.',
     },
+    negativeExplainNoun: 'Here it\'s "kein" because you\'re negating a noun (kein/keine/keinen depending on gender) — not "nicht".',
+    negativeExplainPlace: 'Here it\'s "nicht" because you\'re negating a place, not a noun — "kein" only ever negates nouns.',
     regularLabel: 'Regular',
     irregularLabel: 'Irregular',
     regularNote: 'Regular verb — always uses the endings -e, -st, -t, -en, -t, -en, with no stem vowel change.',
@@ -162,9 +168,11 @@ export const ui: Record<Locale, UiStrings> = {
     formExplain: {
       affirmative: 'Das Verb steht immer an Position 2: Subjekt + Verb + Rest des Satzes.',
       question: 'Bei einer Ja/Nein-Frage rückt das konjugierte Verb an den Anfang: Verb + Subjekt + Rest?',
-      negative: '"kein" verneint ein Nomen ohne eigenen Artikel (kein/keine/keinen je nach Geschlecht); "nicht" verneint einen Ort oder das ganze Verb.',
+      negative: 'Hier steht "nicht", weil es kein Nomen zum Verneinen gibt — "nicht" verneint das ganze Verb.',
       twoVerbs: 'Mit einem Modalverb steht dieses konjugiert an Position 2, das Hauptverb wandert als Infinitiv ans Satzende.',
     },
+    negativeExplainNoun: 'Hier steht "kein", weil ein Nomen verneint wird (kein/keine/keinen je nach Geschlecht) — nicht "nicht".',
+    negativeExplainPlace: 'Hier steht "nicht", weil ein Ort verneint wird, kein Nomen — "kein" verneint nur Nomen.',
     regularLabel: 'Regelmäßig',
     irregularLabel: 'Unregelmäßig',
     regularNote: 'Regelmäßiges Verb — nutzt immer die Endungen -e, -st, -t, -en, -t, -en, ohne Änderung des Stammvokals.',
