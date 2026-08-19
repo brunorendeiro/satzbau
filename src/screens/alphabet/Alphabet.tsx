@@ -7,7 +7,11 @@ import './alphabet.css'
 
 const CORE_IDS = new Set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])
 
-function LetterCard({ entry, trickyTag }: { entry: LetterEntry; trickyTag: string }) {
+function exampleMeaning(entry: LetterEntry, locale: Locale): string {
+  return locale === 'en' ? entry.exampleEn : entry.examplePt
+}
+
+function LetterCard({ entry, trickyTag, locale }: { entry: LetterEntry; trickyTag: string; locale: Locale }) {
   return (
     <div className={entry.tricky ? 'letter-card tricky' : 'letter-card'}>
       <div className="letter-head">
@@ -17,7 +21,7 @@ function LetterCard({ entry, trickyTag }: { entry: LetterEntry; trickyTag: strin
       {entry.tricky && <span className="letter-tag">{trickyTag}</span>}
       <div className="letter-example">
         <span className="letter-example-word">{entry.example}</span>
-        <span className="letter-example-meaning">{entry.examplePt} · {entry.exampleEn}</span>
+        <span className="letter-example-meaning">{exampleMeaning(entry, locale)}</span>
       </div>
       <div className="letter-guide">
         <p><span className="letter-guide-label pt">PT</span>{entry.soundPt}</p>
@@ -54,7 +58,7 @@ export default function Alphabet() {
         <div className="alpha-section">
           <span className="piece-label">{t.sectionAlphabet}</span>
           <div className="alpha-grid">
-            {core.map(entry => <LetterCard key={entry.id} entry={entry} trickyTag={t.trickyTag} />)}
+            {core.map(entry => <LetterCard key={entry.id} entry={entry} trickyTag={t.trickyTag} locale={locale} />)}
           </div>
         </div>
       )}
@@ -63,7 +67,7 @@ export default function Alphabet() {
         <div className="alpha-section">
           <span className="piece-label">{t.sectionExtra}</span>
           <div className="alpha-grid">
-            {extra.map(entry => <LetterCard key={entry.id} entry={entry} trickyTag={t.trickyTag} />)}
+            {extra.map(entry => <LetterCard key={entry.id} entry={entry} trickyTag={t.trickyTag} locale={locale} />)}
           </div>
         </div>
       )}
@@ -73,7 +77,7 @@ export default function Alphabet() {
           <span className="piece-label">{t.sectionCombos}</span>
           <p className="alpha-section-note">{t.combosIntro}</p>
           <div className="alpha-grid">
-            {shownCombos.map(entry => <LetterCard key={entry.id} entry={entry} trickyTag={t.trickyTag} />)}
+            {shownCombos.map(entry => <LetterCard key={entry.id} entry={entry} trickyTag={t.trickyTag} locale={locale} />)}
           </div>
         </div>
       )}
