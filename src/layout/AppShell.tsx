@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { detectLocale, locales, commonUi, type Locale } from '../i18n/common'
-import { getStoredConsent, loadAnalytics } from '../analytics'
+import { getStoredConsent, loadAnalytics, loadAds } from '../analytics'
 import CookieConsent from './CookieConsent'
 
 type Theme = 'light' | 'dark'
@@ -19,7 +19,10 @@ export default function AppShell() {
   useEffect(() => {
     setLocale(detectLocale())
     setTheme(detectTheme())
-    if (getStoredConsent() === 'granted') loadAnalytics()
+    if (getStoredConsent() === 'granted') {
+      loadAnalytics()
+      loadAds()
+    }
   }, [])
 
   useEffect(() => {
