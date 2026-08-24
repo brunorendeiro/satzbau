@@ -33,10 +33,15 @@ export const rooms: Room[] = [
     gridArea: 'kueche',
     items: [
       { id: 'kuehlschrank', de: 'der Kühlschrank', pt: 'o frigorífico', en: 'the fridge' },
+      { id: 'uhr', de: 'die Uhr', pt: 'o relógio', en: 'the clock' },
+      { id: 'fenster', de: 'das Fenster', pt: 'a janela', en: 'the window' },
+      { id: 'dunstabzugshaube', de: 'die Dunstabzugshaube', pt: 'o exaustor', en: 'the extractor hood' },
+      { id: 'kuechenschrank', de: 'der Küchenschrank', pt: 'o armário de cozinha', en: 'the kitchen cabinet' },
+      { id: 'mikrowelle', de: 'die Mikrowelle', pt: 'o micro-ondas', en: 'the microwave' },
       { id: 'herd', de: 'der Herd', pt: 'o fogão', en: 'the stove' },
-      { id: 'spuele', de: 'die Spüle', pt: 'a pia', en: 'the sink' },
       { id: 'topf', de: 'der Topf', pt: 'a panela', en: 'the pot' },
       { id: 'pfanne', de: 'die Pfanne', pt: 'a frigideira', en: 'the pan' },
+      { id: 'spuele', de: 'die Spüle', pt: 'a pia', en: 'the sink' },
     ],
   },
   {
