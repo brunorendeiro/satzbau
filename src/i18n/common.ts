@@ -25,6 +25,7 @@ type CommonUiStrings = {
   navWordFamily: string
   navVocabulary: string
   navHouse: string
+  navEmergency: string
   footerTagline: string
   cookieBody: string
   cookieAccept: string
@@ -42,6 +43,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navWordFamily: 'Wortfamilie',
     navVocabulary: 'Wortschatz',
     navHouse: 'Zuhause',
+    navEmergency: 'Notfall',
     footerTagline: 'Sem contas · tudo guardado no teu browser',
     cookieBody: 'Uso o Google Analytics e o Google AdSense para perceber quantas pessoas visitam este projeto. Aceitas cookies de análise e publicidade?',
     cookieAccept: 'Aceitar',
@@ -57,6 +59,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navWordFamily: 'Wortfamilie',
     navVocabulary: 'Wortschatz',
     navHouse: 'Zuhause',
+    navEmergency: 'Notfall',
     footerTagline: 'No accounts · everything stays in your browser',
     cookieBody: 'I use Google Analytics and Google AdSense to understand how many people visit this project. Do you accept analytics and advertising cookies?',
     cookieAccept: 'Accept',
@@ -72,6 +75,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navWordFamily: 'Wortfamilie',
     navVocabulary: 'Wortschatz',
     navHouse: 'Zuhause',
+    navEmergency: 'Notfall',
     footerTagline: 'Keine Konten · alles bleibt im Browser',
     cookieBody: 'Ich verwende Google Analytics und Google AdSense, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse- und Werbe-Cookies?',
     cookieAccept: 'Akzeptieren',
