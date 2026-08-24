@@ -6,6 +6,7 @@ import Numbers from './screens/numbers/Numbers'
 import Alphabet from './screens/alphabet/Alphabet'
 import WordFamily from './screens/word-family/WordFamily'
 import Vocabulary from './screens/vocabulary/Vocabulary'
+import House from './screens/house/House'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="aussprache" element={<Alphabet />} />
           <Route path="wortfamilie" element={<WordFamily />} />
           <Route path="wortschatz" element={<Vocabulary />} />
+          <Route path="zuhause" element={<House />} />
         </Route>
       </Routes>
     </BrowserRouter>

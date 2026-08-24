@@ -1,0 +1,49 @@
+.house-plan { margin-top: 22px; max-width: 560px; }
+
+.house-roof {
+  height: 28px; margin: 0 12px;
+  background: var(--text);
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+.house-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 110px);
+  grid-template-areas:
+    "wohnzimmer kueche esszimmer"
+    "schlafzimmer badezimmer flur";
+  gap: 4px;
+  padding: 10px;
+  border: 3px solid var(--text);
+  border-top: none;
+}
+
+.house-room {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  padding: 8px; border-radius: 4px; border: 1px dashed var(--line);
+  font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 12px;
+  color: var(--text); background: var(--panel);
+  cursor: pointer; transition: background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.house-room:hover { transform: scale(1.02); }
+.house-room.active { border-style: solid; border-color: var(--text); box-shadow: var(--shadow-sm); }
+
+.room-wohnzimmer, .room-schlafzimmer { background: var(--accent-soft); }
+.room-kueche, .room-badezimmer { background: var(--accent2-soft); }
+.room-esszimmer, .room-flur { background: var(--ok-soft); }
+
+.house-items { margin-top: 26px; }
+.house-item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-top: 12px; }
+.house-item-card {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 16px; border-radius: 4px;
+  background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+}
+.house-item-de { font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; color: var(--text); }
+.house-item-meaning { font-size: 12px; color: var(--muted); }
+
+@media (max-width: 560px) {
+  .house-grid { grid-template-rows: repeat(2, 84px); }
+  .house-room { font-size: 10.5px; }
+}
