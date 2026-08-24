@@ -242,4 +242,142 @@ export const genderRules: GenderRule[] = [
       { word: 'Journalismus', meaningPt: 'jornalismo', meaningEn: 'journalism' },
     ],
   },
+  {
+    id: 'ment',
+    ending: '-ment',
+    article: 'das',
+    descriptionPt: 'Também do latim, quase sempre neutro.',
+    descriptionEn: 'Also from Latin, almost always neuter.',
+    descriptionDe: 'Ebenfalls aus dem Lateinischen, fast immer sächlich.',
+    examples: [
+      { word: 'Dokument', meaningPt: 'documento', meaningEn: 'document' },
+      { word: 'Instrument', meaningPt: 'instrumento', meaningEn: 'instrument' },
+      { word: 'Element', meaningPt: 'elemento', meaningEn: 'element' },
+    ],
+  },
+  {
+    id: 'schaft',
+    ending: '-schaft',
+    article: 'die',
+    descriptionPt: 'Uma coletividade ou condição — o nosso "-agem"/"-ção" coletivo.',
+    descriptionEn: 'A collective or state of being — our "-ship"/"-hood".',
+    descriptionDe: 'Ein Kollektiv oder ein Zustand.',
+    examples: [
+      { word: 'Freundschaft', meaningPt: 'amizade', meaningEn: 'friendship' },
+      { word: 'Mannschaft', meaningPt: 'equipa', meaningEn: 'team' },
+      { word: 'Gesellschaft', meaningPt: 'sociedade', meaningEn: 'society' },
+    ],
+  },
+  {
+    id: 'ei',
+    ending: '-ei',
+    article: 'die',
+    descriptionPt: 'Muitas vezes um local onde se faz algo — a padaria, a lavandaria...',
+    descriptionEn: 'Often a place where something is done — the bakery, the laundry...',
+    descriptionDe: 'Oft ein Ort, an dem etwas gemacht wird.',
+    examples: [
+      { word: 'Bäckerei', meaningPt: 'padaria', meaningEn: 'bakery' },
+      { word: 'Metzgerei', meaningPt: 'talho', meaningEn: 'butcher shop' },
+    ],
+  },
+  {
+    id: 'or',
+    ending: '-or',
+    article: 'der',
+    descriptionPt: 'Máquinas e pessoas que fazem algo — ainda outro herdeiro do latim.',
+    descriptionEn: 'Machines and people that do something — another Latin inheritance.',
+    descriptionDe: 'Maschinen und Personen, die etwas tun.',
+    examples: [
+      { word: 'Motor', meaningPt: 'motor', meaningEn: 'engine' },
+      { word: 'Doktor', meaningPt: 'doutor', meaningEn: 'doctor' },
+    ],
+  },
+]
+
+/** Gender predicted by MEANING/category rather than by spelling — a
+ * different kind of shortcut, with its own small set of exceptions. */
+export type GenderCategory = {
+  id: string
+  labelPt: string
+  labelEn: string
+  labelDe: string
+  article: 'der' | 'die' | 'das'
+  descriptionPt: string
+  descriptionEn: string
+  descriptionDe: string
+  examples: { word: string; meaningPt: string; meaningEn: string }[]
+}
+
+export const genderCategories: GenderCategory[] = [
+  {
+    id: 'days-seasons',
+    labelPt: 'Dias, meses, estações',
+    labelEn: 'Days, months, seasons',
+    labelDe: 'Tage, Monate, Jahreszeiten',
+    article: 'der',
+    descriptionPt: 'Quase sem exceção — só "die Nacht" foge à regra.',
+    descriptionEn: 'Almost no exceptions — only "die Nacht" breaks the rule.',
+    descriptionDe: 'Fast ohne Ausnahme — nur "die Nacht" bricht die Regel.',
+    examples: [
+      { word: 'Montag', meaningPt: 'segunda-feira', meaningEn: 'Monday' },
+      { word: 'Sommer', meaningPt: 'verão', meaningEn: 'summer' },
+      { word: 'Januar', meaningPt: 'janeiro', meaningEn: 'January' },
+    ],
+  },
+  {
+    id: 'compass',
+    labelPt: 'Pontos cardeais',
+    labelEn: 'Compass directions',
+    labelDe: 'Himmelsrichtungen',
+    article: 'der',
+    descriptionPt: 'Norte, sul, este, oeste — todos masculinos, mesmo combinados.',
+    descriptionEn: 'North, south, east, west — all masculine, even combined.',
+    descriptionDe: 'Norden, Süden, Osten, Westen — alle maskulin, auch kombiniert.',
+    examples: [
+      { word: 'Norden', meaningPt: 'norte', meaningEn: 'north' },
+      { word: 'Südwesten', meaningPt: 'sudoeste', meaningEn: 'southwest' },
+    ],
+  },
+  {
+    id: 'alcohol',
+    labelPt: 'Bebidas alcoólicas',
+    labelEn: 'Alcoholic drinks',
+    labelDe: 'Alkoholische Getränke',
+    article: 'der',
+    descriptionPt: 'A grande exceção é "das Bier" — a bebida alemã mais famosa foge à própria regra.',
+    descriptionEn: 'The big exception is "das Bier" — Germany\'s most famous drink breaks its own rule.',
+    descriptionDe: 'Die große Ausnahme ist "das Bier".',
+    examples: [
+      { word: 'Wein', meaningPt: 'vinho', meaningEn: 'wine' },
+      { word: 'Sekt', meaningPt: 'espumante', meaningEn: 'sparkling wine' },
+    ],
+  },
+  {
+    id: 'numbers',
+    labelPt: 'Números substantivados',
+    labelEn: 'Numbers used as nouns',
+    labelDe: 'Substantivierte Zahlen',
+    article: 'die',
+    descriptionPt: 'Quando um número vira um substantivo (a nota, a cifra), é sempre feminino.',
+    descriptionEn: 'When a number becomes a noun (the grade, the figure), it\'s always feminine.',
+    descriptionDe: 'Wird eine Zahl zum Nomen, ist sie immer feminin.',
+    examples: [
+      { word: 'Million', meaningPt: 'o milhão', meaningEn: 'the million' },
+      { word: 'Eins', meaningPt: 'o número um', meaningEn: 'the number one' },
+    ],
+  },
+  {
+    id: 'colors',
+    labelPt: 'Cores substantivadas',
+    labelEn: 'Colors used as nouns',
+    labelDe: 'Substantivierte Farben',
+    article: 'das',
+    descriptionPt: 'Uma cor tratada como coisa em si — "o azul", "o vermelho" — é sempre neutra.',
+    descriptionEn: 'A color treated as a thing in itself — "the blue", "the red" — is always neuter.',
+    descriptionDe: 'Eine Farbe als Ding an sich ist immer sächlich.',
+    examples: [
+      { word: 'Blau', meaningPt: 'o azul', meaningEn: 'the blue' },
+      { word: 'Rot', meaningPt: 'o vermelho', meaningEn: 'the red' },
+    ],
+  },
 ]
