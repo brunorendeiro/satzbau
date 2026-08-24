@@ -43,6 +43,30 @@
 .house-item-de { font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; color: var(--text); }
 .house-item-meaning { font-size: 12px; color: var(--muted); }
 
+.house-scene-wrap {
+  margin-top: 12px; padding: 18px; border-radius: 4px;
+  background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.house-scene-svg { width: 100%; height: auto; display: block; }
+.house-hotspot {
+  fill: var(--panel-2); stroke: var(--text); stroke-width: 2; cursor: pointer;
+  transition: fill .15s ease, stroke .15s ease;
+  outline: none;
+}
+.house-hotspot:focus-visible { stroke: var(--accent2); stroke-width: 3; }
+.house-hotspot:hover { fill: var(--accent-soft); }
+.house-hotspot.active { fill: var(--accent-soft); stroke: var(--accent); }
+.house-hotspot .house-scene-detail { fill: var(--panel); stroke: var(--text); stroke-width: 1.5; }
+.house-hotspot.active .house-scene-detail { fill: var(--panel); stroke: var(--accent); }
+.house-scene-floor { fill: var(--panel-2); }
+.house-scene-faucet { fill: none; stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
+
+.house-scene-label {
+  display: flex; flex-direction: column; gap: 2px; align-items: center;
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line);
+}
+.house-scene-label .house-item-de { font-size: 20px; }
+
 @media (max-width: 560px) {
   .house-grid { grid-template-rows: repeat(2, 84px); }
   .house-room { font-size: 10.5px; }
