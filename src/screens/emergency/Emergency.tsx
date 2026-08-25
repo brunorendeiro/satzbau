@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { emergencyNumbers, phraseGroups, type PhraseGroup, type Phrase } from './data'
 import { ui } from './i18n'
@@ -15,6 +16,9 @@ function phraseMeaning(phrase: Phrase, locale: Locale): string {
 export default function Emergency() {
   const { locale } = useOutletContext<{ locale: Locale }>()
   const t = ui[locale]
+
+  const [groupId, setGroupId] = useState(phraseGroups[0].id)
+  const activeGroup = useMemo(() => phraseGroups.find(g => g.id === groupId) ?? phraseGroups[0], [groupId])
 
   return (
     <div className="screen-emergency">
@@ -38,19 +42,29 @@ export default function Emergency() {
         </div>
       </div>
 
-      {phraseGroups.map(group => (
-        <div className="em-section" key={group.id}>
-          <span className="piece-label">{groupTitle(group, locale)}</span>
-          <div className="em-phrase-grid">
-            {group.phrases.map(p => (
-              <div className="em-phrase-card" key={p.id}>
-                <span className="em-phrase-de">{p.de}</span>
-                <span className="em-phrase-meaning">{phraseMeaning(p, locale)}</span>
-              </div>
-            ))}
-          </div>
+      <div className="em-section">
+        <span className="piece-label">{t.situationLabel}</span>
+        <div className="chips">
+          {phraseGroups.map(group => (
+            <button
+              key={group.id}
+              className={group.id === groupId ? 'chip active' : 'chip'}
+              onClick={() => setGroupId(group.id)}
+            >
+              {groupTitle(group, locale)}
+            </button>
+          ))}
         </div>
-      ))}
+
+        <div className="em-phrase-grid">
+          {activeGroup.phrases.map(p => (
+            <div className="em-phrase-card" key={p.id}>
+              <span className="em-phrase-de">{p.de}</span>
+              <span className="em-phrase-meaning">{phraseMeaning(p, locale)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

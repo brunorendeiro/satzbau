@@ -11,7 +11,8 @@
 .em-number-label { font-size: 13px; color: var(--text); font-weight: 600; }
 .em-number-country { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
 
-.em-phrase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 12px; }
+.em-section .chips { margin-top: 12px; }
+.em-phrase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 16px; }
 .em-phrase-card {
   display: flex; flex-direction: column; gap: 4px;
   padding: 14px 16px; border-radius: 4px;
