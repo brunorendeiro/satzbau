@@ -9,7 +9,8 @@ type Cell = { row: number; col: number }
 
 const PALETTE_SIZE = 6
 
-function questionText(entry: WSClueEntry, locale: Locale): string {
+function translation(entry: WSClueEntry, locale: Locale): string | null {
+  if (locale === 'de') return null
   return locale === 'en' ? entry.questionEn : entry.questionPt
 }
 
@@ -106,7 +107,8 @@ export default function WordSearch() {
           <ul>
             {puzzle.placements.map(p => (
               <li key={p.entry.id} className={foundEntryIds.has(p.entry.id) ? 'found' : ''}>
-                {questionText(p.entry, locale)}
+                <span className="ws-clue-de">{p.entry.questionDe}</span>
+                {translation(p.entry, locale) && <span className="ws-clue-translation">{translation(p.entry, locale)}</span>}
               </li>
             ))}
           </ul>

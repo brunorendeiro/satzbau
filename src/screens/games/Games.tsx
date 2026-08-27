@@ -5,10 +5,9 @@ import type { Locale } from '../../i18n/common'
 import Quiz from '../quiz/Quiz'
 import Crossword from '../crossword/Crossword'
 import WordSearch from '../wordsearch/WordSearch'
-import Sudoku from '../sudoku/Sudoku'
 import './games.css'
 
-const GAMES: GameId[] = ['quiz', 'crossword', 'wordsearch', 'sudoku']
+const GAMES: GameId[] = ['quiz', 'crossword', 'wordsearch']
 
 export default function Games() {
   const { locale } = useOutletContext<{ locale: Locale }>()
@@ -36,7 +35,6 @@ export default function Games() {
         {selected === 'quiz' && <Quiz />}
         {selected === 'crossword' && <Crossword />}
         {selected === 'wordsearch' && <WordSearch />}
-        {selected === 'sudoku' && <Sudoku />}
       </div>
     </div>
   )

@@ -23,8 +23,11 @@
 
 .ws-clues { min-width: 240px; flex: 1; }
 .ws-clues ul { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.ws-clues li { padding: 8px 10px; border-radius: 4px; background: var(--panel); border: 1px solid var(--line); color: var(--text); font-size: 13px; line-height: 1.5; }
-.ws-clues li.found { color: var(--muted); text-decoration: line-through; border-color: transparent; background: var(--ok-soft); }
+.ws-clues li { display: flex; flex-direction: column; gap: 3px; padding: 10px 12px; border-radius: 4px; background: var(--panel); border: 1px solid var(--line); }
+.ws-clue-de { font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px; color: var(--text); line-height: 1.4; }
+.ws-clue-translation { font-size: 11.5px; color: var(--muted); }
+.ws-clues li.found { border-color: transparent; background: var(--ok-soft); }
+.ws-clues li.found .ws-clue-de { color: var(--muted); text-decoration: line-through; }
 
 .ws-actions { margin-top: 18px; }
 .ws-solved { margin-top: 14px; font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--ok); }

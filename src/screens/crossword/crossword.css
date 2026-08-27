@@ -26,14 +26,25 @@
 .cw-solved { margin-top: 14px; font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--ok); }
 
 .cw-clues { display: flex; gap: 28px; flex-wrap: wrap; min-width: 240px; flex: 1; }
-.cw-clue-group ul { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.cw-clue-group ul { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .cw-clue-group li button {
-  display: block; width: 100%; text-align: left; padding: 5px 8px; border-radius: 4px; border: none;
-  background: transparent; color: var(--muted); font-size: 13px; line-height: 1.4; cursor: pointer;
+  display: flex; flex-direction: column; gap: 1px; width: 100%; text-align: left; padding: 6px 8px; border-radius: 4px; border: none;
+  background: transparent; cursor: pointer;
 }
 .cw-clue-group li button:hover { background: var(--panel-2); }
-.cw-clue-group li.active button { background: var(--accent-soft); color: var(--text); font-weight: 600; }
-.cw-clue-number { font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--accent2); }
+.cw-clue-group li.active button { background: var(--accent-soft); }
+.cw-clue-group li.solved .cw-clue-de { color: var(--ok); text-decoration: line-through; }
+.cw-clue-number { font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--accent2); font-size: 11px; }
+.cw-clue-de { font-family: 'Fraunces', serif; font-weight: 600; font-size: 14px; color: var(--text); line-height: 1.4; }
+.cw-clue-translation { font-size: 11px; color: var(--muted); }
+
+.cw-choice-panel {
+  margin-top: 18px; padding: 16px 18px; border-radius: 6px; background: var(--panel); border: 1px solid var(--accent);
+  box-shadow: var(--shadow-sm); max-width: 480px;
+}
+.cw-choice-de { margin: 0; font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--text); }
+.cw-choice-translation { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); font-style: italic; }
+.cw-choice-panel .chips { margin-top: 12px; }
 
 @media (max-width: 640px) {
   .cw-cell { font-size: 13px; }

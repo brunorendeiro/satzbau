@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { generateCrossword, type CrosswordPuzzle, type PlacedWord, type ClueEntry } from './crossword-engine'
+import { generateCrossword, WORD_BANK, type CrosswordPuzzle, type PlacedWord, type ClueEntry } from './crossword-engine'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
 import './crossword.css'
 
 type Dir = 'across' | 'down'
+type Mode = 'type' | 'choice'
 type CellWords = { across?: PlacedWord; down?: PlacedWord }
 
 function buildWordMap(puzzle: CrosswordPuzzle): Map<string, CellWords> {
@@ -23,12 +24,22 @@ function buildWordMap(puzzle: CrosswordPuzzle): Map<string, CellWords> {
   return map
 }
 
-function clueText(entry: ClueEntry, locale: Locale): string {
+function translation(entry: ClueEntry, locale: Locale): string | null {
+  if (locale === 'de') return null
   return locale === 'en' ? entry.clueEn : entry.cluePt
 }
 
 function emptyInput(puzzle: CrosswordPuzzle): string[][] {
   return puzzle.cells.map(row => row.map(() => ''))
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
 }
 
 export default function Crossword() {
@@ -41,6 +52,8 @@ export default function Crossword() {
   const [dir, setDir] = useState<Dir>('across')
   const [showErrors, setShowErrors] = useState(false)
   const [solved, setSolved] = useState(false)
+  const [mode, setMode] = useState<Mode>('type')
+  const [activeChoice, setActiveChoice] = useState<{ word: PlacedWord; options: string[] } | null>(null)
   const cellRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
 
   const wordMap = useMemo(() => buildWordMap(puzzle), [puzzle])
@@ -73,6 +86,37 @@ export default function Crossword() {
     setSelected(null)
     setShowErrors(false)
     setSolved(false)
+    setActiveChoice(null)
+  }
+
+  function isWordSolved(word: PlacedWord): boolean {
+    for (let i = 0; i < word.entry.answer.length; i++) {
+      const r = word.dir === 'down' ? word.row + i : word.row
+      const c = word.dir === 'across' ? word.col + i : word.col
+      if (input[r][c] !== puzzle.cells[r][c]) return false
+    }
+    return true
+  }
+
+  function openChoice(word: PlacedWord) {
+    const others = shuffle(WORD_BANK.filter(w => w.id !== word.entry.id && w.answer !== word.entry.answer)).slice(0, 2).map(w => w.answer)
+    setActiveChoice({ word, options: shuffle([word.entry.answer, ...others]) })
+  }
+
+  function pickChoice(guess: string) {
+    if (!activeChoice) return
+    const word = activeChoice.word
+    if (guess !== word.entry.answer) return
+    setInput(prev => {
+      const next = prev.map(r => [...r])
+      for (let i = 0; i < word.entry.answer.length; i++) {
+        const r = word.dir === 'down' ? word.row + i : word.row
+        const c = word.dir === 'across' ? word.col + i : word.col
+        next[r][c] = word.entry.answer[i]
+      }
+      return next
+    })
+    setActiveChoice(null)
   }
 
   function focusCell(row: number, col: number) {
@@ -93,6 +137,10 @@ export default function Crossword() {
   }
 
   function selectWord(word: PlacedWord) {
+    if (mode === 'choice') {
+      openChoice(word)
+      return
+    }
     setDir(word.dir)
     setSelected({ row: word.row, col: word.col })
     focusCell(word.row, word.col)
@@ -156,6 +204,24 @@ export default function Crossword() {
 
       <p className="intro">{t.intro}</p>
 
+      <span className="piece-label">{t.modeLabel}</span>
+      <div className="chips">
+        <button className={mode === 'type' ? 'chip active' : 'chip'} onClick={() => { setMode('type'); setActiveChoice(null) }}>{t.modeType}</button>
+        <button className={mode === 'choice' ? 'chip active' : 'chip'} onClick={() => { setMode('choice'); setActiveChoice(null) }}>{t.modeChoice}</button>
+      </div>
+
+      {activeChoice && (
+        <div className="cw-choice-panel">
+          <p className="cw-choice-de">{activeChoice.word.entry.clueDe}</p>
+          {translation(activeChoice.word.entry, locale) && <p className="cw-choice-translation">{translation(activeChoice.word.entry, locale)}</p>}
+          <div className="chips">
+            {activeChoice.options.map(o => (
+              <button key={o} className="chip" onClick={() => pickChoice(o)}>{o}</button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="cw-layout">
         <div>
           <div
@@ -205,9 +271,11 @@ export default function Crossword() {
             <span className="piece-label">{t.acrossLabel}</span>
             <ul>
               {acrossClues.map(w => (
-                <li key={w.entry.id} className={activeWord?.entry.id === w.entry.id && dir === 'across' ? 'active' : ''}>
+                <li key={w.entry.id} className={[activeWord?.entry.id === w.entry.id && dir === 'across' ? 'active' : '', isWordSolved(w) ? 'solved' : ''].filter(Boolean).join(' ')}>
                   <button onClick={() => selectWord(w)}>
-                    <span className="cw-clue-number">{w.number}.</span> {clueText(w.entry, locale)}
+                    <span className="cw-clue-number">{w.number}.</span>
+                    <span className="cw-clue-de">{w.entry.clueDe}</span>
+                    {translation(w.entry, locale) && <span className="cw-clue-translation">{translation(w.entry, locale)}</span>}
                   </button>
                 </li>
               ))}
@@ -217,9 +285,11 @@ export default function Crossword() {
             <span className="piece-label">{t.downLabel}</span>
             <ul>
               {downClues.map(w => (
-                <li key={w.entry.id} className={activeWord?.entry.id === w.entry.id && dir === 'down' ? 'active' : ''}>
+                <li key={w.entry.id} className={[activeWord?.entry.id === w.entry.id && dir === 'down' ? 'active' : '', isWordSolved(w) ? 'solved' : ''].filter(Boolean).join(' ')}>
                   <button onClick={() => selectWord(w)}>
-                    <span className="cw-clue-number">{w.number}.</span> {clueText(w.entry, locale)}
+                    <span className="cw-clue-number">{w.number}.</span>
+                    <span className="cw-clue-de">{w.entry.clueDe}</span>
+                    {translation(w.entry, locale) && <span className="cw-clue-translation">{translation(w.entry, locale)}</span>}
                   </button>
                 </li>
               ))}

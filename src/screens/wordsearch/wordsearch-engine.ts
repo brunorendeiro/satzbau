@@ -1,28 +1,30 @@
-export type WSClueEntry = { id: string; answer: string; questionPt: string; questionEn: string }
+export type WSClueEntry = { id: string; answer: string; questionDe: string; questionPt: string; questionEn: string }
 
+/** Questions are German first — this is a German-learning app, so the
+ * translation is a small secondary hint, not the primary text. */
 export const WORD_BANK: WSClueEntry[] = [
-  { id: 'rot', answer: 'ROT', questionPt: 'Qual é a cor do sangue?', questionEn: 'What color is blood?' },
-  { id: 'gruen', answer: 'GRUEN', questionPt: 'Qual é a cor da relva?', questionEn: 'What color is grass?' },
-  { id: 'hund', answer: 'HUND', questionPt: 'Que animal ladra?', questionEn: 'Which animal barks?' },
-  { id: 'katze', answer: 'KATZE', questionPt: 'Que animal mia?', questionEn: 'Which animal meows?' },
-  { id: 'vogel', answer: 'VOGEL', questionPt: 'Que animal voa e canta?', questionEn: 'Which animal flies and sings?' },
-  { id: 'apfel', answer: 'APFEL', questionPt: 'Que fruta é vermelha ou verde?', questionEn: 'Which fruit is red or green?' },
-  { id: 'brot', answer: 'BROT', questionPt: 'O que se come ao pequeno-almoço?', questionEn: 'What do you eat for breakfast?' },
-  { id: 'wasser', answer: 'WASSER', questionPt: 'O que se bebe quando há sede?', questionEn: 'What do you drink when thirsty?' },
-  { id: 'sonne', answer: 'SONNE', questionPt: 'O que brilha de dia?', questionEn: 'What shines during the day?' },
-  { id: 'mond', answer: 'MOND', questionPt: 'O que brilha de noite?', questionEn: 'What shines at night?' },
-  { id: 'haus', answer: 'HAUS', questionPt: 'Onde é que se mora?', questionEn: 'Where do you live?' },
-  { id: 'schule', answer: 'SCHULE', questionPt: 'Onde é que as crianças aprendem?', questionEn: 'Where do children learn?' },
-  { id: 'lehrer', answer: 'LEHRER', questionPt: 'Quem ensina numa escola?', questionEn: 'Who teaches at a school?' },
-  { id: 'arzt', answer: 'ARZT', questionPt: 'Quem trata os doentes?', questionEn: 'Who treats the sick?' },
-  { id: 'buch', answer: 'BUCH', questionPt: 'O que se lê página a página?', questionEn: 'What do you read page by page?' },
-  { id: 'auto', answer: 'AUTO', questionPt: 'O que tem quatro rodas?', questionEn: 'What has four wheels?' },
-  { id: 'zug', answer: 'ZUG', questionPt: 'O que anda sobre carris?', questionEn: 'What runs on rails?' },
-  { id: 'winter', answer: 'WINTER', questionPt: 'Em que estação neva?', questionEn: 'Which season does it snow in?' },
-  { id: 'sommer', answer: 'SOMMER', questionPt: 'Em que estação faz mais calor?', questionEn: 'Which season is hottest?' },
-  { id: 'freund', answer: 'FREUND', questionPt: 'Como se chama alguém de quem gostas muito?', questionEn: 'What do you call someone you like a lot?' },
-  { id: 'kaffee', answer: 'KAFFEE', questionPt: 'Que bebida quente tem cafeína?', questionEn: 'Which hot drink has caffeine?' },
-  { id: 'milch', answer: 'MILCH', questionPt: 'Que bebida branca vem da vaca?', questionEn: 'Which white drink comes from a cow?' },
+  { id: 'rot', answer: 'ROT', questionDe: 'Welche Farbe hat Blut?', questionPt: 'Que cor tem o sangue?', questionEn: 'What color is blood?' },
+  { id: 'gruen', answer: 'GRUEN', questionDe: 'Welche Farbe hat Gras?', questionPt: 'Que cor tem a relva?', questionEn: 'What color is grass?' },
+  { id: 'hund', answer: 'HUND', questionDe: 'Welches Tier bellt?', questionPt: 'Que animal ladra?', questionEn: 'Which animal barks?' },
+  { id: 'katze', answer: 'KATZE', questionDe: 'Welches Tier miaut?', questionPt: 'Que animal mia?', questionEn: 'Which animal meows?' },
+  { id: 'vogel', answer: 'VOGEL', questionDe: 'Welches Tier fliegt und singt?', questionPt: 'Que animal voa e canta?', questionEn: 'Which animal flies and sings?' },
+  { id: 'apfel', answer: 'APFEL', questionDe: 'Welche Frucht ist rot oder grün?', questionPt: 'Que fruta é vermelha ou verde?', questionEn: 'Which fruit is red or green?' },
+  { id: 'brot', answer: 'BROT', questionDe: 'Was isst man zum Frühstück?', questionPt: 'O que se come ao pequeno-almoço?', questionEn: 'What do you eat for breakfast?' },
+  { id: 'wasser', answer: 'WASSER', questionDe: 'Was trinkt man, wenn man Durst hat?', questionPt: 'O que se bebe quando há sede?', questionEn: 'What do you drink when thirsty?' },
+  { id: 'sonne', answer: 'SONNE', questionDe: 'Was scheint tagsüber?', questionPt: 'O que brilha de dia?', questionEn: 'What shines during the day?' },
+  { id: 'mond', answer: 'MOND', questionDe: 'Was scheint nachts?', questionPt: 'O que brilha de noite?', questionEn: 'What shines at night?' },
+  { id: 'haus', answer: 'HAUS', questionDe: 'Wo wohnt man?', questionPt: 'Onde é que se mora?', questionEn: 'Where do you live?' },
+  { id: 'schule', answer: 'SCHULE', questionDe: 'Wo lernen Kinder?', questionPt: 'Onde é que as crianças aprendem?', questionEn: 'Where do children learn?' },
+  { id: 'lehrer', answer: 'LEHRER', questionDe: 'Wer unterrichtet in einer Schule?', questionPt: 'Quem ensina numa escola?', questionEn: 'Who teaches at a school?' },
+  { id: 'arzt', answer: 'ARZT', questionDe: 'Wer behandelt kranke Menschen?', questionPt: 'Quem trata os doentes?', questionEn: 'Who treats the sick?' },
+  { id: 'buch', answer: 'BUCH', questionDe: 'Was liest man Seite für Seite?', questionPt: 'O que se lê página a página?', questionEn: 'What do you read page by page?' },
+  { id: 'auto', answer: 'AUTO', questionDe: 'Was hat vier Räder?', questionPt: 'O que tem quatro rodas?', questionEn: 'What has four wheels?' },
+  { id: 'zug', answer: 'ZUG', questionDe: 'Was fährt auf Schienen?', questionPt: 'O que anda sobre carris?', questionEn: 'What runs on rails?' },
+  { id: 'winter', answer: 'WINTER', questionDe: 'In welcher Jahreszeit schneit es?', questionPt: 'Em que estação neva?', questionEn: 'In which season does it snow?' },
+  { id: 'sommer', answer: 'SOMMER', questionDe: 'Welche Jahreszeit ist am heißesten?', questionPt: 'Que estação é a mais quente?', questionEn: 'Which season is the hottest?' },
+  { id: 'freund', answer: 'FREUND', questionDe: 'Wie nennt man jemanden, den man sehr mag?', questionPt: 'Como se chama alguém de quem gostas muito?', questionEn: 'What do you call someone you like a lot?' },
+  { id: 'kaffee', answer: 'KAFFEE', questionDe: 'Welches heiße Getränk hat Koffein?', questionPt: 'Que bebida quente tem cafeína?', questionEn: 'Which hot drink has caffeine?' },
+  { id: 'milch', answer: 'MILCH', questionDe: 'Welches weiße Getränk kommt von der Kuh?', questionPt: 'Que bebida branca vem da vaca?', questionEn: 'Which white drink comes from a cow?' },
 ]
 
 export type WSPlacement = { entry: WSClueEntry; row: number; col: number; dRow: number; dCol: number }
