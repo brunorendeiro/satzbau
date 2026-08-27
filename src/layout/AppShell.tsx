@@ -88,6 +88,15 @@ export default function AppShell() {
         <NavLink to="/quiz" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navQuiz}
         </NavLink>
+        <NavLink to="/kreuzwortraetsel" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navCrossword}
+        </NavLink>
+        <NavLink to="/wortsuche" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navWordSearch}
+        </NavLink>
+        <NavLink to="/buchstabendoku" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navSudoku}
+        </NavLink>
       </nav>
 
       <Outlet context={{ locale }} />

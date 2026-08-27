@@ -9,6 +9,9 @@ import Vocabulary from './screens/vocabulary/Vocabulary'
 import House from './screens/house/House'
 import Emergency from './screens/emergency/Emergency'
 import Quiz from './screens/quiz/Quiz'
+import Crossword from './screens/crossword/Crossword'
+import WordSearch from './screens/wordsearch/WordSearch'
+import Sudoku from './screens/sudoku/Sudoku'
 
 export default function App() {
   return (
@@ -24,6 +27,9 @@ export default function App() {
           <Route path="zuhause" element={<House />} />
           <Route path="notfall" element={<Emergency />} />
           <Route path="quiz" element={<Quiz />} />
+          <Route path="kreuzwortraetsel" element={<Crossword />} />
+          <Route path="wortsuche" element={<WordSearch />} />
+          <Route path="buchstabendoku" element={<Sudoku />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -27,6 +27,9 @@ type CommonUiStrings = {
   navHouse: string
   navEmergency: string
   navQuiz: string
+  navCrossword: string
+  navWordSearch: string
+  navSudoku: string
   footerTagline: string
   cookieBody: string
   cookieAccept: string
@@ -46,6 +49,9 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navQuiz: 'Quiz',
+    navCrossword: 'Kreuzworträtsel',
+    navWordSearch: 'Wortsuche',
+    navSudoku: 'Buchstabendoku',
     footerTagline: 'Sem contas · tudo guardado no teu browser',
     cookieBody: 'Uso o Google Analytics e o Google AdSense para perceber quantas pessoas visitam este projeto. Aceitas cookies de análise e publicidade?',
     cookieAccept: 'Aceitar',
@@ -63,6 +69,9 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navQuiz: 'Quiz',
+    navCrossword: 'Kreuzworträtsel',
+    navWordSearch: 'Wortsuche',
+    navSudoku: 'Buchstabendoku',
     footerTagline: 'No accounts · everything stays in your browser',
     cookieBody: 'I use Google Analytics and Google AdSense to understand how many people visit this project. Do you accept analytics and advertising cookies?',
     cookieAccept: 'Accept',
@@ -80,6 +89,9 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navQuiz: 'Quiz',
+    navCrossword: 'Kreuzworträtsel',
+    navWordSearch: 'Wortsuche',
+    navSudoku: 'Buchstabendoku',
     footerTagline: 'Keine Konten · alles bleibt im Browser',
     cookieBody: 'Ich verwende Google Analytics und Google AdSense, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse- und Werbe-Cookies?',
     cookieAccept: 'Akzeptieren',

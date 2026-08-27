@@ -1,0 +1,41 @@
+.cw-layout { display: flex; gap: 32px; margin-top: 18px; flex-wrap: wrap; align-items: flex-start; }
+
+.cw-grid {
+  display: grid; gap: 2px; background: var(--line); border: 2px solid var(--text); border-radius: 4px;
+  padding: 2px; box-shadow: var(--shadow-sm);
+}
+.cw-cell {
+  position: relative; aspect-ratio: 1; min-width: 0; border: none; background: var(--panel);
+  color: var(--text); font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: background .1s ease;
+}
+.cw-cell.blocked { background: var(--text); cursor: default; }
+.cw-cell:not(.blocked):hover { background: var(--panel-2); }
+.cw-cell.active-word { background: var(--accent-soft); }
+.cw-cell.selected { background: var(--accent); color: var(--accent-ink); }
+.cw-cell.right { background: var(--ok-soft); }
+.cw-cell.wrong { background: var(--danger-soft); }
+.cw-cell:focus-visible { outline: 2px solid var(--accent2); outline-offset: -2px; }
+
+.cw-number { position: absolute; top: 1px; left: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700; color: var(--muted); }
+.cw-cell.selected .cw-number { color: var(--accent-ink); }
+.cw-letter { line-height: 1; }
+
+.cw-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.cw-solved { margin-top: 14px; font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--ok); }
+
+.cw-clues { display: flex; gap: 28px; flex-wrap: wrap; min-width: 240px; flex: 1; }
+.cw-clue-group ul { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.cw-clue-group li button {
+  display: block; width: 100%; text-align: left; padding: 5px 8px; border-radius: 4px; border: none;
+  background: transparent; color: var(--muted); font-size: 13px; line-height: 1.4; cursor: pointer;
+}
+.cw-clue-group li button:hover { background: var(--panel-2); }
+.cw-clue-group li.active button { background: var(--accent-soft); color: var(--text); font-weight: 600; }
+.cw-clue-number { font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--accent2); }
+
+@media (max-width: 640px) {
+  .cw-cell { font-size: 13px; }
+  .cw-layout { gap: 20px; }
+}
