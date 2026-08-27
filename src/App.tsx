@@ -9,6 +9,7 @@ import Vocabulary from './screens/vocabulary/Vocabulary'
 import House from './screens/house/House'
 import Emergency from './screens/emergency/Emergency'
 import Games from './screens/games/Games'
+import Conversations from './screens/conversations/Conversations'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="wortschatz" element={<Vocabulary />} />
           <Route path="zuhause" element={<House />} />
           <Route path="notfall" element={<Emergency />} />
+          <Route path="gespraeche" element={<Conversations />} />
           <Route path="spiele" element={<Games />} />
         </Route>
       </Routes>
