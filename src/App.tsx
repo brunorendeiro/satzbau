@@ -8,6 +8,7 @@ import WordFamily from './screens/word-family/WordFamily'
 import Vocabulary from './screens/vocabulary/Vocabulary'
 import House from './screens/house/House'
 import Emergency from './screens/emergency/Emergency'
+import Quiz from './screens/quiz/Quiz'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="wortschatz" element={<Vocabulary />} />
           <Route path="zuhause" element={<House />} />
           <Route path="notfall" element={<Emergency />} />
+          <Route path="quiz" element={<Quiz />} />
         </Route>
       </Routes>
     </BrowserRouter>

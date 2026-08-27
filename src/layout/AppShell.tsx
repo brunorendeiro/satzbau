@@ -85,6 +85,9 @@ export default function AppShell() {
         <NavLink to="/notfall" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navEmergency}
         </NavLink>
+        <NavLink to="/quiz" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navQuiz}
+        </NavLink>
       </nav>
 
       <Outlet context={{ locale }} />
