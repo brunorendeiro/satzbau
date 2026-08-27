@@ -1,5 +1,5 @@
 import type { Locale } from '../../i18n/common'
-import type { QuizCategory } from './quiz-engine'
+import type { QuizCategory, QuizLevel } from './quiz-engine'
 
 type UiStrings = {
   title: string
@@ -7,6 +7,8 @@ type UiStrings = {
   tagline: string
   durationLabel: string
   durationMinutes: (n: number) => string
+  levelLabel: string
+  levelLabels: Record<QuizLevel, string>
   bestScoreLabel: (best: number) => string
   startButton: string
   categoryLabels: Record<QuizCategory, string>
@@ -34,6 +36,8 @@ export const ui: Record<Locale, UiStrings> = {
     tagline: 'Nem sabes o bem que te fazia praticar 10 minutinhos destes todos os dias.',
     durationLabel: 'Quanto tempo tens?',
     durationMinutes: (n) => `${n} min`,
+    levelLabel: 'Nível',
+    levelLabels: { easy: 'Fácil', medium: 'Médio', hard: 'Difícil' },
     bestScoreLabel: (best) => `Recorde: ${best} pontos`,
     startButton: 'Começar',
     categoryLabels: {
@@ -71,6 +75,8 @@ export const ui: Record<Locale, UiStrings> = {
     tagline: "You don't even know how good 10 minutes of this every day would be for you.",
     durationLabel: 'How much time do you have?',
     durationMinutes: (n) => `${n} min`,
+    levelLabel: 'Level',
+    levelLabels: { easy: 'Easy', medium: 'Medium', hard: 'Hard' },
     bestScoreLabel: (best) => `Best: ${best} points`,
     startButton: 'Start',
     categoryLabels: {
@@ -108,6 +114,8 @@ export const ui: Record<Locale, UiStrings> = {
     tagline: 'Du weißt gar nicht, wie gut dir 10 Minuten davon jeden Tag tun würden.',
     durationLabel: 'Wie viel Zeit hast du?',
     durationMinutes: (n) => `${n} Min`,
+    levelLabel: 'Level',
+    levelLabels: { easy: 'Leicht', medium: 'Mittel', hard: 'Schwer' },
     bestScoreLabel: (best) => `Rekord: ${best} Punkte`,
     startButton: 'Starten',
     categoryLabels: {

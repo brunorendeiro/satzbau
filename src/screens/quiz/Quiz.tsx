@@ -1,14 +1,27 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { buildQuestionPool, normalizeAnswer, type QuizQuestion } from './quiz-engine'
+import { buildQuestionPool, normalizeAnswer, type QuizQuestion, type QuizLevel } from './quiz-engine'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
 import './quiz.css'
 
 const DURATIONS = [10, 20, 30]
+const LEVELS: QuizLevel[] = ['easy', 'medium', 'hard']
 const LIVES_START = 3
 const BEST_KEY = 'satzbau-quiz-best'
-const TIME_LIMIT_MS: Record<QuizQuestion['kind'], number> = { choice: 10000, typed: 15000, arrange: 20000 }
+
+const TIME_LIMIT_BASE: Record<QuizLevel, Record<QuizQuestion['kind'], number>> = {
+  easy: { choice: 18000, typed: 25000, arrange: 30000 },
+  medium: { choice: 14000, typed: 20000, arrange: 26000 },
+  hard: { choice: 11000, typed: 16000, arrange: 22000 },
+}
+
+function timeLimitMs(q: QuizQuestion, level: QuizLevel): number {
+  let t = TIME_LIMIT_BASE[level][q.kind]
+  if (q.category === 'sentence' && q.kind === 'choice') t += 6000
+  if (q.category === 'reading') t += 8000
+  return t
+}
 
 type AnsweredState = { correct: boolean; correctAnswer: string; timedOut?: boolean; selectedIndex?: number }
 
@@ -25,6 +38,7 @@ export default function Quiz() {
 
   const [phase, setPhase] = useState<'intro' | 'playing' | 'ended'>('intro')
   const [minutes, setMinutes] = useState(10)
+  const [level, setLevel] = useState<QuizLevel>('easy')
   const [questions, setQuestions] = useState<QuizQuestion[]>([])
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)
@@ -71,7 +85,7 @@ export default function Quiz() {
   // Per-question countdown — frozen while feedback is showing.
   useEffect(() => {
     if (phase !== 'playing' || !q || answeredState !== null) return
-    const limit = TIME_LIMIT_MS[q.kind]
+    const limit = timeLimitMs(q, level)
     setQTimeLeft(limit)
     const start = Date.now()
     const id = setInterval(() => {
@@ -87,7 +101,7 @@ export default function Quiz() {
   }, [index, phase, answeredState])
 
   function startGame() {
-    setQuestions(buildQuestionPool(locale))
+    setQuestions(buildQuestionPool(locale, level))
     setIndex(0)
     setScore(0)
     setStreak(0)
@@ -187,6 +201,15 @@ export default function Quiz() {
             ))}
           </div>
 
+          <span className="piece-label">{t.levelLabel}</span>
+          <div className="chips">
+            {LEVELS.map(l => (
+              <button key={l} className={l === level ? 'chip active' : 'chip'} onClick={() => setLevel(l)}>
+                {t.levelLabels[l]}
+              </button>
+            ))}
+          </div>
+
           <button className="quiz-start-btn" onClick={startGame}>{t.startButton}</button>
         </div>
       )}
@@ -205,7 +228,7 @@ export default function Quiz() {
           </div>
 
           <div className="quiz-qtimer-track">
-            <div className="quiz-qtimer-fill" style={{ width: `${(qTimeLeft / TIME_LIMIT_MS[q.kind]) * 100}%` }} />
+            <div className="quiz-qtimer-fill" style={{ width: `${(qTimeLeft / timeLimitMs(q, level)) * 100}%` }} />
           </div>
 
           <span className="quiz-category">{t.categoryLabels[q.category]}</span>
@@ -213,8 +236,9 @@ export default function Quiz() {
           {q.kind === 'choice' && (
             <>
               {q.hint && <p className="quiz-reading-text">{q.hint}</p>}
-              <p className="quiz-prompt">{q.prompt}</p>
-              <div className="quiz-choices">
+              {q.gloss && <p className="quiz-gloss">{q.gloss}</p>}
+              {q.prompt && <p className="quiz-prompt">{q.prompt}</p>}
+              <div className={q.category === 'sentence' ? 'quiz-choices quiz-choices-wide' : 'quiz-choices'}>
                 {q.choices.map((c, i) => (
                   <button key={i} onClick={() => onChoiceClick(i)} disabled={answeredState !== null} className={choiceClass(i, q.correctIndex)}>
                     {c}
@@ -244,7 +268,7 @@ export default function Quiz() {
 
           {q.kind === 'arrange' && (
             <>
-              <p className="quiz-prompt">{q.gloss}</p>
+              <p className="quiz-gloss">{q.gloss}</p>
               <p className="quiz-hint-text">{t.arrangeHint}</p>
               <div className="quiz-arrange-assembled">
                 {arranged.map((tokenIdx, pos) => (

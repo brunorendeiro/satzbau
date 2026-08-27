@@ -12,7 +12,9 @@ export type QuizCategory =
   | 'vocab' | 'numbers' | 'arithmetic' | 'gender' | 'pronoun'
   | 'compound' | 'verbs' | 'question-word' | 'profession' | 'reading' | 'sentence'
 
-type Base = { id: string; category: QuizCategory; hint?: string }
+export type QuizLevel = 'easy' | 'medium' | 'hard'
+
+type Base = { id: string; category: QuizCategory; hint?: string; gloss?: string }
 
 export type ChoiceQuestion = Base & { kind: 'choice'; prompt: string; choices: string[]; correctIndex: number }
 export type TypedQuestion = Base & { kind: 'typed'; prompt: string; answer: string }
@@ -88,22 +90,25 @@ function numberQuestions(): ChoiceQuestion[] {
 // ---------------------------------------------------------------------------
 // 3. Arithmetic — type the German word for the result (plus/minus/mal)
 // ---------------------------------------------------------------------------
-function arithmeticQuestion(): TypedQuestion {
+function arithmeticQuestion(level: QuizLevel): TypedQuestion {
   const op = pick(['plus', 'minus', 'mal'] as const)
   let a: number, b: number, result: number, symbol: string
   if (op === 'plus') {
-    a = Math.floor(Math.random() * 60)
-    b = Math.floor(Math.random() * (100 - a))
+    const cap = level === 'easy' ? 10 : level === 'medium' ? 30 : 60
+    a = Math.floor(Math.random() * (cap + 1))
+    b = Math.floor(Math.random() * (level === 'hard' ? 100 - a + 1 : cap + 1))
     result = a + b
     symbol = '+'
   } else if (op === 'minus') {
-    a = Math.floor(Math.random() * 100)
+    const cap = level === 'easy' ? 20 : level === 'medium' ? 50 : 100
+    a = Math.floor(Math.random() * (cap + 1))
     b = Math.floor(Math.random() * (a + 1))
     result = a - b
     symbol = '−'
   } else {
-    a = Math.floor(Math.random() * 10) + 1
-    b = Math.floor(Math.random() * Math.floor(100 / a)) + 1
+    const factorCap = level === 'easy' ? 5 : level === 'medium' ? 8 : 10
+    a = Math.floor(Math.random() * factorCap) + 1
+    b = Math.floor(Math.random() * (level === 'hard' ? Math.floor(100 / a) : factorCap)) + 1
     result = a * b
     symbol = '×'
   }
@@ -116,8 +121,8 @@ function arithmeticQuestion(): TypedQuestion {
   }
 }
 
-function arithmeticQuestions(n: number): TypedQuestion[] {
-  return Array.from({ length: n }, () => arithmeticQuestion())
+function arithmeticQuestions(n: number, level: QuizLevel): TypedQuestion[] {
+  return Array.from({ length: n }, () => arithmeticQuestion(level))
 }
 
 // ---------------------------------------------------------------------------
@@ -290,40 +295,54 @@ function readingQuestions(): ChoiceQuestion[] {
 // ---------------------------------------------------------------------------
 // 11. Sentence building — tap the German words in the right order
 // ---------------------------------------------------------------------------
-function sentenceQuestions(locale: Locale): ArrangeQuestion[] {
+function sentenceQuestions(locale: Locale, level: QuizLevel): (ArrangeQuestion | ChoiceQuestion)[] {
   const noneTime = timeAdverbs[0]
   const noneManner = mannerAdverbs[0]
   const noneModal = modals[0]
   const combos: { verb: Verb; object: (typeof verbs)[number]['objects'][number] }[] = []
   verbs.forEach(verb => verb.objects.forEach(object => combos.push({ verb, object })))
 
-  return sample(combos, 18).map(({ verb, object }, i) => {
+  const picked = sample(combos, 18)
+
+  return picked.map(({ verb, object }, i) => {
     const subject = pick(subjects)
     const tokens = buildDeTokens('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
     const words = tokens.map(t => t.text)
+    const sentence = words.join(' ')
+    const gloss = locale === 'en'
+      ? buildEn('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
+      : buildPt('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
+    const id = `sentence-${i}-${verb.id}-${object.id}`
+
+    if (level === 'easy') {
+      const others = sample(picked.filter((_, j) => j !== i), 3).map(({ verb: v2, object: o2 }) => {
+        const s2 = pick(subjects)
+        return buildDeTokens('affirmative', s2.id, v2, o2, noneModal, noneTime, noneManner).map(t => t.text).join(' ')
+      })
+      const { choices, correctIndex } = buildChoiceSet(sentence, others)
+      return { id, kind: 'choice', category: 'sentence', prompt: '', gloss, choices, correctIndex }
+    }
+
     let shuffled = shuffle(words)
     if (words.length > 1) {
       let guard = 0
-      while (shuffled.join(' ') === words.join(' ') && guard < 10) {
+      while (shuffled.join(' ') === sentence && guard < 10) {
         shuffled = shuffle(words)
         guard++
       }
     }
-    const gloss = locale === 'en'
-      ? buildEn('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
-      : buildPt('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
-    return { id: `sentence-${i}-${verb.id}-${object.id}`, kind: 'arrange', category: 'sentence', gloss, tokens: shuffled, answerTokens: words }
+    return { id, kind: 'arrange', category: 'sentence', gloss, tokens: shuffled, answerTokens: words }
   })
 }
 
 // ---------------------------------------------------------------------------
 // Pool builder
 // ---------------------------------------------------------------------------
-export function buildQuestionPool(locale: Locale): QuizQuestion[] {
+export function buildQuestionPool(locale: Locale, level: QuizLevel = 'medium'): QuizQuestion[] {
   return shuffle([
     ...vocabQuestions(locale),
     ...numberQuestions(),
-    ...arithmeticQuestions(15),
+    ...arithmeticQuestions(15, level),
     ...genderQuestions(),
     ...pronounQuestions(),
     ...compoundQuestions(),
@@ -331,12 +350,8 @@ export function buildQuestionPool(locale: Locale): QuizQuestion[] {
     ...questionWordQuestions(),
     ...professionQuestions(),
     ...readingQuestions(),
-    ...sentenceQuestions(locale),
+    ...sentenceQuestions(locale, level),
   ])
-}
-
-export function makeArithmeticQuestion(): TypedQuestion {
-  return arithmeticQuestion()
 }
 
 /** Normalizes a typed German answer for comparison — case-insensitive and
