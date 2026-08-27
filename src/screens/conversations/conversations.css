@@ -38,7 +38,8 @@
 .cv-choice.correct { border-color: var(--ok); background: var(--ok-soft); }
 .cv-choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
 .cv-choice.dim { opacity: .45; }
-.cv-feedback { margin-top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; }
+.cv-feedback-row { display: flex; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
+.cv-feedback { margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; }
 .cv-feedback.correct { color: var(--ok); }
 .cv-feedback.wrong { color: var(--danger); }
 

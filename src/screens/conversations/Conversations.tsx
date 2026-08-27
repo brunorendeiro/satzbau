@@ -88,9 +88,14 @@ export default function Conversations() {
           })}
         </div>
         {answered !== null && (
-          <p className={answered === scene.question.correctIndex ? 'cv-feedback correct' : 'cv-feedback wrong'}>
-            {answered === scene.question.correctIndex ? t.correctFeedback : t.wrongFeedback}
-          </p>
+          <div className="cv-feedback-row">
+            <p className={answered === scene.question.correctIndex ? 'cv-feedback correct' : 'cv-feedback wrong'}>
+              {answered === scene.question.correctIndex ? t.correctFeedback : t.wrongFeedback}
+            </p>
+            {answered !== scene.question.correctIndex && (
+              <button className="chip" onClick={() => setAnswered(null)}>{t.tryAgainButton}</button>
+            )}
+          </div>
         )}
       </div>
     </div>

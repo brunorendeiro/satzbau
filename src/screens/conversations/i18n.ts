@@ -8,6 +8,7 @@ type UiStrings = {
   questionLabel: string
   correctFeedback: string
   wrongFeedback: string
+  tryAgainButton: string
 }
 
 export const ui: Record<Locale, UiStrings> = {
@@ -18,7 +19,8 @@ export const ui: Record<Locale, UiStrings> = {
     phrasesLabel: 'Frases-chave',
     questionLabel: 'Percebeste?',
     correctFeedback: 'Certo!',
-    wrongFeedback: 'Não é bem isso — tenta outra vez.',
+    wrongFeedback: 'Não é bem isso.',
+    tryAgainButton: 'Tentar outra vez',
   },
   en: {
     title: 'Gespräche',
@@ -27,7 +29,8 @@ export const ui: Record<Locale, UiStrings> = {
     phrasesLabel: 'Key phrases',
     questionLabel: 'Did you follow?',
     correctFeedback: 'Correct!',
-    wrongFeedback: "Not quite — try again.",
+    wrongFeedback: 'Not quite.',
+    tryAgainButton: 'Try again',
   },
   de: {
     title: 'Gespräche',
@@ -36,6 +39,7 @@ export const ui: Record<Locale, UiStrings> = {
     phrasesLabel: 'Schlüsselsätze',
     questionLabel: 'Alles verstanden?',
     correctFeedback: 'Richtig!',
-    wrongFeedback: 'Nicht ganz — versuch es nochmal.',
+    wrongFeedback: 'Nicht ganz.',
+    tryAgainButton: 'Nochmal versuchen',
   },
 }
