@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { generateCrossword, WORD_BANK, type CrosswordPuzzle, type PlacedWord, type ClueEntry } from './crossword-engine'
 import { ui } from './i18n'
@@ -54,7 +54,7 @@ export default function Crossword() {
   const [solved, setSolved] = useState(false)
   const [mode, setMode] = useState<Mode>('type')
   const [activeChoice, setActiveChoice] = useState<{ word: PlacedWord; options: string[] } | null>(null)
-  const cellRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
+  const hiddenInputRef = useRef<HTMLInputElement>(null)
 
   const wordMap = useMemo(() => buildWordMap(puzzle), [puzzle])
   const numberAt = useMemo(() => {
@@ -119,8 +119,10 @@ export default function Crossword() {
     setActiveChoice(null)
   }
 
-  function focusCell(row: number, col: number) {
-    cellRefs.current.get(`${row},${col}`)?.focus()
+  function focusHiddenInput() {
+    // A tiny timeout dodges iOS Safari swallowing focus() calls that happen
+    // inside the same tick as the click that triggered them.
+    setTimeout(() => hiddenInputRef.current?.focus(), 0)
   }
 
   function selectCell(row: number, col: number) {
@@ -133,17 +135,17 @@ export default function Crossword() {
       if (dir === 'down' && !words?.down && words?.across) setDir('across')
     }
     setSelected({ row, col })
-    focusCell(row, col)
+    if (mode !== 'choice') focusHiddenInput()
   }
 
   function selectWord(word: PlacedWord) {
+    setDir(word.dir)
+    setSelected({ row: word.row, col: word.col })
     if (mode === 'choice') {
       openChoice(word)
       return
     }
-    setDir(word.dir)
-    setSelected({ row: word.row, col: word.col })
-    focusCell(word.row, word.col)
+    focusHiddenInput()
   }
 
   function moveSelection(row: number, col: number, d: Dir, delta: number) {
@@ -155,7 +157,6 @@ export default function Crossword() {
       if (r < 0 || c < 0 || r >= puzzle.height || c >= puzzle.width) return
       if (puzzle.cells[r][c]) {
         setSelected({ row: r, col: c })
-        focusCell(r, c)
         return
       }
     }
@@ -169,7 +170,9 @@ export default function Crossword() {
     })
   }
 
-  function onCellKeyDown(e: KeyboardEvent<HTMLButtonElement>, row: number, col: number) {
+  function onHiddenKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (!selected) return
+    const { row, col } = selected
     if (e.key === 'ArrowRight') { e.preventDefault(); setDir('across'); moveSelection(row, col, 'across', 1); return }
     if (e.key === 'ArrowLeft') { e.preventDefault(); setDir('across'); moveSelection(row, col, 'across', -1); return }
     if (e.key === 'ArrowDown') { e.preventDefault(); setDir('down'); moveSelection(row, col, 'down', 1); return }
@@ -178,14 +181,16 @@ export default function Crossword() {
       e.preventDefault()
       if (input[row][col]) { setLetter(row, col, ''); setShowErrors(false) }
       else moveSelection(row, col, dir, -1)
-      return
     }
-    if (/^[a-zA-Z]$/.test(e.key)) {
-      e.preventDefault()
-      setLetter(row, col, e.key.toUpperCase())
-      setShowErrors(false)
-      moveSelection(row, col, dir, 1)
-    }
+  }
+
+  function onHiddenChange(e: ChangeEvent<HTMLInputElement>) {
+    const letter = e.target.value.slice(-1).toUpperCase()
+    e.target.value = ''
+    if (!selected || !/^[A-ZÄÖÜ]$/.test(letter)) return
+    setLetter(selected.row, selected.col, letter)
+    setShowErrors(false)
+    moveSelection(selected.row, selected.col, dir, 1)
   }
 
   const activeWord = selected ? wordMap.get(`${selected.row},${selected.col}`)?.[dir] : null
@@ -224,37 +229,51 @@ export default function Crossword() {
 
       <div className="cw-layout">
         <div>
-          <div
-            className="cw-grid"
-            style={{ gridTemplateColumns: `repeat(${puzzle.width}, 1fr)`, maxWidth: `${puzzle.width * 38}px` }}
-          >
-            {puzzle.cells.map((rowArr, r) =>
-              rowArr.map((cell, c) => {
-                if (!cell) return <div key={`${r}-${c}`} className="cw-cell blocked" />
-                const isSelected = selected?.row === r && selected?.col === c
-                const val = input[r][c]
-                const wrong = showErrors && val !== '' && val !== cell
-                const right = showErrors && val !== '' && val === cell
-                const number = numberAt.get(`${r},${c}`)
-                return (
-                  <button
-                    key={`${r}-${c}`}
-                    ref={el => { if (el) cellRefs.current.set(`${r},${c}`, el) }}
-                    className={[
-                      'cw-cell',
-                      isSelected ? 'selected' : isInActiveWord(r, c) ? 'active-word' : '',
-                      wrong ? 'wrong' : '',
-                      right ? 'right' : '',
-                    ].filter(Boolean).join(' ')}
-                    onClick={() => selectCell(r, c)}
-                    onKeyDown={e => onCellKeyDown(e, r, c)}
-                  >
-                    {number !== undefined && <span className="cw-number">{number}</span>}
-                    <span className="cw-letter">{val}</span>
-                  </button>
-                )
-              }),
-            )}
+          <div className="cw-grid-wrap">
+            <input
+              ref={hiddenInputRef}
+              className="cw-hidden-input"
+              value=""
+              onChange={onHiddenChange}
+              onKeyDown={onHiddenKeyDown}
+              autoCapitalize="characters"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+              inputMode="text"
+              aria-hidden="true"
+              tabIndex={-1}
+            />
+            <div
+              className="cw-grid"
+              style={{ gridTemplateColumns: `repeat(${puzzle.width}, 1fr)`, maxWidth: `${puzzle.width * 38}px` }}
+            >
+              {puzzle.cells.map((rowArr, r) =>
+                rowArr.map((cell, c) => {
+                  if (!cell) return <div key={`${r}-${c}`} className="cw-cell blocked" />
+                  const isSelected = selected?.row === r && selected?.col === c
+                  const val = input[r][c]
+                  const wrong = showErrors && val !== '' && val !== cell
+                  const right = showErrors && val !== '' && val === cell
+                  const number = numberAt.get(`${r},${c}`)
+                  return (
+                    <button
+                      key={`${r}-${c}`}
+                      className={[
+                        'cw-cell',
+                        isSelected ? 'selected' : isInActiveWord(r, c) ? 'active-word' : '',
+                        wrong ? 'wrong' : '',
+                        right ? 'right' : '',
+                      ].filter(Boolean).join(' ')}
+                      onClick={() => selectCell(r, c)}
+                    >
+                      {number !== undefined && <span className="cw-number">{number}</span>}
+                      <span className="cw-letter">{val}</span>
+                    </button>
+                  )
+                }),
+              )}
+            </div>
           </div>
 
           <div className="cw-actions">
