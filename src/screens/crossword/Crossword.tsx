@@ -209,10 +209,12 @@ export default function Crossword() {
 
       <p className="intro">{t.intro}</p>
 
-      <span className="piece-label">{t.modeLabel}</span>
-      <div className="chips">
-        <button className={mode === 'type' ? 'chip active' : 'chip'} onClick={() => { setMode('type'); setActiveChoice(null) }}>{t.modeType}</button>
-        <button className={mode === 'choice' ? 'chip active' : 'chip'} onClick={() => { setMode('choice'); setActiveChoice(null) }}>{t.modeChoice}</button>
+      <div className="cw-mode-section">
+        <span className="piece-label">{t.modeLabel}</span>
+        <div className="chips">
+          <button className={mode === 'type' ? 'chip active' : 'chip'} onClick={() => { setMode('type'); setActiveChoice(null) }}>{t.modeType}</button>
+          <button className={mode === 'choice' ? 'chip active' : 'chip'} onClick={() => { setMode('choice'); setActiveChoice(null) }}>{t.modeChoice}</button>
+        </div>
       </div>
 
       {activeChoice && (
