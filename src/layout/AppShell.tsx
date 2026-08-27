@@ -85,17 +85,8 @@ export default function AppShell() {
         <NavLink to="/notfall" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navEmergency}
         </NavLink>
-        <NavLink to="/quiz" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
-          {t.navQuiz}
-        </NavLink>
-        <NavLink to="/kreuzwortraetsel" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
-          {t.navCrossword}
-        </NavLink>
-        <NavLink to="/wortsuche" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
-          {t.navWordSearch}
-        </NavLink>
-        <NavLink to="/buchstabendoku" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
-          {t.navSudoku}
+        <NavLink to="/spiele" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navGames}
         </NavLink>
       </nav>
 
