@@ -230,7 +230,7 @@ export default function Crossword() {
       )}
 
       <div className="cw-layout">
-        <div>
+        <div className="cw-board">
           <div className="cw-grid-wrap">
             <input
               ref={hiddenInputRef}
@@ -248,7 +248,7 @@ export default function Crossword() {
             />
             <div
               className="cw-grid"
-              style={{ gridTemplateColumns: `repeat(${puzzle.width}, 1fr)`, maxWidth: `${puzzle.width * 38}px` }}
+              style={{ gridTemplateColumns: `repeat(${puzzle.width}, 1fr)`, width: '100%', maxWidth: `${puzzle.width * 38}px` }}
             >
               {puzzle.cells.map((rowArr, r) =>
                 rowArr.map((cell, c) => {

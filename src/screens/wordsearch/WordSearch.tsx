@@ -79,7 +79,7 @@ export default function WordSearch() {
       <div className="ws-layout">
         <div
           className="ws-grid"
-          style={{ gridTemplateColumns: `repeat(${puzzle.size}, 1fr)`, maxWidth: `${puzzle.size * 34}px` }}
+          style={{ gridTemplateColumns: `repeat(${puzzle.size}, 1fr)`, width: '100%', maxWidth: `${puzzle.size * 34}px` }}
         >
           {puzzle.grid.map((rowArr, r) =>
             rowArr.map((letter, c) => {

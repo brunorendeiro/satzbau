@@ -3,6 +3,7 @@
 
 .cw-layout { display: flex; gap: 32px; margin-top: 18px; flex-wrap: wrap; align-items: flex-start; }
 
+.cw-board { flex: 1 1 260px; }
 .cw-grid-wrap { position: relative; }
 .cw-hidden-input {
   position: absolute; top: 0; left: 0; width: 1px; height: 1px; padding: 0; margin: 0;

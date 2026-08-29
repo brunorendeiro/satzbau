@@ -2,7 +2,7 @@
 
 .ws-grid {
   display: grid; gap: 2px; background: var(--line); border: 2px solid var(--text); border-radius: 4px;
-  padding: 2px; box-shadow: var(--shadow-sm); user-select: none;
+  padding: 2px; box-shadow: var(--shadow-sm); user-select: none; flex: 1 1 260px;
 }
 .ws-cell {
   aspect-ratio: 1; min-width: 0; border: none; background: var(--panel); color: var(--text);
