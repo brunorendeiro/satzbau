@@ -39,6 +39,10 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
+function choiceCountForLevel(level: QuizLevel): number {
+  return level === 'easy' ? 3 : level === 'hard' ? 5 : 4
+}
+
 function buildChoiceSet(correct: string, distractorPool: string[], count = 4): { choices: string[]; correctIndex: number } {
   const unique = Array.from(new Set(distractorPool.filter(d => d !== correct)))
   const picked = sample(unique, count - 1)
@@ -53,7 +57,8 @@ function vocabMeaning(entry: VocabEntry, locale: Locale): string {
 // ---------------------------------------------------------------------------
 // 1. Vocabulary — colors, greetings, weekdays, months, seasons
 // ---------------------------------------------------------------------------
-function vocabQuestions(locale: Locale): ChoiceQuestion[] {
+function vocabQuestions(locale: Locale, level: QuizLevel): ChoiceQuestion[] {
+  const count = choiceCountForLevel(level)
   const pools: { name: string; items: VocabEntry[] }[] = [
     { name: 'colors', items: colors },
     { name: 'greetings', items: greetings },
@@ -67,7 +72,7 @@ function vocabQuestions(locale: Locale): ChoiceQuestion[] {
     const meanings = pool.items.map(e => vocabMeaning(e, locale))
     pool.items.forEach(entry => {
       const correct = vocabMeaning(entry, locale)
-      const { choices, correctIndex } = buildChoiceSet(correct, meanings)
+      const { choices, correctIndex } = buildChoiceSet(correct, meanings, count)
       qs.push({ id: `vocab-${pool.name}-${entry.id}`, kind: 'choice', category: 'vocab', prompt: entry.de, choices, correctIndex })
     })
   })
@@ -77,12 +82,13 @@ function vocabQuestions(locale: Locale): ChoiceQuestion[] {
 // ---------------------------------------------------------------------------
 // 2. Numbers — say the German word for a number (multiple choice)
 // ---------------------------------------------------------------------------
-function numberQuestions(): ChoiceQuestion[] {
+function numberQuestions(level: QuizLevel): ChoiceQuestion[] {
+  const count = choiceCountForLevel(level)
   const all = Array.from({ length: 101 }, (_, i) => i)
   const allWords = all.map(n => breakdown(n).word)
   return sample(all, 12).map(n => {
     const correct = breakdown(n).word
-    const { choices, correctIndex } = buildChoiceSet(correct, allWords)
+    const { choices, correctIndex } = buildChoiceSet(correct, allWords, count)
     return { id: `number-${n}`, kind: 'choice', category: 'numbers', prompt: String(n), choices, correctIndex }
   })
 }
@@ -128,40 +134,43 @@ function arithmeticQuestions(n: number, level: QuizLevel): TypedQuestion[] {
 // ---------------------------------------------------------------------------
 // 4/5. Gender (der/die/das) & pronoun (er/sie/es) — same source words
 // ---------------------------------------------------------------------------
-function genderWordPool(): { word: string; article: 'der' | 'die' | 'das' }[] {
-  const items: { word: string; article: 'der' | 'die' | 'das' }[] = []
-  genderRules.forEach(r => r.examples.forEach(ex => items.push({ word: ex.word, article: r.article })))
-  genderCategories.forEach(c => c.examples.forEach(ex => items.push({ word: ex.word, article: c.article })))
+function genderWordPool(): { word: string; article: 'der' | 'die' | 'das'; hint: string }[] {
+  const items: { word: string; article: 'der' | 'die' | 'das'; hint: string }[] = []
+  genderRules.forEach(r => r.examples.forEach(ex => items.push({ word: ex.word, article: r.article, hint: `Endet auf „${r.ending}"` })))
+  genderCategories.forEach(c => c.examples.forEach(ex => items.push({ word: ex.word, article: c.article, hint: c.labelDe })))
   return items
 }
 
-function genderQuestions(): ChoiceQuestion[] {
+function genderQuestions(level: QuizLevel): ChoiceQuestion[] {
   return genderWordPool().map((item, i) => {
     const others = (['der', 'die', 'das'] as const).filter(a => a !== item.article)
     const choices = shuffle([item.article, ...others])
-    return { id: `gender-${i}-${item.word}`, kind: 'choice', category: 'gender', prompt: item.word, choices, correctIndex: choices.indexOf(item.article) }
+    const hint = level === 'easy' ? item.hint : undefined
+    return { id: `gender-${i}-${item.word}`, kind: 'choice', category: 'gender', prompt: item.word, choices, correctIndex: choices.indexOf(item.article), hint }
   })
 }
 
 const PRONOUN_FOR: Record<'der' | 'die' | 'das', string> = { der: 'er', die: 'sie', das: 'es' }
 
-function pronounQuestions(): ChoiceQuestion[] {
+function pronounQuestions(level: QuizLevel): ChoiceQuestion[] {
   return genderWordPool().map((item, i) => {
     const correct = PRONOUN_FOR[item.article]
     const others = ['er', 'sie', 'es'].filter(p => p !== correct)
     const choices = shuffle([correct, ...others])
-    return { id: `pronoun-${i}-${item.word}`, kind: 'choice', category: 'pronoun', prompt: item.word, choices, correctIndex: choices.indexOf(correct) }
+    const hint = level === 'easy' ? item.hint : undefined
+    return { id: `pronoun-${i}-${item.word}`, kind: 'choice', category: 'pronoun', prompt: item.word, choices, correctIndex: choices.indexOf(correct), hint }
   })
 }
 
 // ---------------------------------------------------------------------------
 // 6. Compound words — Kummer + Speck = ?
 // ---------------------------------------------------------------------------
-function compoundQuestions(): ChoiceQuestion[] {
+function compoundQuestions(level: QuizLevel): ChoiceQuestion[] {
+  const count = choiceCountForLevel(level)
   const allCompounds = compoundWords.map(c => c.compound.de)
   return compoundWords.map(cw => {
     const correct = cw.compound.de
-    const { choices, correctIndex } = buildChoiceSet(correct, allCompounds)
+    const { choices, correctIndex } = buildChoiceSet(correct, allCompounds, count)
     return { id: `compound-${cw.id}`, kind: 'choice', category: 'compound', prompt: `${cw.part1.de} + ${cw.part2.de}`, choices, correctIndex }
   })
 }
@@ -169,11 +178,12 @@ function compoundQuestions(): ChoiceQuestion[] {
 // ---------------------------------------------------------------------------
 // 7. Verbs — what does "lernen" mean?
 // ---------------------------------------------------------------------------
-function verbQuestions(locale: Locale): ChoiceQuestion[] {
+function verbQuestions(locale: Locale, level: QuizLevel): ChoiceQuestion[] {
+  const count = choiceCountForLevel(level)
   const meanings = verbs.map(v => (locale === 'en' ? v.meaningEn : v.meaningPt))
   return verbs.map(v => {
     const correct = locale === 'en' ? v.meaningEn : v.meaningPt
-    const { choices, correctIndex } = buildChoiceSet(correct, meanings)
+    const { choices, correctIndex } = buildChoiceSet(correct, meanings, count)
     return { id: `verb-${v.id}`, kind: 'choice', category: 'verbs', prompt: v.infinitive, choices, correctIndex }
   })
 }
@@ -202,9 +212,10 @@ const QUESTION_WORD_ITEMS: { statement: string; word: (typeof QUESTION_WORDS)[nu
   { statement: 'Wir gehen ins Kino.', word: 'Wohin' },
 ]
 
-function questionWordQuestions(): ChoiceQuestion[] {
+function questionWordQuestions(level: QuizLevel): ChoiceQuestion[] {
+  const count = choiceCountForLevel(level)
   return QUESTION_WORD_ITEMS.map((item, i) => {
-    const { choices, correctIndex } = buildChoiceSet(item.word, [...QUESTION_WORDS])
+    const { choices, correctIndex } = buildChoiceSet(item.word, [...QUESTION_WORDS], count)
     return { id: `qword-${i}`, kind: 'choice', category: 'question-word', prompt: item.statement, choices, correctIndex }
   })
 }
@@ -227,10 +238,11 @@ const PROFESSIONS: { m: string; f: string }[] = [
   { m: 'der Journalist', f: 'die Journalistin' },
 ]
 
-function professionQuestions(): ChoiceQuestion[] {
+function professionQuestions(level: QuizLevel): ChoiceQuestion[] {
+  const count = choiceCountForLevel(level)
   const allFem = PROFESSIONS.map(p => p.f)
   return PROFESSIONS.map((p, i) => {
-    const { choices, correctIndex } = buildChoiceSet(p.f, allFem)
+    const { choices, correctIndex } = buildChoiceSet(p.f, allFem, count)
     return { id: `profession-${i}`, kind: 'choice', category: 'profession', prompt: p.m, choices, correctIndex }
   })
 }
@@ -277,9 +289,12 @@ const READING_ITEMS: { text: string; question: string; correct: string; distract
   },
 ]
 
-function readingQuestions(): ChoiceQuestion[] {
+function readingQuestions(level: QuizLevel): ChoiceQuestion[] {
+  const count = choiceCountForLevel(level)
+  const allAnswers = READING_ITEMS.map(item => item.correct)
   return READING_ITEMS.map((item, i) => {
-    const choices = shuffle([item.correct, ...item.distractors])
+    const extras = allAnswers.filter(a => a !== item.correct && !item.distractors.includes(a))
+    const { choices, correctIndex } = buildChoiceSet(item.correct, [...item.distractors, ...extras], count)
     return {
       id: `reading-${i}`,
       kind: 'choice',
@@ -287,7 +302,7 @@ function readingQuestions(): ChoiceQuestion[] {
       hint: item.text,
       prompt: item.question,
       choices,
-      correctIndex: choices.indexOf(item.correct),
+      correctIndex,
     }
   })
 }
@@ -340,16 +355,16 @@ function sentenceQuestions(locale: Locale, level: QuizLevel): (ArrangeQuestion |
 // ---------------------------------------------------------------------------
 export function buildQuestionPool(locale: Locale, level: QuizLevel = 'medium'): QuizQuestion[] {
   return shuffle([
-    ...vocabQuestions(locale),
-    ...numberQuestions(),
+    ...vocabQuestions(locale, level),
+    ...numberQuestions(level),
     ...arithmeticQuestions(15, level),
-    ...genderQuestions(),
-    ...pronounQuestions(),
-    ...compoundQuestions(),
-    ...verbQuestions(locale),
-    ...questionWordQuestions(),
-    ...professionQuestions(),
-    ...readingQuestions(),
+    ...genderQuestions(level),
+    ...pronounQuestions(level),
+    ...compoundQuestions(level),
+    ...verbQuestions(locale, level),
+    ...questionWordQuestions(level),
+    ...professionQuestions(level),
+    ...readingQuestions(level),
     ...sentenceQuestions(locale, level),
   ])
 }
