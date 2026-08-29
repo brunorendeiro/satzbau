@@ -1,0 +1,11 @@
+.cs-section { margin-top: 26px; }
+.cs-section .chips { margin-top: 12px; }
+
+.cs-phrase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; }
+.cs-phrase-card {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 16px; border-radius: 4px;
+  background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+}
+.cs-phrase-de { font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; color: var(--text); }
+.cs-phrase-meaning { font-size: 12px; color: var(--muted); }

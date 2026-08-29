@@ -87,6 +87,9 @@ export default function AppShell() {
         <NavLink to="/gespraeche" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navConversations}
         </NavLink>
+        <NavLink to="/spickzettel" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navCheatSheet}
+        </NavLink>
         <NavLink to="/spiele" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navGames}
         </NavLink>
