@@ -3,6 +3,7 @@ import { useOutletContext } from 'react-router-dom'
 import { cheatCategories, type CheatCategory, type CheatPhrase } from './data'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
+import AdSlot from '../../layout/AdSlot'
 import './cheatsheet.css'
 
 function categoryTitle(category: CheatCategory, locale: Locale): string {
@@ -54,6 +55,8 @@ export default function CheatSheet() {
           ))}
         </div>
       </div>
+
+      <AdSlot />
     </div>
   )
 }
