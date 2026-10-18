@@ -13,9 +13,11 @@ declare global {
 
 export type Consent = 'granted' | 'denied'
 
-function gtag(...args: unknown[]) {
+function gtag(..._args: unknown[]) {
   window.dataLayer = window.dataLayer || []
-  window.dataLayer.push(args)
+  // gtag.js expects the function's Arguments object, as in Google's official
+  // snippet. A normal array is left in the queue without configuring GA4.
+  window.dataLayer.push(arguments)
 }
 
 export function getStoredConsent(): Consent | null {
