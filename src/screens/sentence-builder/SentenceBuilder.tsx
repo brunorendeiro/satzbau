@@ -39,6 +39,7 @@ import {
 } from './data/grammar'
 import { ui } from './i18n'
 import type { Locale } from '../../i18n/common'
+import SpeakButton from '../../layout/SpeakButton'
 import './sentence-builder.css'
 
 const FORMS: Form[] = ['affirmative', 'question', 'negative', 'twoVerbs']
@@ -57,7 +58,7 @@ function objectSortKey(o: VerbObject): string {
 
 function SentenceTokens({ tokens }: { tokens: Token[] }) {
   return (
-    <p className="sentence-de">
+    <p className="sentence-de" aria-live="polite">
       {tokens.map((token, i) => (
         <span className={`tok tok-${token.role}`} key={i}>
           <span className="tok-word">{token.text}</span>
@@ -167,6 +168,7 @@ export default function SentenceBuilder() {
   const yesAnswer = buildDeAnswer('yes', subjectId, verb, object, time, reason, manner, isNegatedYesNo)
   const noAnswer = buildDeAnswer('no', subjectId, verb, object, time, reason, manner, isNegatedYesNo)
   const openAnswer = buildDeOpenAnswer(subjectId, verb, object, time, reason, manner)
+  const spokenSentence = tokens.map(token => token.text).join(' ')
 
   return (
     <div className="screen-sentence-builder">
@@ -181,6 +183,7 @@ export default function SentenceBuilder() {
           <button
             key={f}
             className={f === form ? 'form-tab active' : 'form-tab'}
+            aria-pressed={f === form}
             onClick={() => { setForm(f); if (f !== 'question') setQuestionMode('yesno') }}
           >
             {t.forms[f]}
@@ -209,7 +212,10 @@ export default function SentenceBuilder() {
       )}
 
       <div className="output-card">
-        <span className="schema-tag">SATZ-SCHEMA</span>
+        <div className="output-card-topline">
+          <span className="schema-tag">SATZ-SCHEMA</span>
+          <SpeakButton text={spokenSentence} label={t.listenLabel} />
+        </div>
         <SentenceTokens tokens={tokens} />
         {locale !== 'pt' && <p className="sentence-translation">{sentenceEn}</p>}
         {locale !== 'en' && <p className="sentence-translation">{sentencePt}</p>}

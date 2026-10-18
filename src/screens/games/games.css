@@ -1,3 +1,10 @@
 .screen-games .chips { margin-top: 22px; }
+.games-beginner-hint { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; padding: 13px 15px; border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--muted); font-size: 12px; line-height: 1.5; }
+.games-beginner-hint a { flex: 0 0 auto; color: var(--text); font: 700 10px 'IBM Plex Mono', monospace; text-decoration: none; text-transform: uppercase; }
+.games-beginner-hint a:hover { color: var(--accent2); }
 .games-active { margin-top: 8px; }
 .games-active .screen-header { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+
+@media (max-width: 520px) {
+  .games-beginner-hint { align-items: flex-start; flex-direction: column; gap: 9px; }
+}

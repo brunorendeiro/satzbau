@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { Link, useOutletContext } from 'react-router-dom'
 import { ui, type GameId } from './i18n'
 import type { Locale } from '../../i18n/common'
 import Quiz from '../quiz/Quiz'
@@ -23,9 +23,14 @@ export default function Games() {
 
       <p className="intro">{t.intro}</p>
 
+      <aside className="games-beginner-hint">
+        <span>{t.beginnerHint}</span>
+        <Link to="/alltag">{t.beginnerLink} <span aria-hidden="true">→</span></Link>
+      </aside>
+
       <div className="chips">
         {GAMES.map(g => (
-          <button key={g} className={g === selected ? 'chip active' : 'chip'} onClick={() => setSelected(g)}>
+          <button key={g} className={g === selected ? 'chip active' : 'chip'} aria-pressed={g === selected} onClick={() => setSelected(g)}>
             {t.gameLabels[g]}
           </button>
         ))}

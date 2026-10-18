@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import type { Locale } from '../../i18n/common'
 import AdSlot from '../../layout/AdSlot'
+import SpeakButton from '../../layout/SpeakButton'
 import { ui, type PronounMode } from './i18n'
 import './everyday.css'
 
@@ -20,6 +21,7 @@ export default function Everyday() {
     () => t.pronouns.find(item => item.id === pronounId) ?? t.pronouns[0],
     [pronounId, t.pronouns],
   )
+  const situationIndex = t.situations.findIndex(item => item.id === situation.id)
 
   function toggleAnswer(index: number) {
     setRevealed(current => {
@@ -41,12 +43,14 @@ export default function Everyday() {
       <section className="everyday-section" aria-labelledby="situations-title">
         <span className="piece-label" id="situations-title">{t.situationsLabel}</span>
         <div className="everyday-situation-tabs">
-          {t.situations.map(item => (
+          {t.situations.map((item, index) => (
             <button
               key={item.id}
               className={item.id === situation.id ? 'situation-tab active' : 'situation-tab'}
+              aria-pressed={item.id === situation.id}
               onClick={() => setSituationId(item.id)}
             >
+              <span className="situation-step">{index + 1}</span>
               <span aria-hidden="true">{item.icon}</span>
               <span>{item.title}</span>
             </button>
@@ -57,6 +61,7 @@ export default function Everyday() {
           <div className="situation-heading">
             <span className="situation-icon" aria-hidden="true">{situation.icon}</span>
             <div>
+              <span className="situation-progress">{t.stepLabel} {situationIndex + 1} / {t.situations.length}</span>
               <h2>{situation.title}</h2>
               <p>{situation.goal}</p>
             </div>
@@ -64,7 +69,10 @@ export default function Everyday() {
           <div className="everyday-phrases">
             {situation.phrases.map(phrase => (
               <article className="everyday-phrase" key={phrase.de}>
-                <strong lang="de">{phrase.de}</strong>
+                <div className="everyday-phrase-heading">
+                  <strong lang="de">{phrase.de}</strong>
+                  <SpeakButton text={phrase.de} label={t.listenLabel} />
+                </div>
                 <span>{phrase.meaning}</span>
               </article>
             ))}
@@ -87,6 +95,7 @@ export default function Everyday() {
             <button
               key={item.id}
               className={item.id === pronoun.id ? 'pronoun-tab active' : 'pronoun-tab'}
+              aria-pressed={item.id === pronoun.id}
               onClick={() => setPronounId(item.id)}
             >
               <b>{item.label}</b>
@@ -112,7 +121,10 @@ export default function Everyday() {
             <div className="pronoun-examples">
               {pronoun.examples.map(example => (
                 <p key={example.de}>
-                  <strong lang="de">{example.de}</strong>
+                  <span className="pronoun-example-heading">
+                    <strong lang="de">{example.de}</strong>
+                    <SpeakButton text={example.de} label={t.listenLabel} />
+                  </span>
                   <span>{example.meaning}</span>
                 </p>
               ))}
@@ -135,8 +147,13 @@ export default function Everyday() {
             return (
               <article className="practice-card" key={item.prompt}>
                 <p>{item.prompt}</p>
-                {isRevealed && <strong lang="de">{item.answer}</strong>}
-                <button onClick={() => toggleAnswer(index)} aria-expanded={isRevealed}>
+                {isRevealed && (
+                  <div className="practice-answer">
+                    <strong lang="de">{item.answer}</strong>
+                    <SpeakButton text={item.answer} label={t.listenLabel} />
+                  </div>
+                )}
+                <button className="practice-toggle" onClick={() => toggleAnswer(index)} aria-expanded={isRevealed}>
                   {isRevealed ? t.hide : t.reveal}
                 </button>
               </article>

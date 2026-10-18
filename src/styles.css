@@ -44,6 +44,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); transition: background .2s ease, color .2s ease; }
 button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
 
 .app-shell { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
 
@@ -60,6 +61,18 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .nav-tab { padding: 9px 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--muted); font-weight: 700; font-size: 13px; font-family: 'IBM Plex Mono', monospace; text-decoration: none; transition: background .15s ease, color .15s ease, border-color .15s ease; }
 .nav-tab:hover { border-color: var(--accent2); }
 .nav-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+.beginner-start { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 18px; padding: 14px 16px; border: 1px solid var(--accent); border-radius: 6px; background: var(--accent-soft); box-shadow: var(--shadow-sm); }
+.beginner-start div { display: flex; flex-direction: column; gap: 2px; }
+.beginner-start strong { font: 600 16px 'Fraunces', serif; }
+.beginner-start span { color: var(--muted); font-size: 12px; line-height: 1.4; }
+.beginner-start > a { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; padding: 9px 13px; border-radius: 5px; background: var(--accent); color: var(--accent-ink); font: 700 11px 'IBM Plex Mono', monospace; text-decoration: none; text-transform: uppercase; }
+.beginner-start > a span { color: inherit; font-size: 14px; }
+
+.speak-button { display: inline-grid; place-items: center; flex: 0 0 auto; width: 34px; height: 34px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--panel); color: var(--text); font-size: 15px; line-height: 1; cursor: pointer; transition: border-color .15s ease, background .15s ease, transform .15s ease; }
+.speak-button:hover { border-color: var(--accent2); background: var(--accent2-soft); transform: translateY(-1px); }
+.speak-button:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+.speak-button svg { width: 16px; height: 16px; }
 
 .screen-header { margin: 22px 0 0; }
 .screen-header strong { display: block; font: 600 20px 'Fraunces', serif; color: var(--muted); }
@@ -105,6 +118,12 @@ footer a:hover { color: var(--accent2); }
 @media (max-width: 560px) {
   .app-shell { padding: 22px 14px 44px; }
   header { flex-wrap: wrap; gap: 12px; }
+  .beginner-start { align-items: flex-start; }
+  .beginner-start > a { padding: 9px 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
 .cookie-consent { position: fixed; z-index: 50; left: 20px; right: 20px; bottom: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; max-width: 640px; margin: 0 auto; padding: 20px 22px; border-radius: 4px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); }

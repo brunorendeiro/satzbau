@@ -53,6 +53,7 @@ type UiStrings = {
   questionAffirmativeLabel: string
   questionNegativeLabel: string
   dochExplain: string
+  listenLabel: string
   restart: string
 }
 
@@ -119,6 +120,7 @@ export const ui: Record<Locale, UiStrings> = {
     questionAffirmativeLabel: 'Pergunta afirmativa',
     questionNegativeLabel: 'Pergunta negativa',
     dochExplain: 'A uma pergunta negativa não se responde "Ja" — usa-se "Doch" para contradizer (sim, na verdade sim) e "Nein" para confirmar a negação (não, de facto não).',
+    listenLabel: 'Ouvir em alemão',
     restart: 'Reiniciar',
   },
   en: {
@@ -183,6 +185,7 @@ export const ui: Record<Locale, UiStrings> = {
     questionAffirmativeLabel: 'Affirmative question',
     questionNegativeLabel: 'Negative question',
     dochExplain: 'You can\'t answer a negative question with "Ja" — use "Doch" to contradict it (yes, actually I do) and "Nein" to confirm the negation (no, indeed I don\'t).',
+    listenLabel: 'Listen in German',
     restart: 'Restart',
   },
   de: {
@@ -247,6 +250,7 @@ export const ui: Record<Locale, UiStrings> = {
     questionAffirmativeLabel: 'Bejahte Frage',
     questionNegativeLabel: 'Verneinte Frage',
     dochExplain: 'Auf eine verneinte Frage antwortet man nicht mit "Ja" — "Doch" widerspricht ihr (doch, eigentlich schon) und "Nein" bestätigt die Verneinung (nein, wirklich nicht).',
+    listenLabel: 'Auf Deutsch anhören',
     restart: 'Neu starten',
   },
 }

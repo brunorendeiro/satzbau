@@ -5,16 +5,21 @@
 .situation-tab:hover { border-color: var(--accent2); }
 .situation-tab.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); box-shadow: var(--shadow-sm); }
 .situation-tab > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.situation-step { display: grid; place-items: center; flex: 0 0 auto; width: 19px; height: 19px; border: 1px solid currentColor; border-radius: 50%; font: 700 9px 'IBM Plex Mono', monospace; opacity: .75; }
 
 .situation-panel { margin-top: 12px; padding: 22px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel-2); box-shadow: var(--shadow); }
 .situation-heading { display: flex; align-items: center; gap: 14px; }
 .situation-icon { display: grid; place-items: center; flex: 0 0 auto; width: 48px; height: 48px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); font-size: 23px; }
 .situation-heading h2, .section-copy h2 { margin: 0; font: 600 23px 'Fraunces', serif; }
+.situation-progress { display: block; margin-bottom: 3px; color: var(--accent2); font: 700 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
 .situation-heading p, .section-copy p { margin: 4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .everyday-phrases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .everyday-phrase { display: flex; flex-direction: column; gap: 6px; padding: 15px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); }
 .everyday-phrase strong { font: 600 16px 'Fraunces', serif; line-height: 1.35; }
 .everyday-phrase span { color: var(--muted); font-size: 12px; line-height: 1.45; }
+.everyday-phrase-heading, .pronoun-example-heading, .practice-answer { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.everyday-phrase-heading .speak-button, .pronoun-example-heading .speak-button, .practice-answer .speak-button { width: 30px; height: 30px; }
+.everyday-phrase-heading > strong, .pronoun-example-heading > strong, .practice-answer > strong { flex: 1; }
 .swiss-tip { margin: 14px 0 0; padding: 12px 14px; border-left: 3px solid var(--accent2); background: var(--accent2-soft); color: var(--muted); font-size: 12px; line-height: 1.5; }
 .swiss-tip b { color: var(--accent2); }
 
@@ -35,15 +40,17 @@
 .pronoun-examples p { display: flex; flex-direction: column; gap: 3px; margin: 0 0 8px; padding: 11px 13px; border-left: 3px solid var(--ok); background: var(--ok-soft); }
 .pronoun-examples strong { font: 600 15px 'Fraunces', serif; }
 .pronoun-examples span, .pronoun-note { color: var(--muted); font-size: 11px; line-height: 1.45; }
+.pronoun-examples .pronoun-example-heading { color: var(--text); font-size: inherit; line-height: normal; }
 .pronoun-note { margin: 10px 0 0; }
 .capitalisation-note { margin: 18px 0 0; padding: 13px 15px; border: 1px dashed var(--accent); border-radius: 4px; background: var(--accent-soft); color: var(--text); font-size: 12px; line-height: 1.5; }
 
 .practice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 15px; }
 .practice-card { display: flex; flex-direction: column; align-items: flex-start; min-height: 155px; padding: 16px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); box-shadow: var(--shadow-sm); }
 .practice-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
-.practice-card strong { margin: 12px 0; font: 600 16px 'Fraunces', serif; }
-.practice-card button { margin-top: auto; padding: 8px 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--panel-2); color: var(--text); font: 700 10px 'IBM Plex Mono', monospace; text-transform: uppercase; }
-.practice-card button:hover { border-color: var(--accent2); }
+.practice-answer { width: 100%; margin: 12px 0; }
+.practice-card strong { font: 600 16px 'Fraunces', serif; }
+.practice-card .practice-toggle { margin-top: auto; padding: 8px 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--panel-2); color: var(--text); font: 700 10px 'IBM Plex Mono', monospace; text-transform: uppercase; }
+.practice-card .practice-toggle:hover { border-color: var(--accent2); }
 
 @media (max-width: 680px) {
   .everyday-situation-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }

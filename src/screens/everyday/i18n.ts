@@ -27,6 +27,8 @@ type UiStrings = {
   title: string
   intro: string
   situationsLabel: string
+  stepLabel: string
+  listenLabel: string
   swissTipLabel: string
   pronounsTitle: string
   pronounsIntro: string
@@ -47,6 +49,8 @@ export const ui: Record<Locale, UiStrings> = {
     title: 'Alltag in der Schweiz',
     intro: 'Alemão A1 para situações que realmente aparecem na Suíça: apresentar-te, trabalhar, fazer compras, viajar, comer fora, ir ao médico e tratar de documentos.',
     situationsLabel: 'Escolhe uma situação',
+    stepLabel: 'Passo',
+    listenLabel: 'Ouvir em alemão',
     swissTipLabel: 'Na Suíça',
     pronounsTitle: 'Du, ihr ou Sie?',
     pronounsIntro: 'Escolhe com quem estás a falar. A app mostra imediatamente o pronome pessoal, o dativo e o possessivo corretos.',
@@ -147,6 +151,8 @@ export const ui: Record<Locale, UiStrings> = {
     title: 'Alltag in der Schweiz',
     intro: 'A1 German for situations you will actually face in Switzerland: introductions, work, shopping, transport, restaurants, health and official paperwork.',
     situationsLabel: 'Choose a situation',
+    stepLabel: 'Step',
+    listenLabel: 'Listen in German',
     swissTipLabel: 'In Switzerland',
     pronounsTitle: 'Du, ihr or Sie?',
     pronounsIntro: 'Choose who you are speaking to. The app immediately shows the correct personal, dative and possessive forms.',
@@ -177,6 +183,8 @@ export const ui: Record<Locale, UiStrings> = {
     title: 'Alltag in der Schweiz',
     intro: 'A1-Deutsch für echte Situationen in der Schweiz: sich vorstellen, arbeiten, einkaufen, unterwegs sein, essen gehen, Gesundheit und Behördengänge.',
     situationsLabel: 'Wähle eine Situation',
+    stepLabel: 'Schritt',
+    listenLabel: 'Auf Deutsch anhören',
     swissTipLabel: 'In der Schweiz',
     pronounsTitle: 'Du, ihr oder Sie?',
     pronounsIntro: 'Wähle, mit wem du sprichst. Die passenden Personal-, Dativ- und Possessivformen erscheinen sofort.',

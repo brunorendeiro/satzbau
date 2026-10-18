@@ -30,6 +30,9 @@ type CommonUiStrings = {
   navEveryday: string
   navCheatSheet: string
   navGames: string
+  beginnerTitle: string
+  beginnerBody: string
+  beginnerAction: string
   footerTagline: string
   cookieBody: string
   cookieAccept: string
@@ -49,9 +52,12 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navConversations: 'Gespräche',
-    navEveryday: 'Alltag',
+    navEveryday: 'Alltag · A1',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
+    beginnerTitle: 'Novo no alemão?',
+    beginnerBody: 'Começa com frases essenciais para viver na Suíça.',
+    beginnerAction: 'Começar A1',
     footerTagline: 'Aprende alemão ao teu ritmo',
     cookieBody: 'Uso o Google Analytics e o Google AdSense para perceber quantas pessoas visitam este projeto. Aceitas cookies de análise e publicidade?',
     cookieAccept: 'Aceitar',
@@ -69,9 +75,12 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navConversations: 'Gespräche',
-    navEveryday: 'Alltag',
+    navEveryday: 'Alltag · A1',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
+    beginnerTitle: 'New to German?',
+    beginnerBody: 'Start with essential phrases for everyday life in Switzerland.',
+    beginnerAction: 'Start A1',
     footerTagline: 'Learn German at your own pace',
     cookieBody: 'I use Google Analytics and Google AdSense to understand how many people visit this project. Do you accept analytics and advertising cookies?',
     cookieAccept: 'Accept',
@@ -89,9 +98,12 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navConversations: 'Gespräche',
-    navEveryday: 'Alltag',
+    navEveryday: 'Alltag · A1',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
+    beginnerTitle: 'Neu in Deutsch?',
+    beginnerBody: 'Beginne mit wichtigen Sätzen für den Alltag in der Schweiz.',
+    beginnerAction: 'A1 starten',
     footerTagline: 'Lerne Deutsch in deinem Tempo',
     cookieBody: 'Ich verwende Google Analytics und Google AdSense, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse- und Werbe-Cookies?',
     cookieAccept: 'Akzeptieren',

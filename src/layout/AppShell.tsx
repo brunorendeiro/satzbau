@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { detectLocale, locales, commonUi, type Locale } from '../i18n/common'
 import { getStoredConsent, loadAnalytics, loadAds } from '../analytics'
 import CookieConsent from './CookieConsent'
@@ -83,6 +83,16 @@ export default function AppShell() {
           </div>
         </div>
       </header>
+
+      {location.pathname === '/' && (
+        <aside className="beginner-start" aria-labelledby="beginner-start-title">
+          <div>
+            <strong id="beginner-start-title">{t.beginnerTitle}</strong>
+            <span>{t.beginnerBody}</span>
+          </div>
+          <Link to="/alltag">{t.beginnerAction}<span aria-hidden="true">→</span></Link>
+        </aside>
+      )}
 
       <nav className="main-nav">
         <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
