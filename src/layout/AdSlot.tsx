@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getStoredConsent } from '../analytics'
+import { CONSENT_EVENT, getStoredConsent, type Consent } from '../analytics'
 
 const AD_CLIENT = 'ca-pub-4561414438757131'
 const AD_SLOT = '7279942336'
@@ -7,7 +7,7 @@ const AD_SLOT = '7279942336'
 /**
  * Bloco de anúncio manual e responsivo. Ao contrário dos auto ads (desligados em
  * analytics.ts), este componente só deve ser usado em ecrãs com conteúdo real
- * substancial (ex. Spickzettel) — nunca nos exercícios interativos, para respeitar
+ * substancial (ex. Spickzettel e Alltag) — nunca nos exercícios interativos, para respeitar
  * as políticas do AdSense sobre anúncios em ecrãs sem conteúdo do publicador.
  */
 export default function AdSlot() {
@@ -15,6 +15,11 @@ export default function AdSlot() {
 
   useEffect(() => {
     setGranted(getStoredConsent() === 'granted')
+    const syncConsent = (event: Event) => {
+      setGranted((event as CustomEvent<Consent>).detail === 'granted')
+    }
+    window.addEventListener(CONSENT_EVENT, syncConsent)
+    return () => window.removeEventListener(CONSENT_EVENT, syncConsent)
   }, [])
 
   useEffect(() => {

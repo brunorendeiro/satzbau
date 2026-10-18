@@ -1,0 +1,62 @@
+{
+  "/": {
+    "pt": { "title": "Construtor de frases em alemão com TeKaMoLo | Satzbau", "heading": "Construtor de frases em alemão", "description": "Constrói frases em alemão e aprende TeKaMoLo, perguntas, negação, verbos modais e ordem das palavras com explicações em português." },
+    "en": { "title": "German sentence builder with TeKaMoLo | Satzbau", "heading": "German sentence builder", "description": "Build German sentences and learn TeKaMoLo, questions, negation, modal verbs and word order with clear English explanations." },
+    "de": { "title": "Deutsche Sätze bauen und TeKaMoLo lernen | Satzbau", "heading": "Deutsche Sätze bauen", "description": "Baue deutsche Sätze und übe TeKaMoLo, Fragen, Verneinung, Modalverben und Wortstellung interaktiv." }
+  },
+  "/wortbau": {
+    "pt": { "title": "Palavras compostas em alemão | Wortbau", "heading": "Wortbau: palavras compostas em alemão", "description": "Aprende a formar palavras compostas em alemão, identifica cada elemento e descobre o género da palavra final." },
+    "en": { "title": "German compound words | Wortbau", "heading": "Wortbau: German compound words", "description": "Learn how German compound words are formed, identify each component and understand the gender of the final word." },
+    "de": { "title": "Deutsche Komposita verstehen | Wortbau", "heading": "Wortbau: deutsche Komposita", "description": "Lerne, wie deutsche Komposita aufgebaut sind, erkenne ihre Bestandteile und bestimme das Genus des Grundworts." }
+  },
+  "/wortfamilie": {
+    "pt": { "title": "Famílias de palavras e género em alemão | Wortfamilie", "heading": "Famílias de palavras em alemão", "description": "Explora famílias de palavras alemãs e aprende padrões úteis para reconhecer substantivos, sufixos e género gramatical." },
+    "en": { "title": "German word families and noun gender | Wortfamilie", "heading": "German word families", "description": "Explore German word families and learn useful patterns for recognising nouns, suffixes and grammatical gender." },
+    "de": { "title": "Wortfamilien und Genus im Deutschen | Wortfamilie", "heading": "Deutsche Wortfamilien", "description": "Entdecke deutsche Wortfamilien und lerne Muster für Nomen, Suffixe und das grammatische Geschlecht." }
+  },
+  "/zahlen": {
+    "pt": { "title": "Números em alemão com exercícios | Zahlen", "heading": "Aprender os números em alemão", "description": "Aprende a escrever, ler e construir números em alemão com decomposição visual e exercícios interativos." },
+    "en": { "title": "German numbers with interactive exercises | Zahlen", "heading": "Learn German numbers", "description": "Learn to write, read and build German numbers with visual breakdowns and interactive exercises." },
+    "de": { "title": "Deutsche Zahlen interaktiv üben | Zahlen", "heading": "Deutsche Zahlen lernen", "description": "Lerne deutsche Zahlen zu lesen, zu schreiben und mit visuellen Erklärungen interaktiv zu bilden." }
+  },
+  "/aussprache": {
+    "pt": { "title": "Pronúncia e alfabeto alemão | Aussprache", "heading": "Pronúncia do alemão", "description": "Pratica o alfabeto, os sons e a pronúncia do alemão com exemplos claros para falantes de português." },
+    "en": { "title": "German pronunciation and alphabet | Aussprache", "heading": "German pronunciation", "description": "Practise the German alphabet, sounds and pronunciation with clear examples for English speakers." },
+    "de": { "title": "Deutsche Aussprache und Alphabet üben", "heading": "Deutsche Aussprache", "description": "Übe das deutsche Alphabet, wichtige Laute und die Aussprache mit verständlichen Beispielen." }
+  },
+  "/wortschatz": {
+    "pt": { "title": "Vocabulário básico de alemão | Wortschatz", "heading": "Vocabulário alemão essencial", "description": "Aprende vocabulário alemão essencial por temas, com traduções e exemplos para situações do quotidiano." },
+    "en": { "title": "Essential German vocabulary | Wortschatz", "heading": "Essential German vocabulary", "description": "Learn essential German vocabulary by topic, with translations and examples for everyday situations." },
+    "de": { "title": "Deutschen Grundwortschatz lernen | Wortschatz", "heading": "Deutscher Grundwortschatz", "description": "Lerne wichtigen deutschen Wortschatz nach Themen geordnet und mit Beispielen für den Alltag." }
+  },
+  "/zuhause": {
+    "pt": { "title": "Vocabulário da casa em alemão | Zuhause", "heading": "A casa em alemão", "description": "Descobre os nomes das divisões e dos objetos da casa em alemão através de uma experiência visual interativa." },
+    "en": { "title": "German vocabulary for the home | Zuhause", "heading": "The home in German", "description": "Discover German names for rooms and household objects through an interactive visual experience." },
+    "de": { "title": "Wortschatz rund ums Zuhause", "heading": "Das Zuhause auf Deutsch", "description": "Entdecke die deutschen Namen für Räume und Gegenstände im Haus in einer interaktiven visuellen Übung." }
+  },
+  "/notfall": {
+    "pt": { "title": "Alemão para emergências | Notfall", "heading": "Frases de emergência em alemão", "description": "Aprende frases essenciais em alemão para pedir ajuda, falar com médicos e reagir numa emergência." },
+    "en": { "title": "German emergency phrases | Notfall", "heading": "Emergency phrases in German", "description": "Learn essential German phrases for asking for help, speaking to medical staff and handling an emergency." },
+    "de": { "title": "Wichtige Sätze für den Notfall", "heading": "Deutsch für den Notfall", "description": "Übe wichtige deutsche Sätze, um Hilfe zu rufen, Beschwerden zu erklären und in einem Notfall zu reagieren." }
+  },
+  "/gespraeche": {
+    "pt": { "title": "Diálogos práticos em alemão | Gespräche", "heading": "Conversas do quotidiano em alemão", "description": "Pratica diálogos reais em alemão para restaurantes, transportes, trabalho, serviços e outras situações do dia a dia." },
+    "en": { "title": "Practical German dialogues | Gespräche", "heading": "Everyday German conversations", "description": "Practise real German dialogues for restaurants, transport, work, public services and everyday situations." },
+    "de": { "title": "Praktische Dialoge auf Deutsch | Gespräche", "heading": "Deutsche Alltagsgespräche", "description": "Übe echte deutsche Dialoge für Restaurant, Verkehr, Arbeit, Behörden und weitere Alltagssituationen." }
+  },
+  "/alltag": {
+    "pt": { "title": "Alemão A1 para viver na Suíça | Alltag", "heading": "Alemão para o quotidiano na Suíça", "description": "Aprende alemão A1 para trabalho, transportes, compras, saúde e município na Suíça, incluindo du, ihr, Sie, euch e Ihnen." },
+    "en": { "title": "A1 German for everyday life in Switzerland | Alltag", "heading": "German for everyday life in Switzerland", "description": "Learn A1 German for work, transport, shopping, health and local authorities in Switzerland, including du, ihr, Sie, euch and Ihnen." },
+    "de": { "title": "A1-Deutsch für den Alltag in der Schweiz", "heading": "Deutsch für den Alltag in der Schweiz", "description": "Übe A1-Deutsch für Arbeit, Verkehr, Einkaufen, Gesundheit und Gemeinde sowie du, ihr, Sie, euch und Ihnen." }
+  },
+  "/spickzettel": {
+    "pt": { "title": "Frases úteis em alemão | Spickzettel", "heading": "Guia rápido de frases em alemão", "description": "Consulta rapidamente as frases alemãs mais úteis para viajar, trabalhar, comprar, comer fora e pedir ajuda." },
+    "en": { "title": "Useful German phrases | Spickzettel", "heading": "German phrase cheat sheet", "description": "Quickly find useful German phrases for travel, work, shopping, eating out and asking for help." },
+    "de": { "title": "Nützliche deutsche Sätze | Spickzettel", "heading": "Spickzettel für deutsche Sätze", "description": "Finde schnell nützliche deutsche Sätze für Reise, Arbeit, Einkaufen, Restaurant und Hilfe im Alltag." }
+  },
+  "/spiele": {
+    "pt": { "title": "Jogos e quiz para aprender alemão | Spiele", "heading": "Jogos para praticar alemão", "description": "Pratica alemão com quiz, palavras cruzadas, sopa de letras, sudoku e desafios de construção de frases." },
+    "en": { "title": "Games and quizzes to learn German | Spiele", "heading": "Games for practising German", "description": "Practise German with quizzes, crosswords, word searches, sudoku and sentence-building challenges." },
+    "de": { "title": "Deutsch lernen mit Spielen und Quiz | Spiele", "heading": "Spiele zum Deutschüben", "description": "Übe Deutsch mit Quiz, Kreuzworträtsel, Wortsuchen, Sudoku und Aufgaben zum Satzbau." }
+  }
+}

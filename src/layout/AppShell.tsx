@@ -3,8 +3,11 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { detectLocale, locales, commonUi, type Locale } from '../i18n/common'
 import { getStoredConsent, loadAnalytics, loadAds } from '../analytics'
 import CookieConsent from './CookieConsent'
+import seoPagesData from '../seo-pages.json'
 
 type Theme = 'light' | 'dark'
+type SeoPage = Record<Locale, { title: string; heading: string; description: string }>
+const seoPages = seoPagesData as Record<string, SeoPage>
 
 function detectTheme(): Theme {
   const stored = window.localStorage.getItem('satzbau-theme')
@@ -33,32 +36,21 @@ export default function AppShell() {
   const t = commonUi[locale]
 
   useEffect(() => {
-    const pageNames: Record<string, string> = {
-      '/wortbau': t.navCompoundWords,
-      '/wortfamilie': t.navWordFamily,
-      '/zahlen': t.navNumbers,
-      '/aussprache': t.navAlphabet,
-      '/wortschatz': t.navVocabulary,
-      '/zuhause': t.navHouse,
-      '/notfall': t.navEmergency,
-      '/gespraeche': t.navConversations,
-      '/spickzettel': t.navCheatSheet,
-      '/spiele': t.navGames,
-    }
-    const pageName = pageNames[location.pathname]
-    const title = pageName ? `${pageName} | Satzbau` : t.seoTitle
+    const seo = (seoPages[location.pathname] ?? seoPages['/'])[locale]
+    const title = seo.title
     const canonicalUrl = `https://satzbau.vercel.app${location.pathname === '/' ? '/' : location.pathname}`
 
     document.documentElement.lang = locale
     document.title = title
-    document.querySelector('meta[name="description"]')?.setAttribute('content', t.seoDescription)
+    document.querySelector('meta[name="description"]')?.setAttribute('content', seo.description)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
-    document.querySelector('meta[property="og:description"]')?.setAttribute('content', t.seoDescription)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', seo.description)
     document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalUrl)
+    document.querySelector('meta[property="og:locale"]')?.setAttribute('content', locale === 'pt' ? 'pt_PT' : locale === 'de' ? 'de_DE' : 'en_US')
     document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title)
-    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', t.seoDescription)
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', seo.description)
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl)
-  }, [locale, location.pathname, t])
+  }, [locale, location.pathname])
 
   function changeLocale(next: Locale) {
     setLocale(next)
@@ -116,6 +108,9 @@ export default function AppShell() {
         </NavLink>
         <NavLink to="/gespraeche" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navConversations}
+        </NavLink>
+        <NavLink to="/alltag" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
+          {t.navEveryday}
         </NavLink>
         <NavLink to="/spickzettel" className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}>
           {t.navCheatSheet}

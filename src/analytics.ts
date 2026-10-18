@@ -1,6 +1,7 @@
 const GA_MEASUREMENT_ID = 'G-8PWRSDS62T'
 const CONSENT_KEY = 'satzbau-analytics-consent'
 const AD_CLIENT = 'ca-pub-4561414438757131'
+export const CONSENT_EVENT = 'satzbau:consent'
 
 declare global {
   interface Window {
@@ -50,6 +51,7 @@ export function loadAds() {
 
 export function setConsent(value: Consent) {
   window.localStorage.setItem(CONSENT_KEY, value)
+  window.dispatchEvent(new CustomEvent<Consent>(CONSENT_EVENT, { detail: value }))
   if (value === 'granted') {
     loadAnalytics()
     loadAds()

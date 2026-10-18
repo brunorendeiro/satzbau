@@ -16,8 +16,6 @@ export function detectLocale(): Locale {
 }
 
 type CommonUiStrings = {
-  seoTitle: string
-  seoDescription: string
   themeLight: string
   themeDark: string
   navSentenceBuilder: string
@@ -29,6 +27,7 @@ type CommonUiStrings = {
   navHouse: string
   navEmergency: string
   navConversations: string
+  navEveryday: string
   navCheatSheet: string
   navGames: string
   footerTagline: string
@@ -39,8 +38,6 @@ type CommonUiStrings = {
 
 export const commonUi: Record<Locale, CommonUiStrings> = {
   pt: {
-    seoTitle: 'Satzbau — Aprende alemão com exercícios interativos',
-    seoDescription: 'Aprende alemão com exercícios interativos de frases, TeKaMoLo, vocabulário, pronúncia, números, conversação e jogos em PT, EN e DE.',
     themeLight: 'Claro',
     themeDark: 'Escuro',
     navSentenceBuilder: 'Satzbau',
@@ -52,6 +49,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navConversations: 'Gespräche',
+    navEveryday: 'Alltag',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
     footerTagline: 'Aprende alemão ao teu ritmo',
@@ -60,8 +58,6 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     cookieReject: 'Recusar',
   },
   en: {
-    seoTitle: 'Satzbau — Learn German with interactive exercises',
-    seoDescription: 'Learn German with interactive exercises for sentences, TeKaMoLo, vocabulary, pronunciation, numbers, conversations and games in PT, EN and DE.',
     themeLight: 'Light',
     themeDark: 'Dark',
     navSentenceBuilder: 'Satzbau',
@@ -73,6 +69,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navConversations: 'Gespräche',
+    navEveryday: 'Alltag',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
     footerTagline: 'Learn German at your own pace',
@@ -81,8 +78,6 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     cookieReject: 'Reject',
   },
   de: {
-    seoTitle: 'Satzbau — Deutsch lernen mit interaktiven Übungen',
-    seoDescription: 'Lerne Deutsch mit interaktiven Übungen zu Satzbau, TeKaMoLo, Wortschatz, Aussprache, Zahlen, Gesprächen und Spielen auf PT, EN und DE.',
     themeLight: 'Hell',
     themeDark: 'Dunkel',
     navSentenceBuilder: 'Satzbau',
@@ -94,6 +89,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navHouse: 'Zuhause',
     navEmergency: 'Notfall',
     navConversations: 'Gespräche',
+    navEveryday: 'Alltag',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
     footerTagline: 'Lerne Deutsch in deinem Tempo',

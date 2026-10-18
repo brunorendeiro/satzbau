@@ -11,6 +11,7 @@ import Emergency from './screens/emergency/Emergency'
 import Games from './screens/games/Games'
 import Conversations from './screens/conversations/Conversations'
 import CheatSheet from './screens/cheatsheet/CheatSheet'
+import Everyday from './screens/everyday/Everyday'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="zuhause" element={<House />} />
           <Route path="notfall" element={<Emergency />} />
           <Route path="gespraeche" element={<Conversations />} />
+          <Route path="alltag" element={<Everyday />} />
           <Route path="spickzettel" element={<CheatSheet />} />
           <Route path="spiele" element={<Games />} />
         </Route>
