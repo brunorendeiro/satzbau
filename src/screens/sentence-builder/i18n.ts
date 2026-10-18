@@ -9,6 +9,7 @@ type UiStrings = {
   modal: string
   wasWo: string
   zeit: string
+  grund: string
   wie: string
   noneOption: string
   forms: Record<Form, string>
@@ -32,6 +33,7 @@ type UiStrings = {
   whereFromModeLabel: string
   whereModeLabel: string
   wannModeLabel: string
+  warumModeLabel: string
   wieModeLabel: string
   werExplain: string
   whatExplain: string
@@ -39,7 +41,15 @@ type UiStrings = {
   whereFromExplain: string
   whereExplain: string
   wannExplain: string
+  warumExplain: string
   wieExplain: string
+  tekamoloTitle: string
+  tekamoloIntro: string
+  tekamoloTemporal: string
+  tekamoloCausal: string
+  tekamoloModal: string
+  tekamoloLocal: string
+  tekamoloHint: string
   questionAffirmativeLabel: string
   questionNegativeLabel: string
   dochExplain: string
@@ -55,6 +65,7 @@ export const ui: Record<Locale, UiStrings> = {
     modal: 'Modal · Querer, precisar, gostaria',
     wasWo: 'Was/Wo · O quê / Onde',
     zeit: 'Wann · Quando',
+    grund: 'Warum · Porquê',
     wie: 'Wie · Como',
     noneOption: '— nenhum —',
     forms: {
@@ -93,9 +104,18 @@ export const ui: Record<Locale, UiStrings> = {
     whereFromExplain: '"Woher" (de onde) substitui a origem — usa-se "woher" e não "wo" porque o verbo implica movimento a partir de um sítio.',
     whereExplain: '"Wo" substitui um lugar sem movimento — usa-se "wo" (não "wohin"/"woher") porque o verbo descreve onde algo está ou acontece, não uma direção.',
     wannModeLabel: 'Quando',
+    warumModeLabel: 'Porquê',
     wieModeLabel: 'Como',
     wannExplain: '"Wann" (quando) substitui a expressão de tempo — se escolheres uma peça de tempo ela desaparece da frase, é isso que se está a perguntar.',
+    warumExplain: '"Warum" (porquê) substitui a causa — o motivo escolhido desaparece da frase porque é precisamente a informação pedida.',
     wieExplain: '"Wie" (como) substitui a expressão de modo — se escolheres uma peça de modo ela desaparece da frase, é isso que se está a perguntar.',
+    tekamoloTitle: 'TeKaMoLo · a ordem do meio da frase',
+    tekamoloIntro: 'Quando aparecem várias informações circunstanciais, a ordem neutra mais segura é:',
+    tekamoloTemporal: 'Quando?',
+    tekamoloCausal: 'Porquê?',
+    tekamoloModal: 'Como?',
+    tekamoloLocal: 'Onde?',
+    tekamoloHint: 'Não precisas das quatro peças. A regra apenas ordena as que usares; objetos e pronomes têm regras próprias.',
     questionAffirmativeLabel: 'Pergunta afirmativa',
     questionNegativeLabel: 'Pergunta negativa',
     dochExplain: 'A uma pergunta negativa não se responde "Ja" — usa-se "Doch" para contradizer (sim, na verdade sim) e "Nein" para confirmar a negação (não, de facto não).',
@@ -109,6 +129,7 @@ export const ui: Record<Locale, UiStrings> = {
     modal: 'Modal · Want, need, would like',
     wasWo: 'Was/Wo · What / Where',
     zeit: 'Wann · When',
+    grund: 'Warum · Why',
     wie: 'Wie · How',
     noneOption: '— none —',
     forms: {
@@ -147,9 +168,18 @@ export const ui: Record<Locale, UiStrings> = {
     whereFromExplain: '"Woher" (where from) replaces the origin — "woher", not "wo", because the verb implies moving away from a place.',
     whereExplain: '"Wo" replaces a place with no movement — "wo" (not "wohin"/"woher") because the verb describes where something is or happens, not a direction.',
     wannModeLabel: 'When',
+    warumModeLabel: 'Why',
     wieModeLabel: 'How',
     wannExplain: '"Wann" (when) replaces the time expression — pick a time piece and it drops out of the sentence, since that\'s exactly what\'s being asked.',
+    warumExplain: '"Warum" (why) replaces the cause — the selected reason drops out because it is exactly the information being asked for.',
     wieExplain: '"Wie" (how) replaces the manner expression — pick a manner piece and it drops out of the sentence, since that\'s exactly what\'s being asked.',
+    tekamoloTitle: 'TeKaMoLo · order in the middle field',
+    tekamoloIntro: 'When several adverbial details appear, the safest neutral order is:',
+    tekamoloTemporal: 'When?',
+    tekamoloCausal: 'Why?',
+    tekamoloModal: 'How?',
+    tekamoloLocal: 'Where?',
+    tekamoloHint: 'You do not need all four pieces. The rule only orders the ones you use; objects and pronouns follow their own rules.',
     questionAffirmativeLabel: 'Affirmative question',
     questionNegativeLabel: 'Negative question',
     dochExplain: 'You can\'t answer a negative question with "Ja" — use "Doch" to contradict it (yes, actually I do) and "Nein" to confirm the negation (no, indeed I don\'t).',
@@ -163,6 +193,7 @@ export const ui: Record<Locale, UiStrings> = {
     modal: 'Modal · wollen, müssen, möchten',
     wasWo: 'Was/Wo',
     zeit: 'Wann',
+    grund: 'Warum',
     wie: 'Wie',
     noneOption: '— keine —',
     forms: {
@@ -201,9 +232,18 @@ export const ui: Record<Locale, UiStrings> = {
     whereFromExplain: '"Woher" ersetzt die Herkunft — "woher" statt "wo", weil das Verb eine Bewegung von einem Ort weg ausdrückt.',
     whereExplain: '"Wo" ersetzt einen Ort ohne Bewegung — "wo" statt "wohin"/"woher", weil das Verb beschreibt, wo etwas ist oder passiert, keine Richtung.',
     wannModeLabel: 'Wann',
+    warumModeLabel: 'Warum',
     wieModeLabel: 'Wie',
     wannExplain: '"Wann" ersetzt die Zeitangabe — wählst du ein Zeit-Stück, fällt es aus dem Satz, denn genau danach wird gefragt.',
+    warumExplain: '"Warum" ersetzt die Kausalangabe — der gewählte Grund fällt aus dem Satz, weil genau danach gefragt wird.',
     wieExplain: '"Wie" ersetzt die Modalangabe — wählst du ein Art-und-Weise-Stück, fällt es aus dem Satz, denn genau danach wird gefragt.',
+    tekamoloTitle: 'TeKaMoLo · die Reihenfolge im Mittelfeld',
+    tekamoloIntro: 'Wenn mehrere adverbiale Angaben vorkommen, ist die sichere neutrale Reihenfolge:',
+    tekamoloTemporal: 'Wann?',
+    tekamoloCausal: 'Warum?',
+    tekamoloModal: 'Wie?',
+    tekamoloLocal: 'Wo?',
+    tekamoloHint: 'Du brauchst nicht alle vier Teile. Die Regel ordnet nur die verwendeten Angaben; Objekte und Pronomen haben eigene Regeln.',
     questionAffirmativeLabel: 'Bejahte Frage',
     questionNegativeLabel: 'Verneinte Frage',
     dochExplain: 'Auf eine verneinte Frage antwortet man nicht mit "Ja" — "Doch" widerspricht ihr (doch, eigentlich schon) und "Nein" bestätigt die Verneinung (nein, wirklich nicht).',

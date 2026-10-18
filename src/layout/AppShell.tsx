@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { detectLocale, locales, commonUi, type Locale } from '../i18n/common'
 import { getStoredConsent, loadAnalytics, loadAds } from '../analytics'
 import CookieConsent from './CookieConsent'
@@ -13,6 +13,7 @@ function detectTheme(): Theme {
 }
 
 export default function AppShell() {
+  const location = useLocation()
   const [locale, setLocale] = useState<Locale>('en')
   const [theme, setTheme] = useState<Theme>('light')
 
@@ -30,6 +31,34 @@ export default function AppShell() {
   }, [theme])
 
   const t = commonUi[locale]
+
+  useEffect(() => {
+    const pageNames: Record<string, string> = {
+      '/wortbau': t.navCompoundWords,
+      '/wortfamilie': t.navWordFamily,
+      '/zahlen': t.navNumbers,
+      '/aussprache': t.navAlphabet,
+      '/wortschatz': t.navVocabulary,
+      '/zuhause': t.navHouse,
+      '/notfall': t.navEmergency,
+      '/gespraeche': t.navConversations,
+      '/spickzettel': t.navCheatSheet,
+      '/spiele': t.navGames,
+    }
+    const pageName = pageNames[location.pathname]
+    const title = pageName ? `${pageName} | Satzbau` : t.seoTitle
+    const canonicalUrl = `https://satzbau.vercel.app${location.pathname === '/' ? '/' : location.pathname}`
+
+    document.documentElement.lang = locale
+    document.title = title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', t.seoDescription)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', t.seoDescription)
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalUrl)
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', t.seoDescription)
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl)
+  }, [locale, location.pathname, t])
 
   function changeLocale(next: Locale) {
     setLocale(next)

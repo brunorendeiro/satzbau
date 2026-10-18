@@ -34,8 +34,8 @@
 .tok-neg .tok-word { background: var(--danger); border-color: var(--danger); color: #fff8f2; }
 .tok-neg .tok-label { color: var(--danger); }
 
-.tok-time .tok-word, .tok-manner .tok-word { background: var(--ok); border-color: var(--ok); color: #fff8f2; }
-.tok-time .tok-label, .tok-manner .tok-label { color: var(--ok); }
+.tok-time .tok-word, .tok-reason .tok-word, .tok-manner .tok-word, .tok-location .tok-word { background: var(--ok); border-color: var(--ok); color: #fff8f2; }
+.tok-time .tok-label, .tok-reason .tok-label, .tok-manner .tok-label, .tok-location .tok-label { color: var(--ok); }
 
 .sentence-translation { margin: 14px 0 0; color: var(--muted); font-size: 15px; }
 .form-explain { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); color: var(--text); font-size: 13px; line-height: 1.6; }
@@ -43,6 +43,17 @@
 .answers { margin-top: 16px; padding: 14px 16px; border-radius: 4px; border-left: 3px solid var(--ok); background: var(--ok-soft); }
 .answers-label { display: block; margin-bottom: 6px; color: var(--ok); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
 .answers p { margin: 4px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+
+.tekamolo-card { margin-top: 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); box-shadow: var(--shadow-sm); }
+.tekamolo-copy { display: flex; flex-direction: column; gap: 4px; }
+.tekamolo-copy strong { font: 600 17px 'Fraunces', serif; }
+.tekamolo-copy span, .tekamolo-card > p { color: var(--muted); font-size: 12px; line-height: 1.55; }
+.tekamolo-card > p { margin: 12px 0 0; }
+.tekamolo-formula { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin-top: 14px; }
+.tekamolo-part { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 5px; border: 1px dashed var(--line); border-radius: 6px; color: var(--muted); background: var(--panel-2); transition: background .15s ease, color .15s ease, border-color .15s ease, transform .15s ease; }
+.tekamolo-part b { font: 700 18px 'IBM Plex Mono', monospace; }
+.tekamolo-part small { font-size: 10px; font-weight: 700; }
+.tekamolo-part.active { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); border-style: solid; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
 
 .pieces { display: flex; flex-direction: column; gap: 18px; margin-top: 24px; }
 
@@ -55,4 +66,6 @@
 @media (max-width: 560px) {
   .output-card { padding: 20px 16px 18px; }
   .form-tab { flex: 1 1 45%; }
+  .tekamolo-card { padding: 16px; }
+  .tekamolo-formula { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

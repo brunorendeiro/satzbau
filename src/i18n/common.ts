@@ -16,6 +16,8 @@ export function detectLocale(): Locale {
 }
 
 type CommonUiStrings = {
+  seoTitle: string
+  seoDescription: string
   themeLight: string
   themeDark: string
   navSentenceBuilder: string
@@ -37,6 +39,8 @@ type CommonUiStrings = {
 
 export const commonUi: Record<Locale, CommonUiStrings> = {
   pt: {
+    seoTitle: 'Satzbau — Aprende alemão com exercícios interativos',
+    seoDescription: 'Aprende alemão com exercícios interativos de frases, TeKaMoLo, vocabulário, pronúncia, números, conversação e jogos em PT, EN e DE.',
     themeLight: 'Claro',
     themeDark: 'Escuro',
     navSentenceBuilder: 'Satzbau',
@@ -50,12 +54,14 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navConversations: 'Gespräche',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
-    footerTagline: 'Sem contas · tudo guardado no teu browser',
+    footerTagline: 'Aprende alemão ao teu ritmo',
     cookieBody: 'Uso o Google Analytics e o Google AdSense para perceber quantas pessoas visitam este projeto. Aceitas cookies de análise e publicidade?',
     cookieAccept: 'Aceitar',
     cookieReject: 'Recusar',
   },
   en: {
+    seoTitle: 'Satzbau — Learn German with interactive exercises',
+    seoDescription: 'Learn German with interactive exercises for sentences, TeKaMoLo, vocabulary, pronunciation, numbers, conversations and games in PT, EN and DE.',
     themeLight: 'Light',
     themeDark: 'Dark',
     navSentenceBuilder: 'Satzbau',
@@ -69,12 +75,14 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navConversations: 'Gespräche',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
-    footerTagline: 'No accounts · everything stays in your browser',
+    footerTagline: 'Learn German at your own pace',
     cookieBody: 'I use Google Analytics and Google AdSense to understand how many people visit this project. Do you accept analytics and advertising cookies?',
     cookieAccept: 'Accept',
     cookieReject: 'Reject',
   },
   de: {
+    seoTitle: 'Satzbau — Deutsch lernen mit interaktiven Übungen',
+    seoDescription: 'Lerne Deutsch mit interaktiven Übungen zu Satzbau, TeKaMoLo, Wortschatz, Aussprache, Zahlen, Gesprächen und Spielen auf PT, EN und DE.',
     themeLight: 'Hell',
     themeDark: 'Dunkel',
     navSentenceBuilder: 'Satzbau',
@@ -88,7 +96,7 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     navConversations: 'Gespräche',
     navCheatSheet: 'Spickzettel',
     navGames: 'Spiele',
-    footerTagline: 'Keine Konten · alles bleibt im Browser',
+    footerTagline: 'Lerne Deutsch in deinem Tempo',
     cookieBody: 'Ich verwende Google Analytics und Google AdSense, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse- und Werbe-Cookies?',
     cookieAccept: 'Akzeptieren',
     cookieReject: 'Ablehnen',

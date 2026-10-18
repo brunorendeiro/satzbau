@@ -5,12 +5,14 @@ import {
   verbs,
   modals,
   timeAdverbs,
+  reasonAdverbs,
   mannerAdverbs,
   NONE_ID,
   buildDeTokens,
   buildDeWerTokens,
   buildDeContentTokens,
   buildDeWannTokens,
+  buildDeWarumTokens,
   buildDeWieTokens,
   buildPt,
   buildEn,
@@ -19,10 +21,12 @@ import {
   buildPtWer,
   buildPtContent,
   buildPtWann,
+  buildPtWarum,
   buildPtWie,
   buildEnWer,
   buildEnContent,
   buildEnWann,
+  buildEnWarum,
   buildEnWie,
   roleLabel,
   type SubjectId,
@@ -73,6 +77,7 @@ export default function SentenceBuilder() {
   const [objectId, setObjectId] = useState<string>('deutsch')
   const [modalId, setModalId] = useState<ModalId>(DEFAULT_MODAL)
   const [timeId, setTimeId] = useState<string>(NONE_ID)
+  const [reasonId, setReasonId] = useState<string>(NONE_ID)
   const [mannerId, setMannerId] = useState<string>(NONE_ID)
   const [negatedQuestion, setNegatedQuestion] = useState(false)
 
@@ -85,6 +90,7 @@ export default function SentenceBuilder() {
     [verb, objectId],
   )
   const time = useMemo(() => timeAdverbs.find(t2 => t2.id === timeId)!, [timeId])
+  const reason = useMemo(() => reasonAdverbs.find(r => r.id === reasonId)!, [reasonId])
   const manner = useMemo(() => mannerAdverbs.find(m => m.id === mannerId)!, [mannerId])
   const sortedObjects = useMemo(
     () => [...verb.objects].sort((a, b) => objectSortKey(a).localeCompare(objectSortKey(b), 'de')),
@@ -110,6 +116,7 @@ export default function SentenceBuilder() {
     changeVerb(DEFAULT_VERB)
     setModalId(DEFAULT_MODAL)
     setTimeId(NONE_ID)
+    setReasonId(NONE_ID)
     setMannerId(NONE_ID)
     setNegatedQuestion(false)
   }
@@ -121,25 +128,28 @@ export default function SentenceBuilder() {
   const isNegatedYesNo = isQuestion && questionMode === 'yesno' && negatedQuestion
 
   const tokens =
-    isQuestion && questionMode === 'wer' ? buildDeWerTokens(verb, object, time, manner) :
-    isQuestion && questionMode === 'content' ? buildDeContentTokens(subjectId, verb, object, time, manner) :
-    isQuestion && questionMode === 'wann' ? buildDeWannTokens(subjectId, verb, object, manner) :
-    isQuestion && questionMode === 'wie' ? buildDeWieTokens(subjectId, verb, object, time) :
-    buildDeTokens(form, subjectId, verb, object, modal, time, manner, isNegatedYesNo)
+    isQuestion && questionMode === 'wer' ? buildDeWerTokens(verb, object, time, reason, manner) :
+    isQuestion && questionMode === 'content' ? buildDeContentTokens(subjectId, verb, object, time, reason, manner) :
+    isQuestion && questionMode === 'wann' ? buildDeWannTokens(subjectId, verb, object, reason, manner) :
+    isQuestion && questionMode === 'warum' ? buildDeWarumTokens(subjectId, verb, object, time, manner) :
+    isQuestion && questionMode === 'wie' ? buildDeWieTokens(subjectId, verb, object, time, reason) :
+    buildDeTokens(form, subjectId, verb, object, modal, time, reason, manner, isNegatedYesNo)
 
   const sentencePt =
-    isQuestion && questionMode === 'wer' ? buildPtWer(verb, object, time, manner) :
-    isQuestion && questionMode === 'content' ? buildPtContent(subjectId, verb, object, time, manner) :
-    isQuestion && questionMode === 'wann' ? buildPtWann(subjectId, verb, object, manner) :
-    isQuestion && questionMode === 'wie' ? buildPtWie(subjectId, verb, object, time) :
-    buildPt(form, subjectId, verb, object, modal, time, manner, isNegatedYesNo)
+    isQuestion && questionMode === 'wer' ? buildPtWer(verb, object, time, reason, manner) :
+    isQuestion && questionMode === 'content' ? buildPtContent(subjectId, verb, object, time, reason, manner) :
+    isQuestion && questionMode === 'wann' ? buildPtWann(subjectId, verb, object, reason, manner) :
+    isQuestion && questionMode === 'warum' ? buildPtWarum(subjectId, verb, object, time, manner) :
+    isQuestion && questionMode === 'wie' ? buildPtWie(subjectId, verb, object, time, reason) :
+    buildPt(form, subjectId, verb, object, modal, time, reason, manner, isNegatedYesNo)
 
   const sentenceEn =
-    isQuestion && questionMode === 'wer' ? buildEnWer(verb, object, time, manner) :
-    isQuestion && questionMode === 'content' ? buildEnContent(subjectId, verb, object, time, manner) :
-    isQuestion && questionMode === 'wann' ? buildEnWann(subjectId, verb, object, manner) :
-    isQuestion && questionMode === 'wie' ? buildEnWie(subjectId, verb, object, time) :
-    buildEn(form, subjectId, verb, object, modal, time, manner, isNegatedYesNo)
+    isQuestion && questionMode === 'wer' ? buildEnWer(verb, object, time, reason, manner) :
+    isQuestion && questionMode === 'content' ? buildEnContent(subjectId, verb, object, time, reason, manner) :
+    isQuestion && questionMode === 'wann' ? buildEnWann(subjectId, verb, object, reason, manner) :
+    isQuestion && questionMode === 'warum' ? buildEnWarum(subjectId, verb, object, time, manner) :
+    isQuestion && questionMode === 'wie' ? buildEnWie(subjectId, verb, object, time, reason) :
+    buildEn(form, subjectId, verb, object, modal, time, reason, manner, isNegatedYesNo)
 
   const negativeExplain = object.kind === 'noun' ? t.negativeExplainNoun : object.kind === 'place' ? t.negativeExplainPlace : t.formExplain.negative
 
@@ -147,15 +157,16 @@ export default function SentenceBuilder() {
     ? (questionMode === 'wer' ? t.werExplain
       : questionMode === 'content' ? contentExplain
       : questionMode === 'wann' ? t.wannExplain
+      : questionMode === 'warum' ? t.warumExplain
       : questionMode === 'wie' ? t.wieExplain
       : isNegatedYesNo ? t.dochExplain
       : t.formExplain.question)
     : form === 'negative' ? negativeExplain
     : t.formExplain[form]
 
-  const yesAnswer = buildDeAnswer('yes', subjectId, verb, object, time, manner, isNegatedYesNo)
-  const noAnswer = buildDeAnswer('no', subjectId, verb, object, time, manner, isNegatedYesNo)
-  const openAnswer = buildDeOpenAnswer(subjectId, verb, object, time, manner)
+  const yesAnswer = buildDeAnswer('yes', subjectId, verb, object, time, reason, manner, isNegatedYesNo)
+  const noAnswer = buildDeAnswer('no', subjectId, verb, object, time, reason, manner, isNegatedYesNo)
+  const openAnswer = buildDeOpenAnswer(subjectId, verb, object, time, reason, manner)
 
   return (
     <div className="screen-sentence-builder">
@@ -185,6 +196,7 @@ export default function SentenceBuilder() {
             <button className={questionMode === 'content' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('content')}>{contentLabel}</button>
           )}
           <button className={questionMode === 'wann' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wann')}>{t.wannModeLabel}</button>
+          <button className={questionMode === 'warum' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('warum')}>{t.warumModeLabel}</button>
           <button className={questionMode === 'wie' ? 'qmode active' : 'qmode'} onClick={() => setQuestionMode('wie')}>{t.wieModeLabel}</button>
         </div>
       )}
@@ -217,6 +229,20 @@ export default function SentenceBuilder() {
           </div>
         )}
       </div>
+
+      <section className="tekamolo-card" aria-labelledby="tekamolo-title">
+        <div className="tekamolo-copy">
+          <strong id="tekamolo-title">{t.tekamoloTitle}</strong>
+          <span>{t.tekamoloIntro}</span>
+        </div>
+        <div className="tekamolo-formula" aria-label="Temporal, Kausal, Modal, Lokal">
+          <span className={time.id !== NONE_ID ? 'tekamolo-part active temporal' : 'tekamolo-part temporal'}><b>Te</b><small>{t.tekamoloTemporal}</small></span>
+          <span className={reason.id !== NONE_ID ? 'tekamolo-part active causal' : 'tekamolo-part causal'}><b>Ka</b><small>{t.tekamoloCausal}</small></span>
+          <span className={manner.id !== NONE_ID ? 'tekamolo-part active modal-part' : 'tekamolo-part modal-part'}><b>Mo</b><small>{t.tekamoloModal}</small></span>
+          <span className={object.kind === 'place' ? 'tekamolo-part active local' : 'tekamolo-part local'}><b>Lo</b><small>{t.tekamoloLocal}</small></span>
+        </div>
+        <p>{t.tekamoloHint}</p>
+      </section>
 
       <div className="pieces">
         <div className="piece-group">
@@ -284,6 +310,17 @@ export default function SentenceBuilder() {
           <div className="chips">
             {timeAdverbs.map(adv => (
               <button key={adv.id} className={adv.id === timeId ? 'chip active' : 'chip'} onClick={() => setTimeId(adv.id)}>
+                {adv.id === NONE_ID ? t.noneOption : adv.de}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="piece-group">
+          <span className="piece-label">{t.grund}</span>
+          <div className="chips">
+            {reasonAdverbs.map(adv => (
+              <button key={adv.id} className={adv.id === reasonId ? 'chip active' : 'chip'} onClick={() => setReasonId(adv.id)}>
                 {adv.id === NONE_ID ? t.noneOption : adv.de}
               </button>
             ))}

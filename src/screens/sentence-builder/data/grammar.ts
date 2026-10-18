@@ -2,7 +2,7 @@ export type SubjectId = 'ich' | 'du' | 'er' | 'wir' | 'ihr' | 'sie'
 export type VerbId = 'lernen' | 'trinken' | 'kaufen' | 'gehen' | 'lesen' | 'sprechen' | 'machen' | 'sehen' | 'essen' | 'fahren' | 'schreiben' | 'spielen' | 'kommen' | 'wohnen' | 'arbeiten' | 'hoeren' | 'kochen' | 'tragen' | 'oeffnen' | 'aufstehen' | 'einkaufen' | 'anrufen' | 'fernsehen'
 export type ModalId = 'moechten' | 'wollen' | 'muessen'
 export type Form = 'affirmative' | 'question' | 'negative' | 'twoVerbs'
-export type QuestionMode = 'yesno' | 'wer' | 'content' | 'wann' | 'wie'
+export type QuestionMode = 'yesno' | 'wer' | 'content' | 'wann' | 'warum' | 'wie'
 
 type PerSubject = Record<SubjectId, string>
 
@@ -412,9 +412,10 @@ export type Modal = {
   en: string
 }
 
-/** Optional TeKaMoLo pieces: a time adverb ("heute") and a manner adverb ("gerne"),
- * each with a "none" sentinel meaning "leave it out of the sentence". */
+/** Optional TeKaMoLo pieces. The place (Lokal) comes from a verb's PlaceObject;
+ * every other piece has a "none" sentinel meaning "leave it out". */
 export type TimeAdverb = { id: string; de: string; pt: string; en: string }
+export type ReasonAdverb = { id: string; de: string; pt: string; en: string }
 export type MannerAdverb = { id: string; de: string; pt: string; en: string }
 
 export const NONE_ID = 'none'
@@ -427,6 +428,13 @@ export const timeAdverbs: TimeAdverb[] = [
   { id: 'oft', de: 'oft', pt: 'muitas vezes', en: 'often' },
   { id: 'nie', de: 'nie', pt: 'nunca', en: 'never' },
   { id: 'morgen', de: 'morgen', pt: 'amanhã', en: 'tomorrow' },
+].sort((a, b) => a.de.localeCompare(b.de, 'de'))
+
+export const reasonAdverbs: ReasonAdverb[] = [
+  { id: NONE_ID, de: '', pt: '', en: '' },
+  { id: 'aus-interesse', de: 'aus Interesse', pt: 'por interesse', en: 'out of interest' },
+  { id: 'wegen-arbeit', de: 'wegen der Arbeit', pt: 'por causa do trabalho', en: 'because of work' },
+  { id: 'wegen-wetter', de: 'wegen des Wetters', pt: 'por causa do tempo', en: 'because of the weather' },
 ].sort((a, b) => a.de.localeCompare(b.de, 'de'))
 
 export const mannerAdverbs: MannerAdverb[] = [
@@ -489,7 +497,7 @@ function objectEn(o: VerbObject): string {
 /** A word (or short phrase) tagged with its grammatical role, used to color-code the
  * output sentence so the word-order rule (verb in 2nd position, infinitive at the end...)
  * is visible, not just stated in the explanation text below it. */
-export type Token = { text: string; role: 'subject' | 'verb' | 'modal' | 'infinitive' | 'neg' | 'wh' | 'rest' | 'time' | 'manner' | 'particle' }
+export type Token = { text: string; role: 'subject' | 'verb' | 'modal' | 'infinitive' | 'neg' | 'wh' | 'rest' | 'time' | 'reason' | 'manner' | 'location' | 'particle' }
 
 /** Real German grammar terms — used as small captions under each word of the
  * output sentence, turning it into a syntax gloss instead of a flat line of text. */
@@ -502,7 +510,9 @@ export const roleLabel: Record<Token['role'], string> = {
   wh: 'W-WORT',
   rest: 'ERGÄNZUNG',
   time: 'ZEITANGABE',
+  reason: 'KAUSALANGABE',
   manner: 'MODALANGABE',
+  location: 'ORTSANGABE',
   particle: 'VERBZUSATZ',
 }
 
@@ -527,38 +537,43 @@ function pushSeparable(core: Token[], verb: Verb): void {
   if (verb.separablePrefix) core.push(tok(verb.separablePrefix, 'particle'))
 }
 
-function deExtras(time: TimeAdverb, manner: MannerAdverb): Token[] {
+function deExtras(time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): Token[] {
   const extras: Token[] = []
   if (time.id !== NONE_ID) extras.push(tok(time.de, 'time'))
+  if (reason.id !== NONE_ID) extras.push(tok(reason.de, 'reason'))
   if (manner.id !== NONE_ID) extras.push(tok(manner.de, 'manner'))
   return extras
 }
 
-function ptExtras(time: TimeAdverb, manner: MannerAdverb): string[] {
-  return [time.id !== NONE_ID ? time.pt : null, manner.id !== NONE_ID ? manner.pt : null].filter((s): s is string => !!s)
+function ptExtras(time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): string[] {
+  return [time.id !== NONE_ID ? time.pt : null, reason.id !== NONE_ID ? reason.pt : null, manner.id !== NONE_ID ? manner.pt : null].filter((s): s is string => !!s)
 }
 
-function enExtras(time: TimeAdverb, manner: MannerAdverb): string[] {
-  return [time.id !== NONE_ID ? time.en : null, manner.id !== NONE_ID ? manner.en : null].filter((s): s is string => !!s)
+function enExtras(time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): string[] {
+  return [time.id !== NONE_ID ? time.en : null, reason.id !== NONE_ID ? reason.en : null, manner.id !== NONE_ID ? manner.en : null].filter((s): s is string => !!s)
 }
 
-export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): Token[] {
+function objectToken(o: VerbObject, text: string): Token {
+  return tok(text, o.kind === 'place' ? 'location' : 'rest')
+}
+
+export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb, negatedQuestion = false): Token[] {
   const subj = subjects.find(s => s.id === subject)!
   const objPhrase = objectDeAffirmative(object)
-  const extras = deExtras(time, manner)
+  const extras = deExtras(time, reason, manner)
   const neg = objectDeNegative(object)
   const hasObject = object.kind !== 'none'
 
   if (form === 'twoVerbs') {
     const core = [tok(cap(subj.de), 'subject'), tok(modal.de[subject], 'modal'), ...extras]
-    if (hasObject) core.push(tok(objPhrase, 'rest'))
+    if (hasObject) core.push(objectToken(object, objPhrase))
     core.push(tok(verb.infinitive, 'infinitive'))
     return withPunctuation(core, '.')
   }
   const verbWord = verb.de[subject]
   if (form === 'affirmative') {
     const core = [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras]
-    if (hasObject) core.push(tok(objPhrase, 'rest'))
+    if (hasObject) core.push(objectToken(object, objPhrase))
     pushSeparable(core, verb)
     return withPunctuation(core, '.')
   }
@@ -567,12 +582,12 @@ export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object
     if (negatedQuestion) {
       if (neg.nichtBefore) {
         core.push(tok('nicht', 'neg'))
-        if (hasObject) core.push(tok(neg.phrase, 'rest'))
+        if (hasObject) core.push(objectToken(object, neg.phrase))
       } else {
         core.push(tok(neg.phrase, 'neg'))
       }
     } else if (hasObject) {
-      core.push(tok(objPhrase, 'rest'))
+      core.push(objectToken(object, objPhrase))
     }
     pushSeparable(core, verb)
     return withPunctuation(core, '?')
@@ -581,7 +596,7 @@ export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object
   const core = [tok(cap(subj.de), 'subject'), tok(verbWord, 'verb'), ...extras]
   if (neg.nichtBefore) {
     core.push(tok('nicht', 'neg'))
-    if (hasObject) core.push(tok(neg.phrase, 'rest'))
+    if (hasObject) core.push(objectToken(object, neg.phrase))
   } else {
     core.push(tok(neg.phrase, 'neg'))
   }
@@ -589,37 +604,46 @@ export function buildDeTokens(form: Form, subject: SubjectId, verb: Verb, object
   return withPunctuation(core, '.')
 }
 
-export function buildDeWerTokens(verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): Token[] {
-  const core = [tok('Wer', 'subject'), tok(verb.de.er, 'verb'), ...deExtras(time, manner)]
-  if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+export function buildDeWerTokens(verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): Token[] {
+  const core = [tok('Wer', 'subject'), tok(verb.de.er, 'verb'), ...deExtras(time, reason, manner)]
+  if (object.kind !== 'none') core.push(objectToken(object, objectDeAffirmative(object)))
   pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
 
 /** The object never appears here — "Was"/"Wohin"/"Woher" already asks for it,
  * so repeating it ("Was lernst du Deutsch?") would be redundant/wrong. */
-export function buildDeContentTokens(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): Token[] {
+export function buildDeContentTokens(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): Token[] {
   const subj = subjects.find(s => s.id === subject)!
   const whWord = object.kind === 'place' ? object.whWord : 'Was'
-  const core = [tok(whWord, 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...deExtras(time, manner)]
+  const core = [tok(whWord, 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...deExtras(time, reason, manner)]
   pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
 
-export function buildDeWannTokens(subject: SubjectId, verb: Verb, object: VerbObject, manner: MannerAdverb): Token[] {
+export function buildDeWannTokens(subject: SubjectId, verb: Verb, object: VerbObject, reason: ReasonAdverb, manner: MannerAdverb): Token[] {
   const subj = subjects.find(s => s.id === subject)!
-  const extras = manner.id !== NONE_ID ? [tok(manner.de, 'manner')] : []
+  const extras = deExtras(timeAdverbs[0], reason, manner)
   const core = [tok('Wann', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras]
-  if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  if (object.kind !== 'none') core.push(objectToken(object, objectDeAffirmative(object)))
   pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
 
-export function buildDeWieTokens(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb): Token[] {
+export function buildDeWarumTokens(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): Token[] {
   const subj = subjects.find(s => s.id === subject)!
-  const extras = time.id !== NONE_ID ? [tok(time.de, 'time')] : []
+  const extras = deExtras(time, reasonAdverbs[0], manner)
+  const core = [tok('Warum', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras]
+  if (object.kind !== 'none') core.push(objectToken(object, objectDeAffirmative(object)))
+  pushSeparable(core, verb)
+  return withPunctuation(core, '?')
+}
+
+export function buildDeWieTokens(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb): Token[] {
+  const subj = subjects.find(s => s.id === subject)!
+  const extras = deExtras(time, reason, mannerAdverbs[0])
   const core = [tok('Wie', 'wh'), tok(verb.de[subject], 'verb'), tok(subj.de, 'subject'), ...extras]
-  if (object.kind !== 'none') core.push(tok(objectDeAffirmative(object), 'rest'))
+  if (object.kind !== 'none') core.push(objectToken(object, objectDeAffirmative(object)))
   pushSeparable(core, verb)
   return withPunctuation(core, '?')
 }
@@ -627,10 +651,10 @@ export function buildDeWieTokens(subject: SubjectId, verb: Verb, object: VerbObj
 /** "Ja" answers a question phrased affirmatively; "Doch" answers one phrased
  * negatively when you're contradicting it (Magst du kein Bier? — Doch, ich mag Bier.).
  * Using "Ja" there would be wrong — Doch exists specifically to avoid that ambiguity. */
-export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
+export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb, negatedQuestion = false): string {
   const subj = subjects.find(s => s.id === subject)!
   const verbWord = verb.de[subject]
-  const extras = [time.id !== NONE_ID ? time.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
+  const extras = [time.id !== NONE_ID ? time.de : null, reason.id !== NONE_ID ? reason.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
   if (kind === 'yes') {
     const prefix = negatedQuestion ? 'Doch' : 'Ja'
     return `${prefix}, ${[subj.de, verbWord, ...extras, objectDeAffirmative(object), verb.separablePrefix].filter(Boolean).join(' ')}.`
@@ -642,15 +666,15 @@ export function buildDeAnswer(kind: 'yes' | 'no', subject: SubjectId, verb: Verb
 
 /** Plain affirmative sentence with no "Ja,"/"Nein," prefix — the answer to an
  * open question (Wer/Was/Wohin/Woher/Wann/Wie), which isn't a yes/no question. */
-export function buildDeOpenAnswer(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
+export function buildDeOpenAnswer(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): string {
   const subj = subjects.find(s => s.id === subject)!
-  const extras = [time.id !== NONE_ID ? time.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
+  const extras = [time.id !== NONE_ID ? time.de : null, reason.id !== NONE_ID ? reason.de : null, manner.id !== NONE_ID ? manner.de : null].filter((s): s is string => !!s)
   return `${[cap(subj.de), verb.de[subject], ...extras, objectDeAffirmative(object), verb.separablePrefix].filter(Boolean).join(' ')}.`
 }
 
-export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
+export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb, negatedQuestion = false): string {
   const subj = subjects.find(s => s.id === subject)!
-  const extras = ptExtras(time, manner)
+  const extras = ptExtras(time, reason, manner)
   const objPt = objectPt(object)
   if (form === 'twoVerbs') {
     const modalWord = modal.ptNeedsDe ? `${modal.pt[subject]} de` : modal.pt[subject]
@@ -665,13 +689,13 @@ export function buildPt(form: Form, subject: SubjectId, verb: Verb, object: Verb
   return `${[cap(subj.pt), 'não', verbWord, objPt, ...extras].filter(Boolean).join(' ')}.`
 }
 
-export function buildPtWer(verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
-  return `Quem ${[verb.pt.er, objectPt(object), ...ptExtras(time, manner)].filter(Boolean).join(' ')}?`
+export function buildPtWer(verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): string {
+  return `Quem ${[verb.pt.er, objectPt(object), ...ptExtras(time, reason, manner)].filter(Boolean).join(' ')}?`
 }
 
-export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
+export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): string {
   const verbWord = verb.pt[subject]
-  const extras = ptExtras(time, manner)
+  const extras = ptExtras(time, reason, manner)
   const tail = extras.length ? ` ${extras.join(' ')}` : ''
   if (object.kind !== 'place') return `O que ${verbWord}${tail}?`
   if (object.whWord === 'Woher') return `De onde ${verbWord}${tail}?`
@@ -679,23 +703,29 @@ export function buildPtContent(subject: SubjectId, verb: Verb, object: VerbObjec
   return `Para onde ${verbWord}${tail}?`
 }
 
-export function buildPtWann(subject: SubjectId, verb: Verb, object: VerbObject, manner: MannerAdverb): string {
-  const tail = manner.id !== NONE_ID ? ` ${manner.pt}` : ''
+export function buildPtWann(subject: SubjectId, verb: Verb, object: VerbObject, reason: ReasonAdverb, manner: MannerAdverb): string {
+  const tail = [reason.id !== NONE_ID ? reason.pt : '', manner.id !== NONE_ID ? manner.pt : ''].filter(Boolean).join(' ')
   const objPt = objectPt(object)
-  return `Quando ${verb.pt[subject]}${tail}${objPt ? ` ${objPt}` : ''}?`
+  return `Quando ${verb.pt[subject]}${tail ? ` ${tail}` : ''}${objPt ? ` ${objPt}` : ''}?`
 }
 
-export function buildPtWie(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb): string {
-  const tail = time.id !== NONE_ID ? ` ${time.pt}` : ''
+export function buildPtWarum(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
+  const tail = [time.id !== NONE_ID ? time.pt : '', manner.id !== NONE_ID ? manner.pt : ''].filter(Boolean).join(' ')
   const objPt = objectPt(object)
-  return `Como ${verb.pt[subject]}${tail}${objPt ? ` ${objPt}` : ''}?`
+  return `Porque é que ${verb.pt[subject]}${tail ? ` ${tail}` : ''}${objPt ? ` ${objPt}` : ''}?`
 }
 
-export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, manner: MannerAdverb, negatedQuestion = false): string {
+export function buildPtWie(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb): string {
+  const tail = [time.id !== NONE_ID ? time.pt : '', reason.id !== NONE_ID ? reason.pt : ''].filter(Boolean).join(' ')
+  const objPt = objectPt(object)
+  return `Como ${verb.pt[subject]}${tail ? ` ${tail}` : ''}${objPt ? ` ${objPt}` : ''}?`
+}
+
+export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: VerbObject, modal: Modal, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb, negatedQuestion = false): string {
   const subj = subjects.find(s => s.id === subject)!
   const base = verb.en.ich
   const does = subject === 'er' ? 'does' : 'do'
-  const extras = enExtras(time, manner)
+  const extras = enExtras(time, reason, manner)
   const objEn = objectEn(object)
 
   if (form === 'twoVerbs') {
@@ -709,15 +739,15 @@ export function buildEn(form: Form, subject: SubjectId, verb: Verb, object: Verb
   return `${[cap(subj.en), does, 'not', base, objEn, ...extras].filter(Boolean).join(' ')}.`
 }
 
-export function buildEnWer(verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
-  return `Who ${[verb.en.er, objectEn(object), ...enExtras(time, manner)].filter(Boolean).join(' ')}?`
+export function buildEnWer(verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): string {
+  return `Who ${[verb.en.er, objectEn(object), ...enExtras(time, reason, manner)].filter(Boolean).join(' ')}?`
 }
 
-export function buildEnContent(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
+export function buildEnContent(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb, manner: MannerAdverb): string {
   const subj = subjects.find(s => s.id === subject)!
   const base = verb.en.ich
   const does = subject === 'er' ? 'does' : 'do'
-  const extras = enExtras(time, manner)
+  const extras = enExtras(time, reason, manner)
   const tail = extras.length ? ` ${extras.join(' ')}` : ''
   if (object.kind !== 'place') return `What ${does} ${subj.en} ${base}${tail}?`
   return object.whWord === 'Woher'
@@ -725,18 +755,26 @@ export function buildEnContent(subject: SubjectId, verb: Verb, object: VerbObjec
     : `Where ${does} ${subj.en} ${base}${tail}?`
 }
 
-export function buildEnWann(subject: SubjectId, verb: Verb, object: VerbObject, manner: MannerAdverb): string {
+export function buildEnWann(subject: SubjectId, verb: Verb, object: VerbObject, reason: ReasonAdverb, manner: MannerAdverb): string {
   const subj = subjects.find(s => s.id === subject)!
   const does = subject === 'er' ? 'does' : 'do'
-  const tail = manner.id !== NONE_ID ? ` ${manner.en}` : ''
+  const tail = [reason.id !== NONE_ID ? reason.en : '', manner.id !== NONE_ID ? manner.en : ''].filter(Boolean).join(' ')
   const objEn = objectEn(object)
-  return `When ${does} ${subj.en} ${verb.en.ich}${tail}${objEn ? ` ${objEn}` : ''}?`
+  return `When ${does} ${subj.en} ${verb.en.ich}${tail ? ` ${tail}` : ''}${objEn ? ` ${objEn}` : ''}?`
 }
 
-export function buildEnWie(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb): string {
+export function buildEnWarum(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, manner: MannerAdverb): string {
   const subj = subjects.find(s => s.id === subject)!
   const does = subject === 'er' ? 'does' : 'do'
-  const tail = time.id !== NONE_ID ? ` ${time.en}` : ''
+  const tail = [time.id !== NONE_ID ? time.en : '', manner.id !== NONE_ID ? manner.en : ''].filter(Boolean).join(' ')
   const objEn = objectEn(object)
-  return `How ${does} ${subj.en} ${verb.en.ich}${tail}${objEn ? ` ${objEn}` : ''}?`
+  return `Why ${does} ${subj.en} ${verb.en.ich}${tail ? ` ${tail}` : ''}${objEn ? ` ${objEn}` : ''}?`
+}
+
+export function buildEnWie(subject: SubjectId, verb: Verb, object: VerbObject, time: TimeAdverb, reason: ReasonAdverb): string {
+  const subj = subjects.find(s => s.id === subject)!
+  const does = subject === 'er' ? 'does' : 'do'
+  const tail = [time.id !== NONE_ID ? time.en : '', reason.id !== NONE_ID ? reason.en : ''].filter(Boolean).join(' ')
+  const objEn = objectEn(object)
+  return `How ${does} ${subj.en} ${verb.en.ich}${tail ? ` ${tail}` : ''}${objEn ? ` ${objEn}` : ''}?`
 }

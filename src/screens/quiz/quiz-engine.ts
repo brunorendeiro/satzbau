@@ -4,7 +4,7 @@ import { breakdown } from '../numbers/germanNumbers'
 import { genderRules, genderCategories } from '../word-family/data'
 import { compoundWords } from '../compound-words/data'
 import {
-  subjects, verbs, modals, timeAdverbs, mannerAdverbs,
+  subjects, verbs, modals, timeAdverbs, reasonAdverbs, mannerAdverbs,
   buildDeTokens, buildPt, buildEn, type Verb,
 } from '../sentence-builder/data/grammar'
 
@@ -312,6 +312,7 @@ function readingQuestions(level: QuizLevel): ChoiceQuestion[] {
 // ---------------------------------------------------------------------------
 function sentenceQuestions(locale: Locale, level: QuizLevel): (ArrangeQuestion | ChoiceQuestion)[] {
   const noneTime = timeAdverbs[0]
+  const noneReason = reasonAdverbs[0]
   const noneManner = mannerAdverbs[0]
   const noneModal = modals[0]
   const combos: { verb: Verb; object: (typeof verbs)[number]['objects'][number] }[] = []
@@ -321,18 +322,18 @@ function sentenceQuestions(locale: Locale, level: QuizLevel): (ArrangeQuestion |
 
   return picked.map(({ verb, object }, i) => {
     const subject = pick(subjects)
-    const tokens = buildDeTokens('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
+    const tokens = buildDeTokens('affirmative', subject.id, verb, object, noneModal, noneTime, noneReason, noneManner)
     const words = tokens.map(t => t.text)
     const sentence = words.join(' ')
     const gloss = locale === 'en'
-      ? buildEn('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
-      : buildPt('affirmative', subject.id, verb, object, noneModal, noneTime, noneManner)
+      ? buildEn('affirmative', subject.id, verb, object, noneModal, noneTime, noneReason, noneManner)
+      : buildPt('affirmative', subject.id, verb, object, noneModal, noneTime, noneReason, noneManner)
     const id = `sentence-${i}-${verb.id}-${object.id}`
 
     if (level === 'easy') {
       const others = sample(picked.filter((_, j) => j !== i), 3).map(({ verb: v2, object: o2 }) => {
         const s2 = pick(subjects)
-        return buildDeTokens('affirmative', s2.id, v2, o2, noneModal, noneTime, noneManner).map(t => t.text).join(' ')
+        return buildDeTokens('affirmative', s2.id, v2, o2, noneModal, noneTime, noneReason, noneManner).map(t => t.text).join(' ')
       })
       const { choices, correctIndex } = buildChoiceSet(sentence, others)
       return { id, kind: 'choice', category: 'sentence', prompt: '', gloss, choices, correctIndex }
