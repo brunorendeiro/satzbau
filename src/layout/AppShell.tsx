@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { detectLocale, locales, commonUi, type Locale } from '../i18n/common'
-import { getStoredConsent, loadAnalytics, loadAds } from '../analytics'
+import { getStoredConsent, loadAnalytics, loadAds, openConsentSettings, trackPageView } from '../analytics'
 import CookieConsent from './CookieConsent'
 import seoPagesData from '../seo-pages.json'
 
@@ -51,6 +51,11 @@ export default function AppShell() {
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', seo.description)
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl)
   }, [locale, location.pathname])
+
+  useEffect(() => {
+    const title = (seoPages[location.pathname] ?? seoPages['/'])[detectLocale()].title
+    trackPageView(location.pathname, title)
+  }, [location.pathname])
 
   function changeLocale(next: Locale) {
     setLocale(next)
@@ -134,6 +139,14 @@ export default function AppShell() {
 
       <footer>
         <span>{t.footerTagline}</span>
+        <nav className="footer-nav" aria-label={t.footerAbout}>
+          <Link to="/privacidade">{t.footerPrivacy}</Link>
+          <Link to="/cookies">{t.footerCookies}</Link>
+          <Link to="/sobre">{t.footerAbout}</Link>
+          <Link to="/contacto">{t.footerContact}</Link>
+          <button type="button" onClick={openConsentSettings}>{t.footerManageCookies}</button>
+        </nav>
+        <span>{t.footerOwner}</span>
         <span className="powered-badge">⚡ Powered by AI</span>
       </footer>
 

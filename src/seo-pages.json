@@ -58,5 +58,25 @@
     "pt": { "title": "Jogos e quiz para aprender alemão | Spiele", "heading": "Jogos para praticar alemão", "description": "Pratica alemão com quiz, palavras cruzadas, sopa de letras, sudoku e desafios de construção de frases." },
     "en": { "title": "Games and quizzes to learn German | Spiele", "heading": "Games for practising German", "description": "Practise German with quizzes, crosswords, word searches, sudoku and sentence-building challenges." },
     "de": { "title": "Deutsch lernen mit Spielen und Quiz | Spiele", "heading": "Spiele zum Deutschüben", "description": "Übe Deutsch mit Quiz, Kreuzworträtsel, Wortsuchen, Sudoku und Aufgaben zum Satzbau." }
+  },
+  "/privacidade": {
+    "pt": { "title": "Política de Privacidade | Satzbau", "heading": "Política de Privacidade", "description": "Consulta como o Satzbau utiliza armazenamento local, Google Analytics, Google AdSense e dados enviados por email." },
+    "en": { "title": "Privacy Policy | Satzbau", "heading": "Privacy Policy", "description": "Learn how Satzbau uses local storage, Google Analytics, Google AdSense and information sent by email." },
+    "de": { "title": "Datenschutzerklärung | Satzbau", "heading": "Datenschutzerklärung", "description": "Erfahre, wie Satzbau lokalen Speicher, Google Analytics, Google AdSense und per E-Mail übermittelte Daten verwendet." }
+  },
+  "/cookies": {
+    "pt": { "title": "Cookies e armazenamento local | Satzbau", "heading": "Cookies e armazenamento local", "description": "Percebe e controla as preferências locais, cookies de análise e cookies de publicidade utilizados pelo Satzbau." },
+    "en": { "title": "Cookies and local storage | Satzbau", "heading": "Cookies and local storage", "description": "Understand and control local preferences, analytics cookies and advertising cookies used by Satzbau." },
+    "de": { "title": "Cookies und lokaler Speicher | Satzbau", "heading": "Cookies und lokaler Speicher", "description": "Verstehe und verwalte lokale Einstellungen sowie Analyse- und Werbe-Cookies bei Satzbau." }
+  },
+  "/sobre": {
+    "pt": { "title": "Sobre o projeto | Satzbau", "heading": "Sobre o Satzbau", "description": "Conhece a missão, o autor e a forma como esta ferramenta gratuita para aprender alemão é criada e mantida." },
+    "en": { "title": "About the project | Satzbau", "heading": "About Satzbau", "description": "Meet the creator and learn how this free German-learning tool is built and maintained." },
+    "de": { "title": "Über das Projekt | Satzbau", "heading": "Über Satzbau", "description": "Erfahre mehr über den Entwickler und darüber, wie dieses kostenlose Werkzeug zum Deutschlernen entsteht und gepflegt wird." }
+  },
+  "/contacto": {
+    "pt": { "title": "Contacto | Satzbau", "heading": "Contactar o Satzbau", "description": "Contacta Bruno Rendeiro para correções, problemas técnicos, privacidade, sugestões ou parcerias relacionadas com o Satzbau." },
+    "en": { "title": "Contact | Satzbau", "heading": "Contact Satzbau", "description": "Contact Bruno Rendeiro about corrections, technical issues, privacy, suggestions or relevant partnerships." },
+    "de": { "title": "Kontakt | Satzbau", "heading": "Satzbau kontaktieren", "description": "Kontaktiere Bruno Rendeiro zu Korrekturen, technischen Problemen, Datenschutz, Vorschlägen oder passenden Partnerschaften." }
   }
 }

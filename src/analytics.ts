@@ -2,6 +2,7 @@ const GA_MEASUREMENT_ID = 'G-8PWRSDS62T'
 const CONSENT_KEY = 'satzbau-analytics-consent'
 const AD_CLIENT = 'ca-pub-4561414438757131'
 export const CONSENT_EVENT = 'satzbau:consent'
+export const CONSENT_OPEN_EVENT = 'satzbau:open-consent'
 
 declare global {
   interface Window {
@@ -11,6 +12,11 @@ declare global {
 }
 
 export type Consent = 'granted' | 'denied'
+
+function gtag(...args: unknown[]) {
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push(args)
+}
 
 export function getStoredConsent(): Consent | null {
   const stored = window.localStorage.getItem(CONSENT_KEY)
@@ -25,12 +31,18 @@ export function loadAnalytics() {
   script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`
   document.head.appendChild(script)
 
-  window.dataLayer = window.dataLayer || []
-  function gtag(..._args: unknown[]) {
-    window.dataLayer.push(arguments)
-  }
   gtag('js', new Date())
-  gtag('config', GA_MEASUREMENT_ID)
+  gtag('config', GA_MEASUREMENT_ID, { send_page_view: false })
+}
+
+export function trackPageView(pathname: string, title: string) {
+  if (getStoredConsent() !== 'granted') return
+  loadAnalytics()
+  gtag('event', 'page_view', {
+    page_title: title,
+    page_location: window.location.href,
+    page_path: pathname,
+  })
 }
 
 export function loadAds() {
@@ -50,10 +62,20 @@ export function loadAds() {
 }
 
 export function setConsent(value: Consent) {
+  const previous = getStoredConsent()
   window.localStorage.setItem(CONSENT_KEY, value)
   window.dispatchEvent(new CustomEvent<Consent>(CONSENT_EVENT, { detail: value }))
   if (value === 'granted') {
     loadAnalytics()
     loadAds()
+    trackPageView(window.location.pathname, document.title)
+  } else if (previous === 'granted') {
+    // Scripts already loaded in this document cannot be reliably unloaded. A
+    // reload immediately applies the withdrawn choice without loading them again.
+    window.location.reload()
   }
+}
+
+export function openConsentSettings() {
+  window.dispatchEvent(new Event(CONSENT_OPEN_EVENT))
 }

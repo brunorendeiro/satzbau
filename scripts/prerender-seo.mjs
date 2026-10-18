@@ -24,16 +24,15 @@ function replaceMeta(html, selector, value) {
 function renderPage(pathname, page) {
   const seo = page.pt
   const canonical = `https://satzbau.vercel.app${pathname === '/' ? '/' : pathname}`
+  const isLearningResource = !['/privacidade', '/cookies', '/sobre', '/contacto'].includes(pathname)
   const structuredData = JSON.stringify({
     '@context': 'https://schema.org',
-    '@type': 'LearningResource',
+    '@type': isLearningResource ? 'LearningResource' : 'WebPage',
     name: seo.heading,
     description: seo.description,
     url: canonical,
     inLanguage: ['pt', 'en', 'de'],
-    isAccessibleForFree: true,
-    educationalLevel: 'Beginner',
-    teaches: 'German language',
+    ...(isLearningResource ? { isAccessibleForFree: true, educationalLevel: 'Beginner', teaches: 'German language' } : {}),
   }).replaceAll('<', '\\u003c')
 
   let html = template

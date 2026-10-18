@@ -12,6 +12,7 @@ import Games from './screens/games/Games'
 import Conversations from './screens/conversations/Conversations'
 import CheatSheet from './screens/cheatsheet/CheatSheet'
 import Everyday from './screens/everyday/Everyday'
+import LegalPage from './screens/legal/LegalPage'
 
 export default function App() {
   return (
@@ -30,6 +31,10 @@ export default function App() {
           <Route path="alltag" element={<Everyday />} />
           <Route path="spickzettel" element={<CheatSheet />} />
           <Route path="spiele" element={<Games />} />
+          <Route path="privacidade" element={<LegalPage pageId="privacy" />} />
+          <Route path="cookies" element={<LegalPage pageId="cookies" />} />
+          <Route path="sobre" element={<LegalPage pageId="about" />} />
+          <Route path="contacto" element={<LegalPage pageId="contact" />} />
         </Route>
       </Routes>
     </BrowserRouter>

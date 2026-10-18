@@ -34,7 +34,15 @@ type CommonUiStrings = {
   beginnerBody: string
   beginnerAction: string
   footerTagline: string
+  footerPrivacy: string
+  footerCookies: string
+  footerAbout: string
+  footerContact: string
+  footerManageCookies: string
+  footerOwner: string
   cookieBody: string
+  cookieLearnMore: string
+  cookieClose: string
   cookieAccept: string
   cookieReject: string
 }
@@ -59,7 +67,15 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     beginnerBody: 'Começa com frases essenciais para viver na Suíça.',
     beginnerAction: 'Começar A1',
     footerTagline: 'Aprende alemão ao teu ritmo',
+    footerPrivacy: 'Privacidade',
+    footerCookies: 'Cookies',
+    footerAbout: 'Sobre',
+    footerContact: 'Contacto',
+    footerManageCookies: 'Gerir cookies',
+    footerOwner: '© 2026 Satzbau · Bruno Rendeiro',
     cookieBody: 'Uso o Google Analytics e o Google AdSense para perceber quantas pessoas visitam este projeto. Aceitas cookies de análise e publicidade?',
+    cookieLearnMore: 'Saber mais',
+    cookieClose: 'Fechar',
     cookieAccept: 'Aceitar',
     cookieReject: 'Recusar',
   },
@@ -82,7 +98,15 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     beginnerBody: 'Start with essential phrases for everyday life in Switzerland.',
     beginnerAction: 'Start A1',
     footerTagline: 'Learn German at your own pace',
+    footerPrivacy: 'Privacy',
+    footerCookies: 'Cookies',
+    footerAbout: 'About',
+    footerContact: 'Contact',
+    footerManageCookies: 'Manage cookies',
+    footerOwner: '© 2026 Satzbau · Bruno Rendeiro',
     cookieBody: 'I use Google Analytics and Google AdSense to understand how many people visit this project. Do you accept analytics and advertising cookies?',
+    cookieLearnMore: 'Learn more',
+    cookieClose: 'Close',
     cookieAccept: 'Accept',
     cookieReject: 'Reject',
   },
@@ -105,7 +129,15 @@ export const commonUi: Record<Locale, CommonUiStrings> = {
     beginnerBody: 'Beginne mit wichtigen Sätzen für den Alltag in der Schweiz.',
     beginnerAction: 'A1 starten',
     footerTagline: 'Lerne Deutsch in deinem Tempo',
+    footerPrivacy: 'Datenschutz',
+    footerCookies: 'Cookies',
+    footerAbout: 'Über Satzbau',
+    footerContact: 'Kontakt',
+    footerManageCookies: 'Cookies verwalten',
+    footerOwner: '© 2026 Satzbau · Bruno Rendeiro',
     cookieBody: 'Ich verwende Google Analytics und Google AdSense, um zu verstehen, wie viele Menschen dieses Projekt besuchen. Akzeptierst du Analyse- und Werbe-Cookies?',
+    cookieLearnMore: 'Mehr erfahren',
+    cookieClose: 'Schließen',
     cookieAccept: 'Akzeptieren',
     cookieReject: 'Ablehnen',
   },
